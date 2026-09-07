@@ -1,10 +1,21 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import MyDatacrons, { buildPlayerDatacronEmbeds } from "../../slash/mydatacrons.ts";
+import MyDatacrons, { buildPlayerDatacronMessages } from "../../slash/mydatacrons.ts";
 import type { DatacronAbilityRef, PlayerDatacron } from "../../types/datacron_types.ts";
 import { createRealLanguage } from "../mocks/mockInteraction.ts";
 
 const language = createRealLanguage();
+
+function charsIn(embeds: { title?: string; description?: string; fields?: { name: string; value: string }[] }[]): number {
+    return embeds.reduce(
+        (sum, e) =>
+            sum +
+            (e.title?.length ?? 0) +
+            (e.description?.length ?? 0) +
+            (e.fields ?? []).reduce((s, f) => s + f.name.length + f.value.length, 0),
+        0,
+    );
+}
 
 // setId 32 exists in the derived data/datacrons.json, so getDatacronSet(32).nameKey resolves.
 const datacron: PlayerDatacron = {
@@ -42,18 +53,18 @@ describe("/mydatacrons metadata", () => {
     });
 });
 
-describe("buildPlayerDatacronEmbeds", () => {
+describe("buildPlayerDatacronMessages", () => {
     it("distinguishes a stale roster (needs refresh) from a genuinely empty one", () => {
-        const stale = JSON.stringify(buildPlayerDatacronEmbeds({ name: "Bob" }, textMap, abilities, language, "eng_us"));
-        const none = JSON.stringify(buildPlayerDatacronEmbeds({ name: "Bob", datacron: [] }, textMap, abilities, language, "eng_us"));
+        const stale = JSON.stringify(buildPlayerDatacronMessages({ name: "Bob" }, textMap, abilities, language, "eng_us"));
+        const none = JSON.stringify(buildPlayerDatacronMessages({ name: "Bob", datacron: [] }, textMap, abilities, language, "eng_us"));
         assert.ok(stale.includes("refresh"), `stale roster should mention a refresh: ${stale}`);
         assert.ok(!none.includes("refresh"), `an empty roster should not: ${none}`);
         assert.notStrictEqual(stale, none);
     });
 
     it("shows every datacron with full affix detail by default (no drill-down needed)", () => {
-        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
-        const text = JSON.stringify(embeds);
+        const messages = buildPlayerDatacronMessages({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
+        const text = JSON.stringify(messages);
         assert.ok(text.includes("Necessary Means"), "set name shown");
         assert.ok(text.includes("Healer"), "headline target resolved and shown");
         assert.ok(text.includes("Whenever Healer allies"), `{0} filled with the target: ${text}`);
@@ -65,7 +76,13 @@ describe("buildPlayerDatacronEmbeds", () => {
     it("puts live datacrons first and marks expired ones, so dead sets don't bury the current one", () => {
         // set 24 expired back in Jan 2026; set 32 is active. Feed them worst-order on purpose.
         const expiredOne: PlayerDatacron = { ...datacron, id: "old", setId: 24, focused: false };
-        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: [expiredOne, datacron] }, textMap, abilities, language, "eng_us");
+        const [embeds] = buildPlayerDatacronMessages(
+            { name: "Bob", datacron: [expiredOne, datacron] },
+            textMap,
+            abilities,
+            language,
+            "eng_us",
+        );
         const fields = embeds[0].fields ?? [];
         assert.ok(
             fields[0].name.includes("32") || fields[0].name.includes("Necessary Means"),
@@ -78,22 +95,38 @@ describe("buildPlayerDatacronEmbeds", () => {
     it("shows an 'expires' line as a live relative timestamp in the field body, not the field name", () => {
         // set 32 is active, so its set carries a future expirationTimeMs. The line goes in the value
         // (which renders <t:...:R> as "in 3 days"), never the name (embed names don't render timestamps).
-        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
+        const [embeds] = buildPlayerDatacronMessages({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
         const field = (embeds[0].fields ?? [])[0];
         assert.ok(/<t:\d+:R>/.test(field.value), `expiry should be a relative timestamp in the value: ${field.value}`);
         assert.ok(!field.name.includes("<t:"), `expiry timestamp must not be in the field name: ${field.name}`);
     });
 
     it("points at /datacron for the full set detail", () => {
-        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
+        const [embeds] = buildPlayerDatacronMessages({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
         assert.ok(embeds[0].description?.includes("/datacron"), `expected a cross-link: ${embeds[0].description}`);
     });
 
     it("spreads many datacrons across multiple embeds (Discord's 10-per-message cap)", () => {
         const many = Array.from({ length: 45 }, (_, i) => ({ ...datacron, id: `d${i}` }));
-        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: many }, textMap, abilities, language, "eng_us");
-        assert.ok(embeds.length > 1, "should paginate into multiple embeds");
-        assert.ok(embeds.length <= 10, "must not exceed Discord's 10-embed limit");
-        assert.ok(embeds[0].title, "first embed carries the title");
+        const messages = buildPlayerDatacronMessages({ name: "Bob", datacron: many }, textMap, abilities, language, "eng_us");
+        assert.ok(messages.flat().length > 1, "should paginate into multiple embeds");
+        for (const embeds of messages) {
+            assert.ok(embeds.length <= 10, "must not exceed Discord's 10-embed limit");
+        }
+        assert.ok(messages[0][0].title, "first embed carries the title");
+    });
+
+    it("keeps every message under Discord's 6000-char total, sending the rest as follow-ups", () => {
+        // A levelled datacron saturates its own 1024-char field cap, so six of them clear 6000 and
+        // the API rejects the whole reply with 50035 rather than truncating it.
+        const many = Array.from({ length: 45 }, (_, i) => ({ ...datacron, id: `d${i}` }));
+        const messages = buildPlayerDatacronMessages({ name: "Bob", datacron: many }, textMap, abilities, language, "eng_us");
+
+        assert.ok(messages.length > 1, "45 datacrons should not be crammed into one message");
+        for (const embeds of messages) {
+            assert.ok(charsIn(embeds) <= 6000, `message held ${charsIn(embeds)} chars, over Discord's 6000 cap`);
+        }
+        const totalFields = messages.flat().reduce((n, e) => n + (e.fields ?? []).length, 0);
+        assert.strictEqual(totalFields, 45, "every datacron must survive pagination");
     });
 });

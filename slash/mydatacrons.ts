@@ -5,14 +5,11 @@ import { formatPlayerAffix, getDatacronAbilities, getDatacronSet, resolveTargetN
 import { getAllyCode } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { type EmbedField, paginateEmbedFields, sendPaginatedEmbeds } from "../modules/utils/embeds.ts";
 import type { DatacronAbilityRef, PlayerDatacron } from "../types/datacron_types.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
-interface EmbedField {
-    name: string;
-    value: string;
-}
 interface DatacronEmbed {
     title?: string;
     description?: string;
@@ -24,9 +21,7 @@ interface PlayerLike {
     datacron?: PlayerDatacron[];
 }
 
-// Discord caps: 25 fields and ~6000 chars per embed, 10 embeds per message. Stay comfortably under.
 const FIELDS_PER_EMBED = 20;
-const MAX_EMBEDS = 10;
 
 /** A datacron is dead once its set expires, so that is worth flagging above focused/locked. */
 function isExpired(datacron: PlayerDatacron): boolean {
@@ -80,26 +75,23 @@ export function buildDatacronField(
 }
 
 /**
- * Builds the player datacron embeds - every owned datacron, each its own field, spread across as
- * many embeds as needed (Discord allows 10 per message). Exported for testing.
- *
  * A missing `datacron` field means the cached roster predates datacron support - NOT the same as
- * owning none.
+ * owning none. Exported for testing.
  */
-export function buildPlayerDatacronEmbeds(
+export function buildPlayerDatacronMessages(
     player: PlayerLike,
     textMap: Map<string, string>,
     abilities: Record<string, DatacronAbilityRef>,
     language: Language,
     lang: SWAPILang,
-): DatacronEmbed[] {
+): DatacronEmbed[][] {
     const title = language.get("COMMAND_MYDATACRONS_HEADER", player.name);
 
     if (player.datacron === undefined) {
-        return [{ title, description: language.get("COMMAND_MYDATACRONS_NEEDS_REFRESH", player.name) }];
+        return [[{ title, description: language.get("COMMAND_MYDATACRONS_NEEDS_REFRESH", player.name) }]];
     }
     if (player.datacron.length === 0) {
-        return [{ title, description: language.get("COMMAND_MYDATACRONS_NONE", player.name) }];
+        return [[{ title, description: language.get("COMMAND_MYDATACRONS_NONE", player.name) }]];
     }
 
     // Live datacrons first, then newest set first - an expired one is dead weight and should not
@@ -107,13 +99,18 @@ export function buildPlayerDatacronEmbeds(
     const ordered = [...player.datacron].sort((a, b) => Number(isExpired(a)) - Number(isExpired(b)) || b.setId - a.setId);
 
     const fields = ordered.map((dc) => buildDatacronField(dc, textMap, abilities, language, lang));
-    const embeds: DatacronEmbed[] = [];
-    for (let i = 0; i < fields.length && embeds.length < MAX_EMBEDS; i += FIELDS_PER_EMBED) {
-        embeds.push({ fields: fields.slice(i, i + FIELDS_PER_EMBED) });
-    }
-    embeds[0].title = title;
-    embeds[0].description = `_${language.get("COMMAND_MYDATACRONS_SET_HINT")}_`;
-    return embeds;
+    const description = `_${language.get("COMMAND_MYDATACRONS_SET_HINT")}_`;
+
+    // Follow-up messages repeat the title so each stands on its own in the channel.
+    return paginateEmbedFields(fields, {
+        fieldsPerEmbed: FIELDS_PER_EMBED,
+        reservedChars: title.length + description.length,
+    }).map((embeds, index) => {
+        const built: DatacronEmbed[] = embeds.map((embedFields) => ({ fields: embedFields }));
+        built[0].title = title;
+        if (index === 0) built[0].description = description;
+        return built;
+    });
 }
 
 export default class MyDatacrons extends Command {
@@ -152,7 +149,7 @@ export default class MyDatacrons extends Command {
         }
 
         const textMap = await swgohAPI.datacronText(swgohLanguage);
-        const embeds = buildPlayerDatacronEmbeds(player, textMap, getDatacronAbilities(), language, swgohLanguage);
-        return interaction.editReply({ embeds });
+        const messages = buildPlayerDatacronMessages(player, textMap, getDatacronAbilities(), language, swgohLanguage);
+        return sendPaginatedEmbeds(interaction, messages);
     }
 }

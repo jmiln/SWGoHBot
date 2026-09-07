@@ -20,23 +20,18 @@ import {
     statName,
 } from "../modules/datacrons.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { type EmbedField, paginateEmbedFields, sendPaginatedEmbeds } from "../modules/utils/embeds.ts";
 import type { DatacronAbilityRef, DatacronSetRef } from "../types/datacron_types.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { AutocompleteContext, CommandContext } from "../types/types.ts";
 
-interface EmbedField {
-    name: string;
-    value: string;
-}
 interface DatacronEmbed {
     title?: string;
     description?: string;
     fields?: EmbedField[];
 }
 
-// Discord caps: 25 fields and ~6000 chars per embed, 10 embeds per message, 1024 chars per field.
 const FIELDS_PER_EMBED = 12;
-const MAX_EMBEDS = 10;
 
 /** Discord rejects a field value over 1024 chars; mark a cut rather than chopping mid-sentence. */
 function truncate(value: string): string {
@@ -44,21 +39,32 @@ function truncate(value: string): string {
     return value.length <= 1024 ? value : `${value.slice(0, 1021)}...`;
 }
 
+// Follow-up messages repeat the title so each stands on its own in the channel.
+function toMessages(fields: EmbedField[], title: string, description?: string): DatacronEmbed[][] {
+    const messages = paginateEmbedFields(fields, {
+        fieldsPerEmbed: FIELDS_PER_EMBED,
+        reservedChars: title.length + (description?.length ?? 0),
+    });
+    return messages.map((embeds, index) => {
+        const built: DatacronEmbed[] = embeds.map((embedFields) => ({ fields: embedFields }));
+        built[0].title = title;
+        if (description && index === 0) built[0].description = description;
+        return built;
+    });
+}
+
 /**
- * Builds the reference embed for a datacron set. Exported so it can be tested without a live
- * interaction. Without `tier`, shows what each tier can boost (target names); with `tier`, shows
- * that tier's full pool with ability text and `{0}` targets filled in.
- *
- * Per the presentation rule, pools are framed as what a tier CAN roll, never as reroll advice.
+ * Without `tier`, shows what each tier can boost (target names); with `tier`, that tier's full pool
+ * with ability text and `{0}` targets filled in. Exported for testing.
  */
-export function buildDatacronSetEmbeds(
+export function buildDatacronSetMessages(
     set: DatacronSetRef,
     tier: number | null,
     textMap: Map<string, string>,
     abilities: Record<string, DatacronAbilityRef>,
     language: Language,
     lang: SWAPILang,
-): DatacronEmbed[] {
+): DatacronEmbed[][] {
     const setName = textMap.get(set.nameKey);
     const fields: EmbedField[] = [];
 
@@ -103,14 +109,8 @@ export function buildDatacronSetEmbeds(
     }
 
     const title = language.get("COMMAND_DATACRON_TITLE", set.setId, setName ?? "");
-    const embeds: DatacronEmbed[] = [];
-    for (let i = 0; i < fields.length && embeds.length < MAX_EMBEDS; i += FIELDS_PER_EMBED) {
-        embeds.push({ fields: fields.slice(i, i + FIELDS_PER_EMBED) });
-    }
-    if (!embeds.length) embeds.push({ fields: [] });
-    embeds[0].title = title;
-    if (tier === null) embeds[0].description = `_${language.get("COMMAND_DATACRON_OVERVIEW_HINT")}_`;
-    return embeds;
+    const description = tier === null ? `_${language.get("COMMAND_DATACRON_OVERVIEW_HINT")}_` : undefined;
+    return toMessages(fields, title, description);
 }
 
 export default class Datacron extends Command {
@@ -160,11 +160,12 @@ export default class Datacron extends Command {
             }
             await interaction.deferReply();
             const textMap = await swgohAPI.datacronText(swgohLanguage);
-            const embeds = buildTargetSearchEmbeds(chosen.name, findSetsForTarget(chosen.targetRule), textMap, language);
+            const messages = buildTargetSearchMessages(chosen.name, findSetsForTarget(chosen.targetRule), textMap, language);
             if (setId !== null || tier !== null) {
-                embeds[0].description = `${embeds[0].description ?? ""} ${language.get("COMMAND_DATACRON_TARGET_OVERRIDE")}`.trim();
+                const first = messages[0][0];
+                first.description = `${first.description ?? ""} ${language.get("COMMAND_DATACRON_TARGET_OVERRIDE")}`.trim();
             }
-            return interaction.editReply({ embeds });
+            return sendPaginatedEmbeds(interaction, messages);
         }
 
         const set = setId === null ? getCurrentDatacronSet() : getDatacronSet(setId);
@@ -180,8 +181,8 @@ export default class Datacron extends Command {
 
         await interaction.deferReply();
         const textMap = await swgohAPI.datacronText(swgohLanguage);
-        const embeds = buildDatacronSetEmbeds(set, tier, textMap, getDatacronAbilities(), language, swgohLanguage);
-        return interaction.editReply({ embeds });
+        const messages = buildDatacronSetMessages(set, tier, textMap, getDatacronAbilities(), language, swgohLanguage);
+        return sendPaginatedEmbeds(interaction, messages);
     }
 
     async autocomplete(interaction: AutocompleteInteraction, focused: AutocompleteFocusedOption, context: AutocompleteContext) {
@@ -271,15 +272,15 @@ export function resolveTargetInput(targets: DatacronTargetRef[], input: string):
  * with the picker. Per the presentation rule this states what CAN boost a target, never reroll
  * advice. Exported for testing.
  */
-export function buildTargetSearchEmbeds(
+export function buildTargetSearchMessages(
     targetName: string,
     matches: DatacronTargetMatch[],
     textMap: Map<string, string>,
     language: Language,
-): DatacronEmbed[] {
+): DatacronEmbed[][] {
     const title = language.get("COMMAND_DATACRON_TARGET_TITLE", targetName);
     if (!matches.length) {
-        return [{ title, description: language.get("COMMAND_DATACRON_TARGET_NONE", targetName) }];
+        return [[{ title, description: language.get("COMMAND_DATACRON_TARGET_NONE", targetName) }]];
     }
 
     const now = Date.now();
@@ -299,11 +300,5 @@ export function buildTargetSearchEmbeds(
         return { name: heading.slice(0, 256), value: truncate(tierLabels.join(", ") || "-") };
     });
 
-    const embeds: DatacronEmbed[] = [];
-    for (let i = 0; i < fields.length && embeds.length < MAX_EMBEDS; i += FIELDS_PER_EMBED) {
-        embeds.push({ fields: fields.slice(i, i + FIELDS_PER_EMBED) });
-    }
-    embeds[0].title = title;
-    embeds[0].description = `_${language.get("COMMAND_DATACRON_TARGET_HINT")}_`;
-    return embeds;
+    return toMessages(fields, title, `_${language.get("COMMAND_DATACRON_TARGET_HINT")}_`);
 }

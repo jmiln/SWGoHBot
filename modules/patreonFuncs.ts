@@ -309,6 +309,29 @@ const ARENA_LOG_CONFIG: Record<
     },
 };
 
+// Keyed as the API names the arenas ("ship", not "fleet"). Markers and setting names are read from
+// ARENA_LOG_CONFIG rather than repeated, so the DM and channel paths cannot drift apart.
+const ARENA_DM_CONFIG = {
+    char: {
+        settingNames: ARENA_LOG_CONFIG.char.settingNames,
+        warnMark: ARENA_LOG_CONFIG.char.warnMark,
+        resultMark: ARENA_LOG_CONFIG.char.resultMark,
+        rankKey: "lastCharRank",
+        climbKey: "lastCharClimb",
+        displayName: "character",
+        capitalName: "Character",
+    },
+    ship: {
+        settingNames: ARENA_LOG_CONFIG.fleet.settingNames,
+        warnMark: ARENA_LOG_CONFIG.fleet.warnMark,
+        resultMark: ARENA_LOG_CONFIG.fleet.resultMark,
+        rankKey: "lastShipRank",
+        climbKey: "lastShipClimb",
+        displayName: "ship",
+        capitalName: "Fleet",
+    },
+} as const;
+
 // How long after a payout the "payout ended" result / payout history may still fire. Gives the
 // once-per-cycle result alert (and history write) a few ticks of slack to self-heal a dropped
 // fetch on the payout minute, without acting on a stale payout hours later (e.g. after an outage).
@@ -1538,30 +1561,7 @@ class PatreonFuncs {
         // Tick timestamp; combined with timeLeft to derive the payout cycle for once-per-cycle gating
         now: number = Date.now(),
     ): Promise<boolean> {
-        const arenaConfig = {
-            char: {
-                alertType: "both" as const,
-                altType: "char" as const,
-                rankKey: "lastCharRank" as const,
-                climbKey: "lastCharClimb" as const,
-                warnMark: "charWarn" as const,
-                resultMark: "charResult" as const,
-                displayName: "character",
-                capitalName: "Character",
-            },
-            ship: {
-                alertType: "both" as const,
-                altType: "fleet" as const,
-                rankKey: "lastShipRank" as const,
-                climbKey: "lastShipClimb" as const,
-                warnMark: "fleetWarn" as const,
-                resultMark: "fleetResult" as const,
-                displayName: "ship",
-                capitalName: "Fleet",
-            },
-        };
-
-        const config = arenaConfig[arenaType];
+        const config = ARENA_DM_CONFIG[arenaType];
         const arenaData = arenaType === "char" ? player.arena?.char : player.arena?.ship;
 
         // True when a per-cycle marker was written, so the caller knows to persist the user doc
@@ -1572,7 +1572,7 @@ class PatreonFuncs {
         if (
             user.arenaAlert &&
             user.arenaAlert.enableRankDMs !== "off" &&
-            [config.alertType, config.altType].includes(user.arenaAlert.arena as "char" | "fleet" | "both")
+            config.settingNames.includes(user.arenaAlert.arena as "char" | "fleet" | "both")
         ) {
             const payoutTime =
                 timeLeft === null

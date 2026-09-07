@@ -2,16 +2,27 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import type { DatacronTargetMatch, DatacronTargetRef } from "../../modules/datacrons.ts";
 import Datacron, {
-    buildDatacronSetEmbeds,
+    buildDatacronSetMessages,
     buildSetChoices,
     buildTargetChoices,
-    buildTargetSearchEmbeds,
+    buildTargetSearchMessages,
     resolveTargetInput,
 } from "../../slash/datacron.ts";
 import type { DatacronAbilityRef, DatacronSetRef } from "../../types/datacron_types.ts";
 import { createRealLanguage } from "../mocks/mockInteraction.ts";
 
 const language = createRealLanguage();
+
+function charsIn(embeds: { title?: string; description?: string; fields?: { name: string; value: string }[] }[]): number {
+    return embeds.reduce(
+        (sum, e) =>
+            sum +
+            (e.title?.length ?? 0) +
+            (e.description?.length ?? 0) +
+            (e.fields ?? []).reduce((s, f) => s + f.name.length + f.value.length, 0),
+        0,
+    );
+}
 
 // statType 49 (Defense) is a percentage stat -> de-scales by 1e6 (10000000 -> 10, 25000000 -> 25).
 const set: DatacronSetRef = {
@@ -91,7 +102,7 @@ describe("target search", () => {
         });
     });
 
-    describe("buildTargetSearchEmbeds", () => {
+    describe("buildTargetSearchMessages", () => {
         // 1900000000000 = year 2030 (active); 1500000000000 = 2017 (expired).
         const activeSet: DatacronSetRef = {
             setId: 33,
@@ -120,7 +131,7 @@ describe("target search", () => {
         ]);
 
         it("titles with the target and lists each matching set with its tiers and relic reqs", () => {
-            const embeds = buildTargetSearchEmbeds("Jedi", matches, textMap, language);
+            const [embeds] = buildTargetSearchMessages("Jedi", matches, textMap, language);
             assert.ok(embeds[0].title?.includes("Jedi"), `title should name the target: ${embeds[0].title}`);
             const text = JSON.stringify(embeds);
             assert.ok(text.includes("Supremacy Directive"), "matching set name shown");
@@ -129,14 +140,14 @@ describe("target search", () => {
         });
 
         it("puts active sets first and marks expired ones", () => {
-            const fields = buildTargetSearchEmbeds("Jedi", matches, textMap, language)[0].fields ?? [];
+            const fields = buildTargetSearchMessages("Jedi", matches, textMap, language)[0][0].fields ?? [];
             assert.ok(fields[0].name.includes("33"), `active set should sort first: ${fields[0].name}`);
             const expiredField = fields.find((f) => f.name.includes("24"));
             assert.ok(expiredField?.name.includes("expired"), `expired set must be marked: ${expiredField?.name}`);
         });
 
         it("handles a target no set can boost", () => {
-            const embeds = buildTargetSearchEmbeds("Nobody", [], textMap, language);
+            const [embeds] = buildTargetSearchMessages("Nobody", [], textMap, language);
             assert.ok(
                 embeds[0].description?.toLowerCase().includes("no datacron"),
                 `expected a no-match message: ${embeds[0].description}`,
@@ -144,7 +155,7 @@ describe("target search", () => {
         });
 
         it("states possibilities, never reroll instructions (presentation rule)", () => {
-            const text = JSON.stringify(buildTargetSearchEmbeds("Jedi", matches, textMap, language)).toLowerCase();
+            const text = JSON.stringify(buildTargetSearchMessages("Jedi", matches, textMap, language)).toLowerCase();
             for (const banned of ["you should", "recommend", "best choice", "worth rerolling", "don't reroll"]) {
                 assert.ok(!text.includes(banned), `presentation rule violated by: "${banned}"`);
             }
@@ -206,27 +217,27 @@ describe("buildSetChoices", () => {
     });
 });
 
-describe("buildDatacronSetEmbeds", () => {
+describe("buildDatacronSetMessages", () => {
     it("titles with the localized set name and shows expiry + rerollable", () => {
-        const embeds = buildDatacronSetEmbeds(set, null, textMap, abilities, language, "eng_us");
+        const [embeds] = buildDatacronSetMessages(set, null, textMap, abilities, language, "eng_us");
         assert.ok(embeds[0].title?.includes("Necessary Means"), `expected localized name in: ${embeds[0].title}`);
         assert.ok(JSON.stringify(embeds).includes("<t:"), "expiry should be a Discord timestamp");
     });
 
     it("overview shows what each tier can boost (target names), not raw pools", () => {
-        const text = JSON.stringify(buildDatacronSetEmbeds(set, null, textMap, abilities, language, "eng_us"));
+        const text = JSON.stringify(buildDatacronSetMessages(set, null, textMap, abilities, language, "eng_us"));
         assert.ok(text.includes("Healer"), `ability tier should list its target: ${text}`);
         assert.ok(!text.includes("Whenever Healer allies"), "overview should not dump full ability text");
     });
 
     it("a specific tier shows the de-scaled stat pool", () => {
-        const text = JSON.stringify(buildDatacronSetEmbeds(set, 1, textMap, abilities, language, "eng_us"));
+        const text = JSON.stringify(buildDatacronSetMessages(set, 1, textMap, abilities, language, "eng_us"));
         assert.ok(text.includes("10") && text.includes("25"), `expected de-scaled range in: ${text}`);
         assert.ok(!text.includes("10000000"), "raw scaled value leaked");
     });
 
     it("a specific ability tier shows full text with {0} filled, one field per option", () => {
-        const embeds = buildDatacronSetEmbeds(set, 3, textMap, abilities, language, "eng_us");
+        const [embeds] = buildDatacronSetMessages(set, 3, textMap, abilities, language, "eng_us");
         const text = JSON.stringify(embeds);
         assert.ok(text.includes("Whenever Healer allies"), `expected {0} filled in: ${text}`);
         assert.ok(!text.includes("{0}"), "no unfilled placeholder");
@@ -258,13 +269,13 @@ describe("buildDatacronSetEmbeds", () => {
             tiers: [{ tier: 9, requiredRelicTier: 8, affixPool: longAbilities }],
         };
 
-        const embeds = buildDatacronSetEmbeds(bigSet, 9, bigText, bigAbilities, language, "eng_us");
-        const text = JSON.stringify(embeds);
+        const messages = buildDatacronSetMessages(bigSet, 9, bigText, bigAbilities, language, "eng_us");
+        const text = JSON.stringify(messages);
         for (let i = 0; i < 10; i++) {
             assert.ok(text.includes(`END${i}`), `ability ${i} was truncated - its tail is missing`);
         }
         // Every field must respect Discord's own limit rather than being sliced mid-sentence.
-        for (const embed of embeds) {
+        for (const embed of messages.flat()) {
             for (const f of embed.fields ?? []) {
                 assert.ok(f.value.length <= 1024, `field value exceeds Discord's 1024 limit: ${f.value.length}`);
             }
@@ -272,8 +283,35 @@ describe("buildDatacronSetEmbeds", () => {
         }
     });
 
+    it("splits a real-sized tier across messages so none exceeds Discord's 6000-char total", () => {
+        // Modelled on set 25 tier 6, which really does build 43 fields / ~9840 chars.
+        const pool = Array.from({ length: 43 }, (_, i) => ({ abilityId: `ability_${i}`, targetRule: `target_datacron_char${i}` }));
+        const bigAbilities: Record<string, DatacronAbilityRef> = {};
+        const bigText = new Map<string, string>([["DATACRON_SET_25_NAME", "Bounty Protocol"]]);
+        for (let i = 0; i < 43; i++) {
+            bigAbilities[`ability_${i}`] = { nameKey: "DATACRON_ROLE_MECHANIC_NAME", descKey: `DESC_${i}` };
+            bigText.set(`DESC_${i}`, `Ability ${i}: ${"x".repeat(200)} END${i}`);
+        }
+        const bigSet: DatacronSetRef = {
+            setId: 25,
+            nameKey: "DATACRON_SET_25_NAME",
+            allowReroll: true,
+            tiers: [{ tier: 6, requiredRelicTier: 7, affixPool: pool }],
+        };
+
+        const messages = buildDatacronSetMessages(bigSet, 6, bigText, bigAbilities, language, "eng_us");
+        assert.ok(messages.length > 1, "an oversized tier should span more than one message");
+        for (const embeds of messages) {
+            assert.ok(charsIn(embeds) <= 6000, `message held ${charsIn(embeds)} chars, over Discord's 6000 cap`);
+        }
+        const text = JSON.stringify(messages);
+        for (let i = 0; i < 43; i++) {
+            assert.ok(text.includes(`END${i}`), `ability ${i} was dropped instead of sent as a follow-up`);
+        }
+    });
+
     it("states possibilities, never instructions (presentation rule)", () => {
-        const text = JSON.stringify(buildDatacronSetEmbeds(set, 1, textMap, abilities, language, "eng_us")).toLowerCase();
+        const text = JSON.stringify(buildDatacronSetMessages(set, 1, textMap, abilities, language, "eng_us")).toLowerCase();
         for (const banned of ["you should", "recommend", "best choice", "worth rerolling", "don't reroll"]) {
             assert.ok(!text.includes(banned), `presentation rule violated by: "${banned}"`);
         }
