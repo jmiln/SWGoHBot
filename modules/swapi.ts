@@ -159,6 +159,36 @@ function describeFetchFailure(message: string, statusCode?: number): string {
     return statusCode ? `[${statusCode}] ${message}` : message;
 }
 
+export type DroppedMember = { playerId: string; detail: string };
+
+// Enough ids to chase a handful of bad accounts without putting a whole roster on one line.
+const MAX_LISTED_DROPPED_IDS = 5;
+
+// Grouping by reason keeps this to one bounded line per fetch, replacing throttled per-player
+// logging whose suppressed tally was only ever flushed by a later error that often never came.
+export function summarizeDroppedMembers(dropped: DroppedMember[], rosterSize: number): string | null {
+    if (!dropped.length) return null;
+
+    const idsByReason = new Map<string, string[]>();
+    for (const { playerId, detail } of dropped) {
+        const ids = idsByReason.get(detail);
+        if (ids) {
+            ids.push(playerId);
+        } else {
+            idsByReason.set(detail, [playerId]);
+        }
+    }
+
+    const reasons = [...idsByReason]
+        .map(([reason, ids]) => {
+            const listed = ids.slice(0, MAX_LISTED_DROPPED_IDS).join(", ");
+            return `${reason} (${ids.length}: ${listed}${ids.length > MAX_LISTED_DROPPED_IDS ? ", ..." : ""})`;
+        })
+        .join("; ");
+
+    return `dropped ${dropped.length}/${rosterSize} members: ${reasons}`;
+}
+
 /**
  * Runs a queued comlink call, returning null instead of throwing when it fails.
  *
@@ -1306,6 +1336,7 @@ class SWAPI {
         }
 
         const members: SWAPIGuildMember[] = [];
+        const droppedMembers: DroppedMember[] = [];
         await eachLimit(
             member,
             MAX_BATCH_IN_FLIGHT,
@@ -1322,13 +1353,15 @@ class SWAPI {
                 // Grab each player and process their info
                 try {
                     // A transient blip here silently drops the member from the guild roster, so
-                    // swapiServe retries before giving up - see BUG_REFERENCE.md
-                    const player = await tryCall<ComlinkPlayer>(
-                        priority,
-                        "formatGuild-getPlayer",
-                        (detail) => `[formatGuild] Failed to fetch player ${playerId}: ${detail}`,
-                        (stub) => stub.getPlayer(null, playerId) as Promise<ComlinkPlayer>,
-                    );
+                    // swapiServe retries the retryable classes before this gives up.
+                    let player: ComlinkPlayer;
+                    try {
+                        player = (await withStub(priority, (stub) => stub.getPlayer(null, playerId))) as ComlinkPlayer;
+                    } catch (err) {
+                        const message = err instanceof Error ? err.message : String(err);
+                        droppedMembers.push({ playerId, detail: describeFetchFailure(message, getFetchErrorStatus(err)) });
+                        return;
+                    }
                     if (!player) return;
                     const { name, level, allyCode, profileStat } = player;
 
@@ -1362,12 +1395,18 @@ class SWAPI {
                         updated: Date.now(),
                     } as unknown as SWAPIGuildMember);
                 } catch (err) {
-                    // The fetch itself reports its own give-up above, so anything reaching here
-                    // came from formatting the member rather than retrieving them
-                    logger.error(`[formatGuild] Failed to process player ${playerId}: ${err instanceof Error ? err.message : String(err)}`);
+                    // The fetch tallies its own failures above, so anything reaching here came from
+                    // formatting the member rather than retrieving them. Both drop them identically.
+                    droppedMembers.push({
+                        playerId,
+                        detail: `while formatting: ${err instanceof Error ? err.message : String(err)}`,
+                    });
                 }
             },
         );
+
+        const droppedSummary = summarizeDroppedMembers(droppedMembers, member.length);
+        if (droppedSummary) logger.error(`[formatGuild] ${name}: ${droppedSummary}`);
 
         return {
             ...profileRest,
