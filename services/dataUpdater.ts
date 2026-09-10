@@ -345,6 +345,17 @@ async function init() {
                 logger.error(`[dataUpdater] Update cycle failed: ${error instanceof Error ? error.stack || error.message : String(error)}`);
                 exitCode = 1;
             } finally {
+                // Not debugTimeEnd: on the success path the phase is already closed, and a second
+                // console.timeEnd would warn. This is a no-op unless the cycle threw.
+                phases.end("Total update cycle");
+                logger.log("Update cycle complete", "log", {
+                    exitCode,
+                    durationMs: phases.durations()["Total update cycle"],
+                    phases: phases.durations(),
+                    countersOnly: COUNTERS_ONLY,
+                    forceGamedata: FORCE_GAMEDATA,
+                    cleanup: RUN_CLEANUP,
+                });
                 await cleanup();
                 process.exit(exitCode);
             }
@@ -2486,14 +2497,44 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
     }
 }
 
+export class PhaseTimer {
+    private readonly started = new Map<string, number>();
+    private readonly completed = new Map<string, number>();
+    private readonly now: () => number;
+
+    constructor(now: () => number = Date.now) {
+        this.now = now;
+    }
+
+    start(name: string): void {
+        this.started.set(name, this.now());
+    }
+
+    end(name: string): void {
+        const startedAt = this.started.get(name);
+        if (startedAt === undefined) return;
+        this.completed.set(name, this.now() - startedAt);
+        this.started.delete(name);
+    }
+
+    durations(): Record<string, number> {
+        return Object.fromEntries(this.completed);
+    }
+}
+
+const phases = new PhaseTimer();
+
+// Timing is recorded regardless of --debug; the flag only controls the per-phase console output.
 function debugTime(name: string) {
-    if (!DEBUG_LOGS) return;
     if (!name?.length) return;
+    phases.start(name);
+    if (!DEBUG_LOGS) return;
     console.time(name);
 }
 function debugTimeEnd(name: string) {
-    if (!DEBUG_LOGS) return;
     if (!name?.length) return;
+    phases.end(name);
+    if (!DEBUG_LOGS) return;
     console.timeEnd(name);
 }
 

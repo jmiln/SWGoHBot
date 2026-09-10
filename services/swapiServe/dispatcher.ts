@@ -2,7 +2,7 @@ import { GOVERNOR, type Priority, RETRY, SHED_REASON_HEADER, SHED_SHUTTING_DOWN 
 import logger from "../../modules/Logger.ts";
 import { type Clock, systemClock, type TimerHandle } from "./clock.ts";
 import { createHttpForwarder, type Forwarder } from "./forwarder.ts";
-import { type BlockedBy, Governor } from "./governor.ts";
+import { type BlockedBy, Governor, type GovernorTransition } from "./governor.ts";
 import { classifyOutcome, isRetryable, type Outcome } from "./outcomes.ts";
 import { PriorityQueue, type QueueEntry } from "./queue.ts";
 import { RetryBudget } from "./retryBudget.ts";
@@ -157,6 +157,7 @@ export class Dispatcher {
         retryDelayMs,
         timeoutMs,
         circuitProbeIntervalMs,
+        onGovernorTransition,
     }: {
         backends: string[];
         accessKey: string;
@@ -172,11 +173,12 @@ export class Dispatcher {
         timeoutMs?: number;
         /** Overrides the circuit probe cadence. Tests use it to avoid waiting out the real one. */
         circuitProbeIntervalMs?: number;
+        onGovernorTransition?: (transition: GovernorTransition) => void;
     }) {
         this.clock = clock ?? systemClock;
         this.forwarder = forwarder ?? createHttpForwarder({ accessKey, secretKey, timeoutMs });
         this.probeIntervalMs = circuitProbeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
-        this.governor = new Governor(backends, { probeIntervalMs: circuitProbeIntervalMs });
+        this.governor = new Governor(backends, { probeIntervalMs: circuitProbeIntervalMs, onTransition: onGovernorTransition });
 
         // Tests need deterministic pacing; production uses GOVERNOR.START_LIMIT and RATE.START_PER_SEC.
         for (const backend of this.governor.snapshot()) {
@@ -467,7 +469,10 @@ export class Dispatcher {
             // The forwarder resolves even for transport errors, so reaching here is our own defect.
             // releaseUnused, or the slot leaks and a healthy backend has its limit halved for it.
             this.governor.releaseUnused(backendUrl, isProbe);
-            logger.error(`SwapiServe: Forwarder threw for ${request.uri}: ${err instanceof Error ? err.message : String(err)}`);
+            logger.error("Forwarder threw", {
+                uri: request.uri,
+                errorMessage: err instanceof Error ? err.message : String(err),
+            });
             this.shed(pending, "upstream_error");
             this.pump();
             return;

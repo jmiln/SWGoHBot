@@ -12,7 +12,8 @@ import {
     guildEventExists,
 } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
-import logger from "../modules/Logger.ts";
+import logger, { shouldUsePretty } from "../modules/Logger.ts";
+import { getPackageVersion } from "../modules/utils/version.ts";
 import type { EventOperationResult, GuildConfigEvent } from "../types/guildConfig_types.ts";
 import type { OperationResult } from "../types/types.ts";
 
@@ -95,7 +96,7 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
             }
         }
     } catch (error) {
-        logger.error(`EventMgr: Handler error for ${req.url}: ${error instanceof Error ? error.message : String(error)}`);
+        logger.error(`Handler error for ${req.url}: ${error instanceof Error ? error.message : String(error)}`);
         res.writeHead(500, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "Internal server error" }));
     }
@@ -124,10 +125,15 @@ async function init() {
         cache.init(mongo);
 
         server.listen(env.EVENT_SERVER_PORT, () => {
-            logger.log(`EventMgr: Service started on port ${env.EVENT_SERVER_PORT}`);
+            logger.log("Service started", "ready", {
+                version: getPackageVersion(),
+                logLevel: env.LOG_LEVEL,
+                pretty: shouldUsePretty(env.LOG_PRETTY, Boolean(process.stdout.isTTY)),
+                port: env.EVENT_SERVER_PORT,
+            });
         });
     } catch (error) {
-        logger.error(`EventMgr: Failed to initialize - ${error instanceof Error ? error.message : String(error)}`);
+        logger.error(`Failed to initialize - ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);
     }
 }
@@ -136,7 +142,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
     if (isShuttingDown) return;
     isShuttingDown = true;
 
-    logger.log(`EventMgr: Received ${signal}, starting graceful shutdown`);
+    logger.log(`Received ${signal}, starting graceful shutdown`);
 
     try {
         await new Promise<void>((resolve, reject) => {
@@ -144,7 +150,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
                 if (err) {
                     reject(err);
                 } else {
-                    logger.log("EventMgr: HTTP server closed");
+                    logger.log("HTTP server closed");
                     resolve();
                 }
             });
@@ -152,13 +158,13 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
         if (mongo) {
             await mongo.close();
-            logger.log("EventMgr: MongoDB connection closed");
+            logger.log("MongoDB connection closed");
         }
 
-        logger.log("EventMgr: Graceful shutdown complete");
+        logger.log("Graceful shutdown complete");
         process.exit(0);
     } catch (error) {
-        logger.error(`EventMgr: Error during shutdown - ${error instanceof Error ? error.message : String(error)}`);
+        logger.error(`Error during shutdown - ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);
     }
 }
@@ -167,17 +173,18 @@ process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 process.on("SIGINT", () => gracefulShutdown("SIGINT"));
 
 process.on("uncaughtException", (error) => {
-    logger.error(`EventMgr: Uncaught exception - ${error instanceof Error ? error.message : String(error)}`);
+    logger.error(`Uncaught exception - ${error instanceof Error ? error.message : String(error)}`);
     logger.error(String(error.stack));
 });
 
 process.on("unhandledRejection", (reason, promise) => {
-    logger.error(`EventMgr: Unhandled rejection at ${promise}`);
+    logger.error(`Unhandled rejection at ${promise}`);
     logger.error(`Reason: ${reason}`);
 });
 
 async function processEvents() {
-    const nowTime = Date.now();
+    const startedAt = Date.now();
+    const nowTime = startedAt;
 
     const triggeredEvents = await getTriggeredEvents({ nowTime });
     const eventsOut = [...triggeredEvents];
@@ -198,6 +205,17 @@ async function processEvents() {
             eventsOut.push(ev);
         }
     }
+
+    // Silent on an empty tick: /checkEvents is polled every minute and most ticks return nothing.
+    if (eventsOut.length) {
+        logger.log("Events triggered", "log", {
+            triggered: triggeredEvents.length,
+            countdown: eventsOut.length - triggeredEvents.length,
+            returned: eventsOut.length,
+            durationMs: Date.now() - startedAt,
+        });
+    }
+
     return eventsOut;
 }
 

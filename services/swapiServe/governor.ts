@@ -14,6 +14,14 @@ import { TokenBucket } from "./tokenBucket.ts";
  */
 export type CircuitState = "closed" | "open" | "half-open";
 
+export interface GovernorTransition {
+    url: string;
+    event: "backoff" | "open" | "half-open" | "closed";
+    limit: number;
+    previousLimit?: number;
+    consecutiveFailures: number;
+}
+
 /** How high the controller had climbed at the moment a backend pushed back. */
 export interface BackendPeak {
     limit: number;
@@ -110,9 +118,14 @@ interface BackendState {
 export class Governor {
     private readonly backends: BackendState[];
     private readonly probeIntervalMs: number;
+    private readonly onTransition?: (transition: GovernorTransition) => void;
 
-    constructor(urls: string[], { probeIntervalMs }: { probeIntervalMs?: number } = {}) {
+    constructor(
+        urls: string[],
+        { probeIntervalMs, onTransition }: { probeIntervalMs?: number; onTransition?: (transition: GovernorTransition) => void } = {},
+    ) {
         this.probeIntervalMs = probeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
+        this.onTransition = onTransition;
         this.backends = urls.map((url) => ({
             url,
             limit: GOVERNOR.START_LIMIT,
@@ -135,6 +148,16 @@ export class Governor {
         }));
     }
 
+    private emit(backend: BackendState, event: GovernorTransition["event"], previousLimit?: number): void {
+        this.onTransition?.({
+            url: backend.url,
+            event,
+            limit: backend.limit,
+            previousLimit,
+            consecutiveFailures: backend.consecutiveFailures,
+        });
+    }
+
     /**
      * Reserves a slot on the healthiest backend with headroom and returns its URL, or null with
      * the reason when everything is unavailable. A circuit-open backend is skipped except for one
@@ -149,6 +172,7 @@ export class Governor {
             // the breaker ever becoming permanent.
             if (backend.state === "open" && now - backend.openedAt >= this.probeIntervalMs) {
                 backend.state = "half-open";
+                this.emit(backend, "half-open");
             }
 
             if (backend.drained || backend.state === "open") continue;
@@ -237,17 +261,20 @@ export class Governor {
             if (backend.recentPeaks.length > RECENT_PEAKS) backend.recentPeaks.shift();
             backend.backoffs++;
 
+            const previousLimit = backend.limit;
             backend.cleanStreak = 0;
             backend.consecutiveFailures++;
             backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.floor(backend.limit * GOVERNOR.DECREASE_FACTOR));
             backend.cooldownUntil = now + GOVERNOR.COOLDOWN_MS;
             backend.bucket.setRate(backend.bucket.getRate() * GOVERNOR.DECREASE_FACTOR);
+            this.emit(backend, "backoff", previousLimit);
 
             // A failed probe sends the breaker straight back to open and restarts the interval,
             // regardless of the failure count.
             if (wasProbe || backend.consecutiveFailures >= GOVERNOR.CIRCUIT_OPEN_AFTER_FAILURES) {
                 backend.state = "open";
                 backend.openedAt = now;
+                this.emit(backend, "open");
             }
             return;
         }
@@ -259,6 +286,7 @@ export class Governor {
             // Re-admit, but do NOT restore the old limit: recovery climbs through normal additive
             // increase so we do not slam straight back into whatever caused the failures.
             backend.state = "closed";
+            this.emit(backend, "closed");
         }
         if (outcome !== "ok") return;
 

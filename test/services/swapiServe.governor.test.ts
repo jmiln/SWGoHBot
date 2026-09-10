@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import { GOVERNOR, RATE } from "../../data/constants/swapiServe.ts";
-import { Governor, RECENT_PEAKS } from "../../services/swapiServe/governor.ts";
+import { Governor, type GovernorTransition, RECENT_PEAKS } from "../../services/swapiServe/governor.ts";
 
 const A = "http://a.test";
 const B = "http://b.test";
@@ -565,5 +565,79 @@ describe("swapiServe.Governor settling metrics", () => {
         governor.snapshot()[0].recentPeaks[0].limit = -1;
 
         assert.notStrictEqual(governor.snapshot()[0].recentPeaks[0].limit, -1);
+    });
+});
+
+describe("swapiServe.Governor transition reporting", () => {
+    it("reports a backoff with the limit before and after the halving", () => {
+        const seen: GovernorTransition[] = [];
+        const governor = new Governor([A], { onTransition: (t) => seen.push(t) });
+
+        governor.acquire(0);
+        governor.report(A, "server_error", 0);
+
+        const backoff = seen.find((t) => t.event === "backoff");
+        assert.ok(backoff, "expected a backoff transition");
+        assert.strictEqual(backoff.url, A);
+        assert.strictEqual(backoff.previousLimit, GOVERNOR.START_LIMIT);
+        assert.ok(backoff.limit < GOVERNOR.START_LIMIT);
+    });
+
+    it("reports the breaker opening after enough consecutive failures", () => {
+        const seen: GovernorTransition[] = [];
+        const governor = new Governor([A], { onTransition: (t) => seen.push(t) });
+
+        for (let i = 0; i < GOVERNOR.CIRCUIT_OPEN_AFTER_FAILURES; i++) {
+            governor.acquire(i);
+            governor.report(A, "server_error", i);
+        }
+
+        assert.ok(
+            seen.some((t) => t.event === "open"),
+            "expected an open transition",
+        );
+    });
+
+    // Production's probe interval, not a compressed one: the failures that open the breaker also
+    // collapse the token rate, so a shortened interval blocks the probe on a token instead.
+    it("reports half-open and then closed when the probe succeeds", () => {
+        const seen: GovernorTransition[] = [];
+        const governor = new Governor([A], { onTransition: (t) => seen.push(t) });
+
+        for (let i = 0; i < GOVERNOR.CIRCUIT_OPEN_AFTER_FAILURES; i++) {
+            governor.report(A, "transport_failure", 0);
+        }
+
+        const probeTime = GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1;
+        const probe = governor.acquire(probeTime);
+        assert.ok(probe.isProbe, "expected the acquire to be the probe");
+        governor.report(A, "ok", probeTime, probe.isProbe);
+
+        assert.ok(
+            seen.some((t) => t.event === "half-open"),
+            "expected a half-open transition",
+        );
+        assert.ok(
+            seen.some((t) => t.event === "closed"),
+            "expected a closed transition",
+        );
+    });
+
+    // The additive increase fires on every clean request. Reporting it would make this
+    // per-request logging by the back door.
+    it("stays silent on the additive limit increase", () => {
+        const seen: GovernorTransition[] = [];
+        const governor = new Governor([A], { onTransition: (t) => seen.push(t) });
+
+        completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN * 3);
+
+        assert.ok(governor.snapshot()[0].limit > GOVERNOR.START_LIMIT, "limit should have grown");
+        assert.deepStrictEqual(seen, []);
+    });
+
+    it("works without a callback, which is how production tests construct it", () => {
+        const governor = new Governor([A]);
+        governor.acquire(0);
+        assert.doesNotThrow(() => governor.report(A, "server_error", 0));
     });
 });

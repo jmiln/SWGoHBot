@@ -1,7 +1,9 @@
 import { type Shard, ShardingManager } from "discord.js";
 import { env } from "./config/config.ts";
+import logger, { shouldUsePretty } from "./modules/Logger.ts";
 import { type ShardHeartbeat, ShardRegistry } from "./modules/shardStatus/registry.ts";
 import { startShardStatusServer } from "./modules/shardStatus/server.ts";
+import { getPackageVersion } from "./modules/utils/version.ts";
 import { systemClock } from "./services/swapiServe/clock.ts";
 
 const Manager = new ShardingManager("./swgohBot.ts", {
@@ -29,29 +31,33 @@ Manager.on("shardCreate", (shard: Shard) => {
     });
 
     shard.on("spawn", () => {
-        console.log(`  [${shard.id}] Spawned shard`);
+        logger.log("Shard spawned", "log", { shardId: shard.id, event: "spawned" });
     });
 
     shard.on("ready", () => {
-        console.log(`  [${shard.id}] Shard is ready`);
+        logger.log("Shard ready", "ready", { shardId: shard.id, event: "ready" });
     });
 
     shard.on("reconnecting", () => {
         // This seems to happen fairly often without disconnecting a lot, so let's not spam the logs with it
         // - Apparently Discord will reconnect any shards periodically
-        // console.log(`  [${shard.id}] Reconnecting shard`);
+        logger.debug("Shard reconnecting", { shardId: shard.id, event: "reconnecting" });
     });
 
     shard.on("disconnect", () => {
-        console.log(`  [${shard.id}] Shard disconnected`);
+        logger.warn("Shard disconnected", { shardId: shard.id, event: "disconnected" });
     });
 
     shard.on("death", () => {
-        console.log(`  [${shard.id}] Shard died`);
+        logger.error("Shard died", { shardId: shard.id, event: "died" });
     });
 
     shard.on("error", (err) => {
-        console.error(`  [${shard.id}] Shard error: ${err instanceof Error ? err.message : String(err)}`);
+        logger.error("Shard error", {
+            shardId: shard.id,
+            event: "error",
+            errorMessage: err instanceof Error ? err.message : String(err),
+        });
     });
 });
 
@@ -75,23 +81,37 @@ try {
         port: env.SHARD_STATUS_PORT,
         host: env.SHARD_STATUS_HOST,
     });
-    console.log(`Shard status endpoint on ${statusServer.url}`);
+    logger.log("Shard status endpoint listening", "log", { url: statusServer.url });
 } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error(`Shard status endpoint failed to start, continuing without it: ${message}`);
+    logger.error("Shard status endpoint failed to start, continuing without it", {
+        errorMessage: err instanceof Error ? err.message : String(err),
+    });
 }
 
 // Give it a large timeout since it refuses to work otherwise
-Manager.spawn({ timeout: 60000 }).catch(async (err) => {
-    const message = await formatSpawnError(err);
-    console.error(`Failed to spawn shards: ${message}`);
-    try {
-        // Clean up spawned shards before exiting
-        await Manager.broadcastEval(() => {
-            process.exit(0);
+Manager.spawn({ timeout: 60000 })
+    .then(() => {
+        // After spawn: totalShards is "auto" until then, so the count is not known earlier.
+        logger.log("Service started", "ready", {
+            version: getPackageVersion(),
+            logLevel: env.LOG_LEVEL,
+            pretty: shouldUsePretty(env.LOG_PRETTY, Boolean(process.stdout.isTTY)),
+            port: env.SHARD_STATUS_PORT,
+            shardCount: Manager.shards.size,
         });
-    } catch (cleanupErr) {
-        console.error(`Error during cleanup: ${cleanupErr instanceof Error ? cleanupErr.message : String(cleanupErr)}`);
-    }
-    process.exit(1);
-});
+    })
+    .catch(async (err) => {
+        const message = await formatSpawnError(err);
+        logger.error("Failed to spawn shards", { errorMessage: message });
+        try {
+            // Clean up spawned shards before exiting
+            await Manager.broadcastEval(() => {
+                process.exit(0);
+            });
+        } catch (cleanupErr) {
+            logger.error("Error during shard cleanup", {
+                errorMessage: cleanupErr instanceof Error ? cleanupErr.message : String(cleanupErr),
+            });
+        }
+        process.exit(1);
+    });

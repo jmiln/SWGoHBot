@@ -1,6 +1,6 @@
 import { type ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import constants from "../../data/constants/constants.ts";
-import logger from "../../modules/Logger.ts";
+import logger, { type LogOptions } from "../../modules/Logger.ts";
 
 // Common/expected Discord API errors that should be filtered out of logs
 const IGNORED_ERRORS = [
@@ -26,9 +26,9 @@ export function isIgnoredError(err: unknown): boolean {
 /**
  * Logs errors while filtering out common/expected Discord API errors
  */
-export function logErr(errStr: string, useWebhook = false): void {
+export function logErr(errStr: string, opts?: boolean | LogOptions): void {
     if (isIgnoredError(errStr)) return;
-    logger.error(errStr, useWebhook);
+    logger.error(errStr, opts);
 }
 
 /**

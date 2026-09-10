@@ -53,24 +53,40 @@ const LEVEL_FORMAT: Record<number, { label: string; color: string }> = {
     60: { label: "FATAL", color: ANSI.red },
 };
 
-function formatLogLine(raw: string): string {
+export type LogOptions = { webhook?: boolean } & Record<string, unknown>;
+
+// Pino writes these itself. Docker stamps the time and labels the container, so neither the
+// timestamp nor a name tag survives into the pretty line.
+const PINO_BASE_KEYS = new Set(["level", "time", "pid", "hostname", "name", "msg"]);
+
+function renderFields(obj: Record<string, unknown>): string {
+    const parts: string[] = [];
+    for (const [key, value] of Object.entries(obj)) {
+        if (PINO_BASE_KEYS.has(key)) continue;
+        parts.push(`${key}=${typeof value === "object" && value !== null ? JSON.stringify(value) : String(value)}`);
+    }
+    return parts.length ? ` ${parts.join(" ")}` : "";
+}
+
+export function formatLogLine(raw: string): string {
     try {
         const obj = JSON.parse(raw);
-        const appName = obj.name ?? "SWGoHBot";
         const level = LEVEL_FORMAT[obj.level] ?? { label: "UNKNOWN", color: ANSI.white };
-        const msg = obj.msg ?? "";
-        const timestamp = Intl.DateTimeFormat("en", {
-            day: "numeric",
-            month: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            timeZone: env.LOG_TIMEZONE,
-        }).format(new Date());
-        return `[${appName}] ${level.color}[${level.label}]${ANSI.reset} [${timestamp}] ${msg}\n`;
+        return `${level.color}[${level.label}]${ANSI.reset} ${obj.msg ?? ""}${renderFields(obj)}\n`;
     } catch {
         return raw;
     }
+}
+
+export function shouldUsePretty(pretty: boolean | undefined, isTTY: boolean): boolean {
+    return pretty ?? isTTY;
+}
+
+export function splitLogOptions(opts?: boolean | LogOptions): { webhook: boolean; fields: Record<string, unknown> } {
+    if (typeof opts === "boolean") return { webhook: opts, fields: {} };
+    if (!opts) return { webhook: false, fields: {} };
+    const { webhook = false, ...fields } = opts;
+    return { webhook, fields };
 }
 
 const prettyStream = new Writable({
@@ -83,16 +99,19 @@ const prettyStream = new Writable({
     },
 });
 
-class Logger {
+export class Logger {
     private shardId: number;
     private readonly logConfigs: Record<LogType, LogConfig>;
     private pino: PinoInstance;
+    private readonly destination?: pino.DestinationStream;
     private readonly throttleMap = new Map<string, { count: number; lastLogged: number }>();
 
-    private logLevel = process.env.LOG_LEVEL ?? (env.DEBUG_LOGS ? "debug" : "info");
+    private logLevel: string = env.LOG_LEVEL === "info" && env.DEBUG_LOGS ? "debug" : env.LOG_LEVEL;
 
-    constructor(shardId = -1) {
+    constructor(shardId = -1, { destination, level }: { destination?: pino.DestinationStream; level?: string } = {}) {
         this.shardId = shardId;
+        this.destination = destination;
+        if (level) this.logLevel = level;
 
         // Map your custom types to Pino levels and Discord colors
         this.logConfigs = {
@@ -105,30 +124,30 @@ class Logger {
             warn: { color: constants.colors.yellow, pinoLevel: "warn" },
         };
 
+        // Not pino's `base`: that is frozen at construction, so a shard id arriving later would
+        // need a rebuild and a second destination on fd 1. Stamped per call instead.
         this.pino = pino(
             {
-                name: process.env.APP_NAME || "SWGoHBot",
                 level: this.logLevel,
-                base: { shardId: this.shardId > -1 ? this.shardId : undefined },
+                // pid is always 1 in a container and hostname is the container id, which docker labels already carry.
+                base: undefined,
                 timestamp: pino.stdTimeFunctions.isoTime,
             },
-            prettyStream,
+            this.destination ?? (shouldUsePretty(env.LOG_PRETTY, Boolean(process.stdout.isTTY)) ? prettyStream : pino.destination(1)),
         );
     }
 
-    /**
-     * Update shard ID and recreate the pino child instance with the new context
-     */
     init(shardId: number): void {
         this.shardId = shardId;
     }
 
-    log(content: unknown, type: LogType = "log", webhook = false): void {
+    log(content: unknown, type: LogType = "log", opts?: boolean | LogOptions): void {
         const { pinoLevel, color } = this.logConfigs[type];
+        const { webhook, fields } = splitLogOptions(opts);
 
         // Convert content to string for logging
         const logContent = typeof content === "string" ? content : JSON.stringify(content);
-        this.pino[pinoLevel as pino.Level](logContent);
+        this.pino[pinoLevel as pino.Level](this.shardId > -1 ? { shardId: this.shardId, ...fields } : fields, logContent);
 
         if (webhook || (type === "error" && typeof content === "string" && content.includes("Unable to authenticate"))) {
             this.sendDiscordWebhook(content, type, color);
@@ -171,8 +190,8 @@ class Logger {
         }
     }
 
-    error(content: unknown, webhook = false): void {
-        this.log(content, "error", webhook);
+    error(content: unknown, opts?: boolean | LogOptions): void {
+        this.log(content, "error", opts);
     }
 
     /**
@@ -203,17 +222,17 @@ class Logger {
             entry.count++;
         }
     }
-    warn(content: unknown, webhook = false): void {
-        this.log(content, "warn", webhook);
+    warn(content: unknown, opts?: boolean | LogOptions): void {
+        this.log(content, "warn", opts);
     }
-    debug(content: unknown, webhook = false): void {
-        this.log(content, "debug", webhook);
+    debug(content: unknown, opts?: boolean | LogOptions): void {
+        this.log(content, "debug", opts);
     }
-    cmd(content: unknown, webhook = false): void {
-        this.log(content, "cmd", webhook);
+    cmd(content: unknown, opts?: boolean | LogOptions): void {
+        this.log(content, "cmd", opts);
     }
-    info(content: unknown, webhook = false): void {
-        this.log(content, "info", webhook);
+    info(content: unknown, opts?: boolean | LogOptions): void {
+        this.log(content, "info", opts);
     }
 }
 

@@ -69,6 +69,9 @@ const envSchema = z.object({
 
     // Logging Configuration
     DEBUG_LOGS: z.coerce.boolean().default(false),
+    LOG_LEVEL: z.enum(["trace", "debug", "info", "warn", "error", "fatal", "silent"]).default("info"),
+    // Unset means "decide by TTY", which is a different state from an explicit false.
+    LOG_PRETTY: z.coerce.boolean().optional(),
     LOG_TO_CHANNEL: z.coerce.boolean().default(false),
     LOG_CHANNEL_ID: z.string().optional().default(""),
     LOG_TIMEZONE: z

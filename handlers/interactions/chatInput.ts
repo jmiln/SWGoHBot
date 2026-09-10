@@ -9,7 +9,34 @@ import logger from "../../modules/Logger.ts";
 import userReg from "../../modules/users.ts";
 import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import type { CommandContext } from "../../types/types.ts";
-import { isIgnoredError, logErr, sendErrorReply } from "./errors.ts";
+import { isIgnoredError, sendErrorReply } from "./errors.ts";
+
+export interface CommandFailureContext {
+    commandName: string;
+    subcommand: string | undefined;
+    optionNames: string[];
+    userId: string;
+    guildId: string | null;
+    shardId: number;
+    durationMs: number;
+    err: Error;
+    ignored: boolean;
+}
+
+export function buildCommandFailureFields(ctx: CommandFailureContext): Record<string, unknown> {
+    return {
+        command: ctx.commandName,
+        subcommand: ctx.subcommand,
+        options: ctx.optionNames,
+        userId: ctx.userId,
+        guildId: ctx.guildId,
+        shardId: ctx.shardId,
+        durationMs: ctx.durationMs,
+        errorName: ctx.err.name,
+        errorMessage: ctx.err.message,
+        stack: ctx.ignored ? undefined : ctx.err.stack,
+    };
+}
 
 /**
  * Handles chat input command interactions
@@ -58,7 +85,6 @@ export async function handleChatInputCommand(interaction: ChatInputCommandIntera
             return;
         }
         commandError = err instanceof Error ? err : new Error(String(err));
-        logger.error(String(err));
         // Special handling for test command
         if (cmd.commandData.name === "test") {
             logger.error(
@@ -67,16 +93,25 @@ export async function handleChatInputCommand(interaction: ChatInputCommandIntera
             return;
         }
 
-        // Log the error
-        if (isIgnoredError(err)) {
-            const firstLine = err?.toString().split("\n")[0] || String(err);
-            logErr(`ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \n${firstLine}`);
+        // Branches on the flag rather than routing through logErr: that filters on the message
+        // text, and the error text now lives in the fields where it cannot match the ignore list.
+        const ignored = isIgnoredError(err);
+        const fields = buildCommandFailureFields({
+            commandName: cmd.commandData.name,
+            subcommand: interaction.options.getSubcommand(false) ?? undefined,
+            optionNames: interaction.options.data.map((o) => o.name),
+            userId: interaction.user.id,
+            guildId: interaction.guild?.id ?? null,
+            shardId: interaction.guild?.shardId ?? -1,
+            durationMs: Date.now() - startTime,
+            err: commandError,
+            ignored,
+        });
+
+        if (ignored) {
+            logger.debug("Command failed", fields);
         } else {
-            const optionNames = interaction.options.data.map((o) => o.name).join(", ");
-            logErr(
-                `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${optionNames} \n${inspect(err, { depth: 5 })}`,
-                true,
-            );
+            logger.error("Command failed", { ...fields, webhook: true });
         }
 
         // Send error reply to user

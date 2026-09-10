@@ -1,7 +1,8 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { env } from "../../config/config.ts";
 import { DEADLINE_MS, PRIORITY_COUNT, type Priority, SHED_REASON_HEADER, SHED_SHUTTING_DOWN } from "../../data/constants/swapiServe.ts";
-import logger from "../../modules/Logger.ts";
+import logger, { shouldUsePretty } from "../../modules/Logger.ts";
+import { getPackageVersion } from "../../modules/utils/version.ts";
 import { Dispatcher } from "./dispatcher.ts";
 
 const BAD_REQUEST = 400;
@@ -75,6 +76,29 @@ export interface RunningService {
  * can and do use that header - `controlSecret` guards them, and matters as soon as the bind is not
  * loopback, since the bind is otherwise their only protection.
  */
+export function buildStartupFields({
+    port,
+    backends,
+    ratePerSecond,
+    startLimit,
+}: {
+    port: number;
+    backends: string[];
+    ratePerSecond?: number;
+    startLimit?: number;
+}): Record<string, unknown> {
+    return {
+        version: getPackageVersion(),
+        logLevel: env.LOG_LEVEL,
+        pretty: shouldUsePretty(env.LOG_PRETTY, Boolean(process.stdout.isTTY)),
+        port,
+        // Count only: these are SWAPI_CLIENT_URL values naming upstream infrastructure.
+        backendCount: backends.length,
+        ratePerSecond,
+        startLimit,
+    };
+}
+
 export async function startSwapiServe({
     port,
     backends,
@@ -98,7 +122,31 @@ export async function startSwapiServe({
     /** Guards the control routes. Unset leaves them open, which is safe only on loopback. */
     controlSecret?: string;
 }): Promise<RunningService> {
-    const dispatcher = new Dispatcher({ backends, accessKey, secretKey, ratePerSecond, startLimit });
+    // Backends are reported by index: their URLs are SWAPI_CLIENT_URL values.
+    const backendIndexes = new Map(backends.map((url, index) => [url, index]));
+    const backendIndexOf = (url: string): number => backendIndexes.get(url) ?? -1;
+
+    const dispatcher = new Dispatcher({
+        backends,
+        accessKey,
+        secretKey,
+        ratePerSecond,
+        startLimit,
+        onGovernorTransition: (transition) => {
+            const fields = {
+                backendIndex: backendIndexOf(transition.url),
+                event: transition.event,
+                limit: transition.limit,
+                previousLimit: transition.previousLimit,
+                consecutiveFailures: transition.consecutiveFailures,
+            };
+            if (transition.event === "backoff" || transition.event === "open") {
+                logger.warn(`Backend ${transition.event}`, fields);
+            } else {
+                logger.log(`Backend ${transition.event}`, "log", fields);
+            }
+        },
+    });
     let isShuttingDown = false;
 
     /**
@@ -130,6 +178,11 @@ export async function startSwapiServe({
             const target = decodeURIComponent(control[1]);
             const payload = req.method === "GET" ? null : await readBody(req);
             const applied = dispatcher.control(target, control[2], payload);
+            logger.log("Operator control action", "log", {
+                action: control[2],
+                backendIndex: backendIndexOf(target),
+                ok: applied.ok,
+            });
 
             res.writeHead(applied.ok ? 200 : BAD_REQUEST, JSON_HEADERS);
             res.end(JSON.stringify(applied));
@@ -192,7 +245,7 @@ export async function startSwapiServe({
         handleRequest(req, res).catch((err: unknown) => {
             const clientGone = res.writableEnded || !res.writable;
             if (!clientGone) {
-                logger.error(`SwapiServe: Request handler failed: ${err instanceof Error ? err.message : String(err)}`);
+                logger.error(`Request handler failed: ${err instanceof Error ? err.message : String(err)}`);
             }
             if (res.headersSent || clientGone) {
                 res.destroy();
@@ -211,7 +264,7 @@ export async function startSwapiServe({
     // Unset-and-loopback is the long-standing status quo. Unset-and-exposed is the combination that
     // arrives silently the first time this runs in a container, so it says so out loud.
     if (!controlSecret && boundHost !== LOOPBACK) {
-        logger.warn(`SwapiServe: control API is unauthenticated and bound to ${boundHost}. Set SWAPI_SERVE_CONTROL_SECRET.`);
+        logger.warn(`Control API is unauthenticated and bound to ${boundHost}. Set SWAPI_SERVE_CONTROL_SECRET.`);
     }
 
     return {
@@ -251,7 +304,7 @@ if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
         secretKey: env.SWAPI_SECRET_KEY,
     })
         .then((service) => {
-            logger.log("SwapiServe: Service started");
+            logger.log("Service started", "ready", buildStartupFields({ port: env.SWAPI_SERVE_PORT, backends: [env.SWAPI_CLIENT_URL] }));
 
             // Without these the close() above is unreachable in production: Node exits on SIGTERM
             // and every queued caller gets a dropped socket instead of a 503.
@@ -260,13 +313,13 @@ if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
                 if (shuttingDown) return;
                 shuttingDown = true;
 
-                logger.log(`SwapiServe: Received ${signal}, starting graceful shutdown`);
+                logger.log(`Received ${signal}, starting graceful shutdown`);
                 try {
                     await service.close();
-                    logger.log("SwapiServe: Graceful shutdown complete");
+                    logger.log("Graceful shutdown complete");
                     process.exit(0);
                 } catch (err: unknown) {
-                    logger.error(`SwapiServe: Error during shutdown: ${err instanceof Error ? err.message : String(err)}`);
+                    logger.error(`Error during shutdown: ${err instanceof Error ? err.message : String(err)}`);
                     process.exit(1);
                 }
             };
@@ -277,16 +330,16 @@ if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
             // Logged rather than fatal, matching eventServe. One malformed response must not cost
             // every client its queue.
             process.on("uncaughtException", (err: Error) => {
-                logger.error(`SwapiServe: Uncaught exception - ${err.message}`);
+                logger.error(`Uncaught exception - ${err.message}`);
                 logger.error(String(err.stack));
             });
             process.on("unhandledRejection", (reason, promise) => {
-                logger.error(`SwapiServe: Unhandled rejection at ${promise}`);
+                logger.error(`Unhandled rejection at ${promise}`);
                 logger.error(`Reason: ${reason}`);
             });
         })
         .catch((err: unknown) => {
-            logger.error(`SwapiServe: Failed to start: ${err instanceof Error ? err.message : String(err)}`);
+            logger.error(`Failed to start: ${err instanceof Error ? err.message : String(err)}`);
             process.exit(1);
         });
 }
