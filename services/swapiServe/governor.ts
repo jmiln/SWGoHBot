@@ -16,9 +16,11 @@ export type CircuitState = "closed" | "open" | "half-open";
 
 export interface GovernorTransition {
     url: string;
-    event: "backoff" | "open" | "half-open" | "closed";
+    event: "backoff" | "open" | "half-open" | "closed" | "increase";
     limit: number;
     previousLimit?: number;
+    ratePerSecond: number;
+    previousRatePerSecond?: number;
     consecutiveFailures: number;
 }
 
@@ -118,17 +120,29 @@ interface BackendState {
 export class Governor {
     private readonly backends: BackendState[];
     private readonly probeIntervalMs: number;
+    private readonly maxLimit: number;
     private readonly onTransition?: (transition: GovernorTransition) => void;
 
     constructor(
         urls: string[],
-        { probeIntervalMs, onTransition }: { probeIntervalMs?: number; onTransition?: (transition: GovernorTransition) => void } = {},
+        {
+            probeIntervalMs,
+            maxLimit,
+            maxPerSecond,
+            onTransition,
+        }: {
+            probeIntervalMs?: number;
+            maxLimit?: number;
+            maxPerSecond?: number;
+            onTransition?: (transition: GovernorTransition) => void;
+        } = {},
     ) {
         this.probeIntervalMs = probeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
+        this.maxLimit = maxLimit ?? GOVERNOR.MAX_LIMIT;
         this.onTransition = onTransition;
         this.backends = urls.map((url) => ({
             url,
-            limit: GOVERNOR.START_LIMIT,
+            limit: Math.min(this.maxLimit, GOVERNOR.START_LIMIT),
             inFlight: 0,
             cleanStreak: 0,
             consecutiveFailures: 0,
@@ -137,7 +151,7 @@ export class Governor {
             drained: false,
             openedAt: 0,
             probeInFlight: false,
-            bucket: new TokenBucket({ ratePerSecond: RATE.START_PER_SEC }),
+            bucket: new TokenBucket({ ratePerSecond: RATE.START_PER_SEC, maxPerSecond }),
             outcomes: {},
             limitMsIntegral: 0,
             rateMsIntegral: 0,
@@ -148,12 +162,14 @@ export class Governor {
         }));
     }
 
-    private emit(backend: BackendState, event: GovernorTransition["event"], previousLimit?: number): void {
+    private emit(backend: BackendState, event: GovernorTransition["event"], previous?: { limit: number; ratePerSecond: number }): void {
         this.onTransition?.({
             url: backend.url,
             event,
             limit: backend.limit,
-            previousLimit,
+            previousLimit: previous?.limit,
+            ratePerSecond: backend.bucket.getRate(),
+            previousRatePerSecond: previous?.ratePerSecond,
             consecutiveFailures: backend.consecutiveFailures,
         });
     }
@@ -261,13 +277,13 @@ export class Governor {
             if (backend.recentPeaks.length > RECENT_PEAKS) backend.recentPeaks.shift();
             backend.backoffs++;
 
-            const previousLimit = backend.limit;
+            const previous = { limit: backend.limit, ratePerSecond: backend.bucket.getRate() };
             backend.cleanStreak = 0;
             backend.consecutiveFailures++;
             backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.floor(backend.limit * GOVERNOR.DECREASE_FACTOR));
             backend.cooldownUntil = now + GOVERNOR.COOLDOWN_MS;
             backend.bucket.setRate(backend.bucket.getRate() * GOVERNOR.DECREASE_FACTOR);
-            this.emit(backend, "backoff", previousLimit);
+            this.emit(backend, "backoff", previous);
 
             // A failed probe sends the breaker straight back to open and restarts the interval,
             // regardless of the failure count.
@@ -295,8 +311,10 @@ export class Governor {
         if (backend.cleanStreak < GOVERNOR.INCREASE_AFTER_CLEAN) return;
 
         backend.cleanStreak = 0;
-        backend.limit = Math.min(GOVERNOR.MAX_LIMIT, backend.limit + 1);
+        const previous = { limit: backend.limit, ratePerSecond: backend.bucket.getRate() };
+        backend.limit = Math.min(this.maxLimit, backend.limit + 1);
         backend.bucket.setRate(backend.bucket.getRate() + 1);
+        this.emit(backend, "increase", previous);
     }
 
     /**
@@ -360,7 +378,7 @@ export class Governor {
     setLimit(url: string, limit: number): void {
         const backend = this.backends.find((candidate) => candidate.url === url);
         if (!backend) return;
-        backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.min(GOVERNOR.MAX_LIMIT, limit));
+        backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.min(this.maxLimit, limit));
     }
 
     /**

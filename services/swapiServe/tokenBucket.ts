@@ -12,12 +12,18 @@ const MS_PER_SECOND = 1000;
 export class TokenBucket {
     private ratePerSecond: number;
     private readonly burstFactor: number;
+    private readonly maxPerSecond: number;
     private tokens: number;
     private lastRefillAt = 0;
 
-    constructor({ ratePerSecond, burstFactor }: { ratePerSecond?: number; burstFactor?: number } = {}) {
+    constructor({
+        ratePerSecond,
+        burstFactor,
+        maxPerSecond,
+    }: { ratePerSecond?: number; burstFactor?: number; maxPerSecond?: number } = {}) {
         this.ratePerSecond = ratePerSecond ?? RATE.START_PER_SEC;
         this.burstFactor = burstFactor ?? RATE.BURST_FACTOR;
+        this.maxPerSecond = maxPerSecond ?? RATE.MAX_PER_SEC;
         this.tokens = this.capacity();
     }
 
@@ -38,7 +44,7 @@ export class TokenBucket {
     }
 
     setRate(perSecond: number): void {
-        this.ratePerSecond = Math.max(RATE.MIN_PER_SEC, Math.min(RATE.MAX_PER_SEC, perSecond));
+        this.ratePerSecond = Math.max(RATE.MIN_PER_SEC, Math.min(this.maxPerSecond, perSecond));
         // A lowered rate lowers the burst ceiling too, so banked tokens must not exceed it.
         this.tokens = Math.min(this.tokens, this.capacity());
     }

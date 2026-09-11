@@ -6,6 +6,14 @@ import { Governor, type GovernorTransition, RECENT_PEAKS } from "../../services/
 const A = "http://a.test";
 const B = "http://b.test";
 
+// Bounded under CIRCUIT_OPEN_AFTER_FAILURES so this stays a capacity collapse rather than a trip.
+function collapseToMinLimit(governor: Governor, url: string): void {
+    for (let i = 0; i < GOVERNOR.CIRCUIT_OPEN_AFTER_FAILURES - 1; i++) {
+        if (governor.snapshot().find((backend) => backend.url === url)?.limit === GOVERNOR.MIN_LIMIT) return;
+        governor.report(url, "throttled", 0);
+    }
+}
+
 function completeClean(governor: Governor, url: string, times: number, now = 0): void {
     for (let i = 0; i < times; i++) {
         const at = now + i * 1000;
@@ -152,7 +160,7 @@ describe("swapiServe.Governor backend selection", () => {
         const governor = new Governor([A, B]);
         // Collapse A to the minimum without tripping its breaker, so this tests selection
         // rather than the circuit.
-        for (let i = 0; i < 3; i++) governor.report(A, "throttled", 0);
+        collapseToMinLimit(governor, A);
 
         assert.strictEqual(governor.snapshot()[0].limit, GOVERNOR.MIN_LIMIT);
         assert.strictEqual(governor.snapshot()[0].state, "closed", "should still be eligible, just small");
@@ -336,7 +344,7 @@ describe("swapiServe.Governor backend selection under collapse", () => {
 
         // B collapses to the minimum but sits completely idle, so by utilisation ratio it looks
         // like the better choice. It is not.
-        for (let i = 0; i < 3; i++) governor.report(B, "throttled", 0);
+        collapseToMinLimit(governor, B);
         assert.strictEqual(governor.snapshot()[1].limit, GOVERNOR.MIN_LIMIT);
 
         // Load A well past B's ratio while leaving it plenty of absolute headroom. Time advances
@@ -623,16 +631,53 @@ describe("swapiServe.Governor transition reporting", () => {
         );
     });
 
-    // The additive increase fires on every clean request. Reporting it would make this
-    // per-request logging by the back door.
-    it("stays silent on the additive limit increase", () => {
+    it("reports each additive increase with the limit and rate on both sides", () => {
         const seen: GovernorTransition[] = [];
         const governor = new Governor([A], { onTransition: (t) => seen.push(t) });
 
         completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN * 3);
 
-        assert.ok(governor.snapshot()[0].limit > GOVERNOR.START_LIMIT, "limit should have grown");
-        assert.deepStrictEqual(seen, []);
+        const increases = seen.filter((t) => t.event === "increase");
+        assert.strictEqual(increases.length, 3);
+        assert.strictEqual(increases[0].previousLimit, GOVERNOR.START_LIMIT);
+        assert.strictEqual(increases[0].limit, GOVERNOR.START_LIMIT + 1);
+        assert.strictEqual(increases[0].previousRatePerSecond, RATE.START_PER_SEC);
+        assert.strictEqual(increases[0].ratePerSecond, RATE.START_PER_SEC + 1);
+    });
+
+    // The limit pins at MAX_LIMIT long before the rate reaches MAX_PER_SEC, so an increase
+    // reported only as a limit change goes silent while the controller is still ramping.
+    it("keeps reporting increases once the limit has pinned at its ceiling", () => {
+        const seen: GovernorTransition[] = [];
+        const governor = new Governor([A], { onTransition: (t) => seen.push(t) });
+
+        const stepsToCeiling = GOVERNOR.MAX_LIMIT - GOVERNOR.START_LIMIT;
+        completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN * (stepsToCeiling + 3));
+
+        assert.strictEqual(governor.snapshot()[0].limit, GOVERNOR.MAX_LIMIT);
+        const pinned = seen.filter((t) => t.event === "increase" && t.limit === GOVERNOR.MAX_LIMIT);
+        assert.ok(pinned.length >= 3, `expected increases past the limit ceiling, got ${pinned.length}`);
+        const last = pinned.at(-1);
+        assert.ok(last, "expected a final increase");
+        assert.strictEqual(last.ratePerSecond, last.previousRatePerSecond + 1);
+    });
+
+    it("honours an overridden ceiling instead of the constant", () => {
+        const maxLimit = GOVERNOR.START_LIMIT + 2;
+        const governor = new Governor([A], { maxLimit });
+
+        completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN * 10);
+
+        assert.strictEqual(governor.snapshot()[0].limit, maxLimit);
+    });
+
+    it("clamps an operator set-limit to the overridden ceiling", () => {
+        const maxLimit = GOVERNOR.START_LIMIT + 2;
+        const governor = new Governor([A], { maxLimit });
+
+        governor.setLimit(A, GOVERNOR.MAX_LIMIT);
+
+        assert.strictEqual(governor.snapshot()[0].limit, maxLimit);
     });
 
     it("works without a callback, which is how production tests construct it", () => {

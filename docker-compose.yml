@@ -81,7 +81,7 @@ services:
   eventserve:
     image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
     build: .
-    container_name: swgoh-eventserve
+    container_name: swgohbot-eventserve
     restart: unless-stopped
     command: ["node", "services/eventServe.ts"]
     env_file: .env
@@ -101,7 +101,7 @@ services:
   swapiserve:
     image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
     build: .
-    container_name: swgoh-swapiserve
+    container_name: swgohbot-swapiserve
     restart: unless-stopped
     command: ["node", "services/swapiServe/index.ts"]
     env_file: .env

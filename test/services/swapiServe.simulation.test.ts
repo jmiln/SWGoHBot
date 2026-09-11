@@ -9,6 +9,8 @@ const CREDENTIALS = { accessKey: "a", secretKey: "s" };
 
 // Step coarsely: advance() fires every timer due in the window in due order, so a bigger step
 // costs no fidelity, and at a 15s probe interval fine steps need tens of thousands of iterations.
+// Bounded above too: a step spanning many forwarder completions starves the drain check, since
+// those settle as promises between advances and never inside one.
 const STEP_MS = 100;
 
 function submit(

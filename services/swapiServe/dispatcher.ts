@@ -153,6 +153,8 @@ export class Dispatcher {
         clock,
         startLimit,
         ratePerSecond,
+        maxLimit,
+        maxPerSecond,
         depthLimits,
         retryDelayMs,
         timeoutMs,
@@ -168,6 +170,8 @@ export class Dispatcher {
         clock?: Clock;
         startLimit?: number;
         ratePerSecond?: number;
+        maxLimit?: number;
+        maxPerSecond?: number;
         depthLimits?: readonly number[];
         retryDelayMs?: number;
         timeoutMs?: number;
@@ -178,7 +182,12 @@ export class Dispatcher {
         this.clock = clock ?? systemClock;
         this.forwarder = forwarder ?? createHttpForwarder({ accessKey, secretKey, timeoutMs });
         this.probeIntervalMs = circuitProbeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
-        this.governor = new Governor(backends, { probeIntervalMs: circuitProbeIntervalMs, onTransition: onGovernorTransition });
+        this.governor = new Governor(backends, {
+            probeIntervalMs: circuitProbeIntervalMs,
+            maxLimit,
+            maxPerSecond,
+            onTransition: onGovernorTransition,
+        });
 
         // Tests need deterministic pacing; production uses GOVERNOR.START_LIMIT and RATE.START_PER_SEC.
         for (const backend of this.governor.snapshot()) {

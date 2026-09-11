@@ -106,6 +106,8 @@ export async function startSwapiServe({
     secretKey,
     ratePerSecond,
     startLimit,
+    maxLimit,
+    maxPerSecond,
     host,
     controlSecret,
 }: {
@@ -117,6 +119,9 @@ export async function startSwapiServe({
     ratePerSecond?: number;
     /** Overrides the starting concurrency limit. Tests use it to force deterministic queueing. */
     startLimit?: number;
+    /** Overrides the AIMD ceilings. Production passes the SWAPI_SERVE_MAX_* env values. */
+    maxLimit?: number;
+    maxPerSecond?: number;
     /** Bind address. Defaults to loopback; containers set 0.0.0.0. */
     host?: string;
     /** Guards the control routes. Unset leaves them open, which is safe only on loopback. */
@@ -132,12 +137,16 @@ export async function startSwapiServe({
         secretKey,
         ratePerSecond,
         startLimit,
+        maxLimit,
+        maxPerSecond,
         onGovernorTransition: (transition) => {
             const fields = {
                 backendIndex: backendIndexOf(transition.url),
                 event: transition.event,
                 limit: transition.limit,
                 previousLimit: transition.previousLimit,
+                ratePerSecond: transition.ratePerSecond,
+                previousRatePerSecond: transition.previousRatePerSecond,
                 consecutiveFailures: transition.consecutiveFailures,
             };
             if (transition.event === "backoff" || transition.event === "open") {
@@ -302,6 +311,10 @@ if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
         backends: [env.SWAPI_CLIENT_URL],
         accessKey: env.SWAPI_ACCESS_KEY,
         secretKey: env.SWAPI_SECRET_KEY,
+        startLimit: env.SWAPI_SERVE_START_LIMIT,
+        ratePerSecond: env.SWAPI_SERVE_START_RATE,
+        maxLimit: env.SWAPI_SERVE_MAX_LIMIT,
+        maxPerSecond: env.SWAPI_SERVE_MAX_RATE,
     })
         .then((service) => {
             logger.log("Service started", "ready", buildStartupFields({ port: env.SWAPI_SERVE_PORT, backends: [env.SWAPI_CLIENT_URL] }));

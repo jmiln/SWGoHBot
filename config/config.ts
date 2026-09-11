@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { GOVERNOR, RATE } from "../data/constants/swapiServe.ts";
 
 // Load environment variables from .env file (Node.js 20.6+)
 // Will load ".env" file if present.
@@ -137,6 +138,15 @@ const envSchema = z.object({
     // Guards the /backend/<url>/drain|enable|set-limit control routes. Optional: unset leaves them
     // open, which is safe only while the service is bound to loopback.
     SWAPI_SERVE_CONTROL_SECRET: z.string().optional(),
+
+    // AIMD controller bounds, defaulting to the values in data/constants/swapiServe.ts, which are
+    // what the test suite pins. Overridable because finding the upstream's real ceiling means
+    // changing them on a live host, and the ceilings are an aggregate across the five comlink
+    // containers behind SWAPI_CLIENT_URL rather than a per-IP budget.
+    SWAPI_SERVE_START_LIMIT: z.coerce.number().int().positive().default(GOVERNOR.START_LIMIT),
+    SWAPI_SERVE_MAX_LIMIT: z.coerce.number().int().positive().default(GOVERNOR.MAX_LIMIT),
+    SWAPI_SERVE_START_RATE: z.coerce.number().positive().default(RATE.START_PER_SEC),
+    SWAPI_SERVE_MAX_RATE: z.coerce.number().positive().default(RATE.MAX_PER_SEC),
 
     // shardStatus: the shard manager's health surface, read by the container healthcheck and later
     // by Uptime Kuma. It carries no secret, so like swapiServe the bind is its only access control:
