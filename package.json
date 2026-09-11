@@ -20,8 +20,9 @@
         "test:services": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/services/*.test.ts",
         "changelog:draft": "scripts/changelog-draft.sh",
         "changelog:write": "scripts/changelog-draft.sh --write",
+        "changelog:release": "scripts/changelog-draft.sh --write --release",
         "release": "npm version --ignore-scripts=false",
-        "version": "scripts/changelog-draft.sh --write --release $npm_package_version && git add CHANGELOG.md"
+        "version": "scripts/changelog-draft.sh --write --stage --release $npm_package_version"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",

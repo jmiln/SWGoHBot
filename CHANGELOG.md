@@ -5,103 +5,67 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
+4.0.0 and 3.0.0 predate that and stay as written.
+
+## [4.5.0] - 2026-09-07
 
 ### Added
 
-- **Unit autocomplete is localized.** Every unit picker (`unit`/`character`/`ship`), the `/panic`
-  journey picker, and guild alias rows now render in the user's `swgohLanguage`. Searching matches
-  the localized name **or** the English one, since SWGoH's wikis and counters chat are English and a
-  localized-only picker would take away a lookup path players actually use. The option `value` is
-  still the defId, so no command behaviour changed. Results sort using the language's own collation
-  rather than the host default, which had been misordering umlauts and Korean.
+- Massive comment overhaul, with some fixes
 
 ### Fixed
 
-- **Guild aliases are capped at 32 characters.** They were unbounded, and a long one could push an
-  autocomplete choice name past Discord's 100-character limit, which fails the whole response and
-  broke that guild's picker for everyone. Enforced on the `/aliases add` option, in the command, and
-  in the schema. Existing over-length aliases keep working; they are truncated for display only.
-- **`/setconf swgohLanguage` was accepted and then ignored.** The setting existed at both guild and
-  user level, but only the user's own value was ever read, so a server-wide language never took
-  effect for anyone who had not set their own. Resolution is now user, then guild, then default.
-  Guilds that set the value and never saw it work will see a visible change.
+- Datacron command breaking on long msg
+- Update biome to include ./test/ but ignore any types
 
-### Changed
+### Chores
 
-- **A failure to bind the shard status endpoint no longer stops the bot starting.** It is awaited
-  before `Manager.spawn`, so an occupied port previously meant no shards spawned at all, and
-  `restart: unless-stopped` would turn that into a loop. The bot would have been down because its
-  diagnostics could not start. It now logs and continues: losing the endpoint costs visibility,
-  losing the shards costs the service.
+- Clean up some logging when unable to get response
+- Data update
+
+## [4.4.0] - 2026-09-03
 
 ### Added
 
-- CI smoke test for the shard status surface, matching the ones swapiServe and eventServe already
-  have. It starts the module directly rather than booting the shard manager, because
-  `Manager.spawn` fails against a dummy token and exits before a probe could land. Using
-  `curl -fsS` also pins the startup rule: `/health` must answer `200` while the fleet is
-  `starting`, since a regression to `503` there would make every deploy report unhealthy for the
-  length of the spawn.
+- localize unit pickers to the user's swgohLanguage
 
-## [4.2.0] - 2026-08-25
+## [4.3.0] - 2026-09-01
 
 ### Added
 
-- **The shard manager now serves fleet health over HTTP** on `SHARD_STATUS_PORT` (3810), backed by
-  `modules/shardStatus/`. `swgohBotShard.ts` is the only process that sees every shard, and until
-  now it did nothing with that beyond logging lifecycle events, which is why the `bot` service
-  carried no healthcheck.
-  - `GET /health` returns `200` while the fleet is starting, ready or degraded, and `503` only on
-    total fleet loss. That is the one case a container restart fixes; a single sick shard is left
-    to the `ShardingManager`'s own `respawn`, because restarting would kill every healthy shard to
-    fix one.
-  - `GET /status` always returns `200` while the manager answers, carrying per-shard status, ping,
-    guild count, uptime and RSS. It deliberately does not mirror `/health`'s status code: a `503`
-    there would fail every per-shard monitor at once.
-  - Each shard reports itself every 15s over the existing IPC channel. Heartbeats are the state
-    because they are level-sampled, so a shard that dies, hangs, or silently loses its gateway
-    stops sending and one staleness check catches all three. The endpoint never messages a shard,
-    since a request-time fan-out would not resolve against a wedged shard and the healthcheck would
-    hang rather than report it.
-- `SHARD_STATUS_PORT` and `SHARD_STATUS_HOST` settings. As with swapiServe's queue path there is no
-  shared secret, so the bind is the only access control: loopback by default, `0.0.0.0` in the
-  container, with the host-side port published to `127.0.0.1` only.
+- Update packages, shrink build & replace async package locally
 
-### Changed
+## [4.2.1] - 2026-08-28
 
-- The `bot` service in `docker-compose.yml` now has a healthcheck, replacing the comment explaining
-  why it could not have one.
+### Refactoring
+
+- Move guildConf defaults to a schema file
+
+### Chores
+
+- Don't crash if shard status port already taken
+
+## [4.2.0] - 2026-08-26
+
+### Added
+
+- Add health endpoint into the shardManager
+
+### Chores
+
+- Add restore script & update backup script
+- Update the mongo backup & remove unused config key
 
 ## [4.1.0] - 2026-08-24
 
-### Changed
-
-- **GAC counter ingestion is now a phase of the nightly `dataUpdater`** rather than a service of its
-  own. It runs between the game data and mod phases, so a `--skip-mods` run still refreshes it.
-  Counters are now at most a day stale instead of an hour, which does not matter when `/counter`
-  shows the previous few seasons. A failure in one mode is isolated: the other mode still runs, the
-  cycle finishes, and the exit code becomes 1 so a source outage shows up in the cron log.
-- The ingestion bookmark moved from `modules/counters/counterMetadata.json` to
-  `data/counterMetadata.json`. Under `modules/` it was baked into the image and its writes landed in
-  a container layer that `docker compose run --rm` discards, so the bookmark could never advance and
-  every run would re-ingest. `data/` is a bind mount, so it persists. Both it and
-  `data/metadata.json` are now gitignored, being runtime state rather than source.
-
 ### Added
 
-- `dataUpdater` flags: `--skip-counters`, `--counters-only` (mutually exclusive), plus
-  `--counter-concurrency`, `--max-per-10s` and `--min-battles`. `--counters-only` exists so an
-  ad-hoc ingest does not need a full cycle.
+- Move counter updaters into dataUpdater, and cleaned up extra files
 
-### Removed
+### Documentation
 
-- `services/counterUpdater.ts` and `counterUpdater.config.cjs`. The hourly cron line its comment
-  documented was never actually installed, so nothing had run it since the feature shipped.
-- `ecosystem.config.cjs`. All three processes it defined now run as containers; pm2 is no longer
-  used by this project at all. A deployment still starting the bot with
-  `pm2 start ecosystem.config.cjs` must switch to `docker compose up -d`.
-- `jsconfig.json`, inert since the TypeScript migration and superseded by `tsconfig.json`.
+- Add 4.1.0 changelog
 
 ## [4.0.0] - 2026-08-21
 
@@ -112,9 +76,9 @@ than a complete list.
 
 Read these before upgrading; each needs an action.
 
-- **Configuration moved to environment variables.** `config.js` is gone. Copy `.env.example` to
+- **Configuration moved to environment variables.** `config.js` is gone. Copy `example.env` to
   `.env` and fill it in; the Zod schema in `config/config.ts` fails at startup, naming the missing
-  variable.
+  variable. (That file shipped as `.env.example` in 4.0.0 and was renamed later.)
 - **The `users` collection changed shape, and ally codes are numbers rather than strings.** Existing
   databases must be migrated before starting 4.0.0. Run all three, in this order, since each reads
   the shape the previous one produces:
