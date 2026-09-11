@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
 4.0.0 and 3.0.0 predate that and stay as written.
 
+## [4.6.0] - 2026-09-11
+
+### Added
+
+- Generate the changelog based on commits
+- Add more logging support throughout services & bot
+
+### Fixed
+
+- parse env booleans instead of coercing them
+- Log every missed guild fetch member
+
+### Refactoring
+
+- Rename .env.example to example.env
+
 ## [4.5.0] - 2026-09-07
 
 ### Added
