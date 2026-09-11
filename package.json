@@ -6,6 +6,7 @@
     "type": "module",
     "scripts": {
         "prepare": "husky",
+        "setup": "npm install && npm run prepare",
         "start": "node swgohBotShard.ts",
         "lint": "biome check --no-errors-on-unmatched .",
         "lint:write": "biome check --write --no-errors-on-unmatched .",
@@ -18,7 +19,9 @@
         "test:slash": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/slash/*.test.ts",
         "test:services": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/services/*.test.ts",
         "changelog:draft": "scripts/changelog-draft.sh",
-        "version": "git add CHANGELOG.md"
+        "changelog:write": "scripts/changelog-draft.sh --write",
+        "release": "npm version --ignore-scripts=false",
+        "version": "scripts/changelog-draft.sh --write --release $npm_package_version && git add CHANGELOG.md"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",

@@ -9,6 +9,28 @@ try {
     // loadEnvFile throws ENOENT; containers carry their config in the environment with no file.
 }
 
+const TRUE_VALUES = new Set(["true", "1", "yes", "on"]);
+const FALSE_VALUES = new Set(["false", "0", "no", "off", ""]);
+
+// Not z.coerce.boolean(): that is Boolean(value), so every non-empty string is true, including
+// "false". An empty value is treated as false because that is what a bare `KEY=` in a .env means.
+export function envBoolean() {
+    return z
+        .string()
+        .optional()
+        .transform((raw, ctx) => {
+            if (raw === undefined) return undefined;
+            const value = raw.trim().toLowerCase();
+            if (TRUE_VALUES.has(value)) return true;
+            if (FALSE_VALUES.has(value)) return false;
+            ctx.addIssue({
+                code: "custom",
+                message: `Expected a boolean (${[...TRUE_VALUES].join("/")} or ${[...FALSE_VALUES].filter(Boolean).join("/")}), got "${raw}"`,
+            });
+            return z.NEVER;
+        });
+}
+
 // Helper for URL validation (Zod v4 deprecated .url() method)
 // Usage:
 //   urlString({ default: "http://..." })           - URL with default value
@@ -68,11 +90,11 @@ const envSchema = z.object({
     EVENT_SERVER_SECRET: z.string().default(""),
 
     // Logging Configuration
-    DEBUG_LOGS: z.coerce.boolean().default(false),
+    DEBUG_LOGS: envBoolean().default(false),
     LOG_LEVEL: z.enum(["trace", "debug", "info", "warn", "error", "fatal", "silent"]).default("info"),
     // Unset means "decide by TTY", which is a different state from an explicit false.
-    LOG_PRETTY: z.coerce.boolean().optional(),
-    LOG_TO_CHANNEL: z.coerce.boolean().default(false),
+    LOG_PRETTY: envBoolean(),
+    LOG_TO_CHANNEL: envBoolean().default(false),
     LOG_CHANNEL_ID: z.string().optional().default(""),
     LOG_TIMEZONE: z
         .string()
@@ -90,7 +112,7 @@ const envSchema = z.object({
         ),
 
     // Premium Configuration
-    PREMIUM: z.coerce.boolean().default(false),
+    PREMIUM: envBoolean().default(false),
 
     // Image Server Configuration
     IMAGE_SERVER_URL: urlString({ default: "http://localhost:3600" }),
