@@ -7,6 +7,12 @@ import { createSimulatedBackend } from "../helpers/simulatedBackend.ts";
 
 const CREDENTIALS = { accessKey: "a", secretKey: "s" };
 
+// Pinned so retuning the start constants cannot silently change what this file measures.
+const COLD_START = { startLimit: 5, ratePerSecond: 5 };
+
+// Without a per-test bound, a slow controller surfaces as a file-level timeout naming no test.
+const TEST_TIMEOUT_MS = 20_000;
+
 // Step coarsely: advance() fires every timer due in the window in due order, so a bigger step
 // costs no fidelity, and at a 15s probe interval fine steps need tens of thousands of iterations.
 // Bounded above too: a step spanning many forwarder completions starves the drain check, since
@@ -35,25 +41,41 @@ function submit(
  * Throws rather than returning quietly if the budget runs out: a queue that never empties is a
  * real finding (a stall, a lost wakeup), and swallowing it would leave the caller's Promise.all
  * hanging until the test runner's timeout, which reports nothing useful.
+ *
+ * The controller's state goes in the message because a correctly throttled backend and a stalled
+ * one both present as "did not drain": limit, rate and backoffs are what tell them apart.
  */
 async function drain(dispatcher: Dispatcher, clock: FakeClock, maxSteps = 20_000): Promise<void> {
     for (let i = 0; i < maxSteps; i++) {
         clock.advance(STEP_MS);
         await clock.flush();
-        if (dispatcher.status().queue.depths.every((depth) => depth === 0)) return;
+        // In-flight requests are not queued, and they complete on a clock this loop owns: returning
+        // while any remain stops time forever and their promises can never settle.
+        const { queue, backends } = dispatcher.status();
+        if (queue.depths.every((depth) => depth === 0) && backends.every((backend) => backend.inFlight === 0)) return;
     }
-    const { queue, blocked } = dispatcher.status();
+    const { queue, blocked, backends, terminal } = dispatcher.status();
+    const [backend] = backends;
     throw new Error(
         `queue did not drain in ${(maxSteps * STEP_MS) / 1000}s of virtual time; ` +
-            `depths=${JSON.stringify(queue.depths)} blocked=${JSON.stringify(blocked)}`,
+            `depths=${JSON.stringify(queue.depths)} blocked=${JSON.stringify(blocked)} ` +
+            `limit=${backend.limit} rate=${backend.ratePerSecond.toFixed(1)} state=${backend.state} ` +
+            `backoffs=${backend.backoffs} inFlight=${backend.inFlight} completed=${terminal.completed}`,
     );
 }
 
 describe("swapiServe controller simulation", () => {
-    it("settles below the backend's tolerance instead of hammering it", async () => {
+    it("settles below the backend's tolerance instead of hammering it", { timeout: TEST_TIMEOUT_MS }, async () => {
         const clock = new FakeClock();
         const backend = createSimulatedBackend({ throttleAboveRps: 15, latencyMs: 50 }, clock);
-        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: backend.forwarder, clock, retryDelayMs: 10 });
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            ...COLD_START,
+            forwarder: backend.forwarder,
+            clock,
+            retryDelayMs: 10,
+        });
 
         const pending = Array.from({ length: 1500 }, () => submit(dispatcher, clock, PRIORITY.BULK));
         await drain(dispatcher, clock);
@@ -65,10 +87,17 @@ describe("swapiServe controller simulation", () => {
         assert.ok(throttleRate < 0.2, `should settle below the tolerance, throttle rate was ${(throttleRate * 100).toFixed(1)}%`);
     });
 
-    it("does not oscillate: the limit stays in a stable band once settled", async () => {
+    it("does not oscillate: the limit stays in a stable band once settled", { timeout: TEST_TIMEOUT_MS }, async () => {
         const clock = new FakeClock();
         const backend = createSimulatedBackend({ throttleAboveRps: 20, latencyMs: 30 }, clock);
-        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: backend.forwarder, clock, retryDelayMs: 10 });
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            ...COLD_START,
+            forwarder: backend.forwarder,
+            clock,
+            retryDelayMs: 10,
+        });
 
         const first = Array.from({ length: 800 }, () => submit(dispatcher, clock, PRIORITY.BULK));
         await drain(dispatcher, clock);
@@ -87,11 +116,58 @@ describe("swapiServe controller simulation", () => {
         );
     });
 
+    // Raising the start constants is a tuning decision, and this is what makes getting it wrong
+    // survivable: overshooting the backend costs throttles and time, never the circuit.
+    it("recovers from a start above the backend's tolerance without opening the breaker", { timeout: TEST_TIMEOUT_MS }, async () => {
+        const clock = new FakeClock();
+        const tolerance = 20;
+        const backend = createSimulatedBackend({ throttleAboveRps: tolerance, latencyMs: 30 }, clock);
+        const events: string[] = [];
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            startLimit: tolerance * 2,
+            ratePerSecond: tolerance * 2,
+            forwarder: backend.forwarder,
+            clock,
+            retryDelayMs: 10,
+            onGovernorTransition: (transition) => events.push(transition.event),
+        });
+
+        const pending = Array.from({ length: 400 }, () => submit(dispatcher, clock, PRIORITY.BULK));
+        await drain(dispatcher, clock);
+        const responses = await Promise.all(pending);
+        const status = dispatcher.status();
+        dispatcher.stop();
+
+        // A backoff happens at any start once the limit climbs into the tolerance, so its presence
+        // proves nothing; needing almost no growth to reach it is what implicates the start.
+        const growthBeforeFirstBackoff = events.indexOf("backoff");
+        assert.ok(
+            growthBeforeFirstBackoff >= 0 && growthBeforeFirstBackoff <= 3,
+            `the start must overshoot, or this asserts nothing; ${growthBeforeFirstBackoff} increases preceded the first backoff`,
+        );
+
+        assert.strictEqual(status.backends[0].state, "closed", "an overshoot must not trip the circuit");
+        assert.strictEqual(
+            responses.filter((response) => response.status === 200).length,
+            responses.length,
+            "every request must still be served once the controller settles",
+        );
+    });
+
     // The reservations exist so a busy bot cannot stall the nightly data pull into staleness.
-    it("keeps bulk work moving while interactive load runs continuously", async () => {
+    it("keeps bulk work moving while interactive load runs continuously", { timeout: TEST_TIMEOUT_MS }, async () => {
         const clock = new FakeClock();
         const backend = createSimulatedBackend({ throttleAboveRps: 25, latencyMs: 20 }, clock);
-        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: backend.forwarder, clock, retryDelayMs: 10 });
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            ...COLD_START,
+            forwarder: backend.forwarder,
+            clock,
+            retryDelayMs: 10,
+        });
 
         const bulk = Array.from({ length: 300 }, () => submit(dispatcher, clock, PRIORITY.BULK));
         const interactive = Array.from({ length: 900 }, () => submit(dispatcher, clock, PRIORITY.PUBLIC_COMMAND));
@@ -106,10 +182,17 @@ describe("swapiServe controller simulation", () => {
     });
 
     // The headline requirement: the payout tick has to land inside its minute.
-    it("serves an arena tick promptly even behind a large bulk backlog", async () => {
+    it("serves an arena tick promptly even behind a large bulk backlog", { timeout: TEST_TIMEOUT_MS }, async () => {
         const clock = new FakeClock();
         const backend = createSimulatedBackend({ throttleAboveRps: 25, latencyMs: 20 }, clock);
-        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: backend.forwarder, clock, retryDelayMs: 10 });
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            ...COLD_START,
+            forwarder: backend.forwarder,
+            clock,
+            retryDelayMs: 10,
+        });
 
         const bulk = Array.from({ length: 1000 }, () => submit(dispatcher, clock, PRIORITY.BULK));
         const submittedAt = clock.now();
@@ -131,12 +214,13 @@ describe("swapiServe controller simulation", () => {
         assert.ok(waited < 60_000, `the payout tick waited ${waited}ms, which risks missing its minute`);
     });
 
-    it("recovers after a backend outage clears", async () => {
+    it("recovers after a backend outage clears", { timeout: TEST_TIMEOUT_MS }, async () => {
         const clock = new FakeClock();
         let healthy = false;
         const dispatcher = new Dispatcher({
             backends: ["sim://a"],
             ...CREDENTIALS,
+            ...COLD_START,
             clock,
             retryDelayMs: 10,
             forwarder: async () =>

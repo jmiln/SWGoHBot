@@ -26,8 +26,15 @@ export const GOVERNOR = {
     // response bodies are buffered, so in-flight memory is this times mean response size (~400MB).
     MAX_LIMIT: 150,
     INCREASE_AFTER_CLEAN: 10,
-    DECREASE_FACTOR: 0.5,
+    // Softer than a halving because the learned ceiling, not the cut, now keeps the controller off
+    // the backend's limit.
+    DECREASE_FACTOR: 0.8,
     COOLDOWN_MS: 30_000,
+    // Growth stops this far below the median of recentPeaks. Peaks older than the TTL are ignored,
+    // so a quiet stretch releases the ceiling and rediscovers a backend that has grown.
+    CEILING_SAFETY_FACTOR: 0.9,
+    CEILING_MIN_PEAKS: 3,
+    PEAK_TTL_MS: 600_000,
     CIRCUIT_OPEN_AFTER_FAILURES: 10,
     CIRCUIT_PROBE_INTERVAL_MS: 15_000,
 } as const;

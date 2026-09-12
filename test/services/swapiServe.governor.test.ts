@@ -77,18 +77,18 @@ describe("swapiServe.Governor additive increase", () => {
 });
 
 describe("swapiServe.Governor multiplicative decrease", () => {
-    it("halves the limit on a throttle", () => {
+    it("cuts the limit by the decrease factor on a throttle", () => {
         const governor = new Governor([A]);
         governor.acquire(0);
         governor.report(A, "throttled", 0);
-        assert.strictEqual(governor.snapshot()[0].limit, Math.floor(GOVERNOR.START_LIMIT / 2));
+        assert.strictEqual(governor.snapshot()[0].limit, Math.floor(GOVERNOR.START_LIMIT * GOVERNOR.DECREASE_FACTOR));
     });
 
-    it("halves the limit on a server error", () => {
+    it("cuts the limit by the decrease factor on a server error", () => {
         const governor = new Governor([A]);
         governor.acquire(0);
         governor.report(A, "server_error", 0);
-        assert.strictEqual(governor.snapshot()[0].limit, Math.floor(GOVERNOR.START_LIMIT / 2));
+        assert.strictEqual(governor.snapshot()[0].limit, Math.floor(GOVERNOR.START_LIMIT * GOVERNOR.DECREASE_FACTOR));
     });
 
     it("never drops below the minimum limit", () => {
@@ -481,12 +481,12 @@ describe("swapiServe.Governor rate limiting", () => {
         assert.strictEqual(governor.nextAvailableAt(0), GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS);
     });
 
-    it("halves the rate alongside the limit on a throttle", () => {
+    it("cuts the rate alongside the limit on a throttle", () => {
         const governor = new Governor([A]);
         const startingRate = governor.snapshot()[0].ratePerSecond;
         governor.report(A, "throttled", 0);
 
-        assert.strictEqual(governor.snapshot()[0].ratePerSecond, startingRate / 2);
+        assert.strictEqual(governor.snapshot()[0].ratePerSecond, startingRate * GOVERNOR.DECREASE_FACTOR);
     });
 
     it("raises the rate alongside the limit on a clean streak", () => {
@@ -573,6 +573,72 @@ describe("swapiServe.Governor settling metrics", () => {
         governor.snapshot()[0].recentPeaks[0].limit = -1;
 
         assert.notStrictEqual(governor.snapshot()[0].recentPeaks[0].limit, -1);
+    });
+});
+
+describe("swapiServe.Governor learned ceiling", () => {
+    const PEAKS = [40, 50, 60];
+    const MEDIAN_PEAK = 50;
+    const expectedCeiling = Math.floor(MEDIAN_PEAK * GOVERNOR.CEILING_SAFETY_FACTOR);
+
+    function recordPeaks(governor: Governor, url: string, limits: number[]): void {
+        for (const [index, limit] of limits.entries()) {
+            governor.setLimit(url, limit);
+            governor.report(url, "throttled", index * 1000);
+        }
+    }
+
+    // Climbs from just under the ceiling, so the run stays well inside PEAK_TTL_MS and the test
+    // cannot pass by the peaks quietly expiring.
+    function climbFrom(governor: Governor, url: string, from: number, at: number): void {
+        governor.setLimit(url, from);
+        completeClean(governor, url, GOVERNOR.INCREASE_AFTER_CLEAN * 20, at);
+    }
+
+    it("leaves growth unconstrained until enough peaks have been recorded", () => {
+        const governor = new Governor([A]);
+        recordPeaks(governor, A, PEAKS.slice(0, GOVERNOR.CEILING_MIN_PEAKS - 1));
+
+        climbFrom(governor, A, 40, GOVERNOR.COOLDOWN_MS + 10_000);
+
+        assert.ok(
+            governor.snapshot()[0].limit > expectedCeiling,
+            `too few peaks must not constrain growth, but the limit stopped at ${governor.snapshot()[0].limit}`,
+        );
+    });
+
+    it("stops growing below the median of the recent peaks", () => {
+        const governor = new Governor([A]);
+        recordPeaks(governor, A, PEAKS);
+
+        climbFrom(governor, A, 40, GOVERNOR.COOLDOWN_MS + 10_000);
+
+        assert.strictEqual(governor.snapshot()[0].limit, expectedCeiling);
+    });
+
+    it("holds the rate below the median peak rate too", () => {
+        const governor = new Governor([A]);
+        for (const [index, rate] of [40, 50, 60].entries()) {
+            governor.setRate(A, rate);
+            governor.report(A, "throttled", index * 1000);
+        }
+
+        governor.setRate(A, 40);
+        completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN * 20, GOVERNOR.COOLDOWN_MS + 10_000);
+
+        assert.strictEqual(governor.snapshot()[0].ratePerSecond, MEDIAN_PEAK * GOVERNOR.CEILING_SAFETY_FACTOR);
+    });
+
+    it("releases the ceiling once the peaks have aged out", () => {
+        const governor = new Governor([A]);
+        recordPeaks(governor, A, PEAKS);
+
+        climbFrom(governor, A, 40, GOVERNOR.PEAK_TTL_MS + 10_000);
+
+        assert.ok(
+            governor.snapshot()[0].limit > expectedCeiling,
+            `expired peaks must stop constraining growth, but the limit stopped at ${governor.snapshot()[0].limit}`,
+        );
     });
 });
 

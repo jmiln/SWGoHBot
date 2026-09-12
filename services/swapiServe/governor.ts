@@ -37,6 +37,12 @@ export interface BackendPeak {
  */
 export const RECENT_PEAKS = 10;
 
+function median(values: number[]): number {
+    const sorted = [...values].sort((a, b) => a - b);
+    const middle = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 0 ? (sorted[middle - 1] + sorted[middle]) / 2 : sorted[middle];
+}
+
 export interface BackendSnapshot {
     url: string;
     limit: number;
@@ -121,6 +127,7 @@ export class Governor {
     private readonly backends: BackendState[];
     private readonly probeIntervalMs: number;
     private readonly maxLimit: number;
+    private readonly maxPerSecond: number;
     private readonly onTransition?: (transition: GovernorTransition) => void;
 
     constructor(
@@ -139,6 +146,7 @@ export class Governor {
     ) {
         this.probeIntervalMs = probeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
         this.maxLimit = maxLimit ?? GOVERNOR.MAX_LIMIT;
+        this.maxPerSecond = maxPerSecond ?? RATE.MAX_PER_SEC;
         this.onTransition = onTransition;
         this.backends = urls.map((url) => ({
             url,
@@ -160,6 +168,23 @@ export class Governor {
             backoffs: 0,
             recentPeaks: [],
         }));
+    }
+
+    /**
+     * How far the controller will climb, given where this backend has been pushed back before.
+     *
+     * Peaks age out rather than only being capped by count: without a TTL a backend whose capacity
+     * has genuinely grown stays pinned under a stale ceiling forever, since the median cannot rise
+     * on its own. Expiry is what lets a quiet stretch rediscover the real limit.
+     */
+    private ceilingFor(backend: BackendState, now: number): { limit: number; ratePerSecond: number } {
+        const fresh = backend.recentPeaks.filter((peak) => now - peak.at < GOVERNOR.PEAK_TTL_MS);
+        if (fresh.length < GOVERNOR.CEILING_MIN_PEAKS) return { limit: this.maxLimit, ratePerSecond: this.maxPerSecond };
+
+        return {
+            limit: Math.min(this.maxLimit, Math.floor(median(fresh.map((peak) => peak.limit)) * GOVERNOR.CEILING_SAFETY_FACTOR)),
+            ratePerSecond: Math.min(this.maxPerSecond, median(fresh.map((peak) => peak.ratePerSecond)) * GOVERNOR.CEILING_SAFETY_FACTOR),
+        };
     }
 
     private emit(backend: BackendState, event: GovernorTransition["event"], previous?: { limit: number; ratePerSecond: number }): void {
@@ -311,9 +336,17 @@ export class Governor {
         if (backend.cleanStreak < GOVERNOR.INCREASE_AFTER_CLEAN) return;
 
         backend.cleanStreak = 0;
+
+        // Clamped rather than driven to the ceiling: coming back down is the backoff path's job,
+        // and reducing here would report a shrink as an "increase".
+        const ceiling = this.ceilingFor(backend, now);
+        const canGrowLimit = backend.limit < ceiling.limit;
+        const canGrowRate = backend.bucket.getRate() < ceiling.ratePerSecond;
+        if (!canGrowLimit && !canGrowRate) return;
+
         const previous = { limit: backend.limit, ratePerSecond: backend.bucket.getRate() };
-        backend.limit = Math.min(this.maxLimit, backend.limit + 1);
-        backend.bucket.setRate(backend.bucket.getRate() + 1);
+        if (canGrowLimit) backend.limit += 1;
+        if (canGrowRate) backend.bucket.setRate(Math.min(ceiling.ratePerSecond, backend.bucket.getRate() + 1));
         this.emit(backend, "increase", previous);
     }
 
