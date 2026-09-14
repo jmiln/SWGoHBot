@@ -16,12 +16,18 @@ export type CircuitState = "closed" | "open" | "half-open";
 
 export interface GovernorTransition {
     url: string;
-    event: "backoff" | "open" | "half-open" | "closed" | "increase";
+    event: "backoff" | "degraded" | "open" | "half-open" | "closed" | "increase";
     limit: number;
     previousLimit?: number;
     ratePerSecond: number;
     previousRatePerSecond?: number;
     consecutiveFailures: number;
+}
+
+/** One completed request's cost, judged against the best RTT seen for that same endpoint. */
+export interface LatencySample {
+    uri: string;
+    latencyMs: number;
 }
 
 /** How high the controller had climbed at the moment a backend pushed back. */
@@ -36,6 +42,9 @@ export interface BackendPeak {
  * window, small enough that the status payload stays readable.
  */
 export const RECENT_PEAKS = 10;
+
+/** Endpoints are a small fixed set; the cap only stops an unexpected URI space growing unbounded. */
+const MAX_BASELINE_URIS = 32;
 
 function median(values: number[]): number {
     const sorted = [...values].sort((a, b) => a - b);
@@ -109,6 +118,10 @@ interface BackendState {
     lastAccountedAt: number;
     backoffs: number;
     recentPeaks: BackendPeak[];
+    /** Best RTT seen per endpoint. A shared baseline would read a mix change as congestion. */
+    baselineRtt: Map<string, number>;
+    queueEstimate: number;
+    degradedStreak: number;
 }
 
 /**
@@ -128,6 +141,9 @@ export class Governor {
     private readonly probeIntervalMs: number;
     private readonly maxLimit: number;
     private readonly maxPerSecond: number;
+    private readonly queueThreshold: number;
+    private readonly degradedSamples: number;
+    private readonly rttAlpha: number;
     private readonly onTransition?: (transition: GovernorTransition) => void;
 
     constructor(
@@ -136,17 +152,29 @@ export class Governor {
             probeIntervalMs,
             maxLimit,
             maxPerSecond,
+            startPerSecond,
+            queueThreshold,
+            degradedSamples,
+            rttAlpha,
             onTransition,
         }: {
             probeIntervalMs?: number;
             maxLimit?: number;
             maxPerSecond?: number;
+            /** Sizes the opening token bank. Setting the rate afterwards only ever trims it down. */
+            startPerSecond?: number;
+            queueThreshold?: number;
+            degradedSamples?: number;
+            rttAlpha?: number;
             onTransition?: (transition: GovernorTransition) => void;
         } = {},
     ) {
         this.probeIntervalMs = probeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
         this.maxLimit = maxLimit ?? GOVERNOR.MAX_LIMIT;
         this.maxPerSecond = maxPerSecond ?? RATE.MAX_PER_SEC;
+        this.queueThreshold = queueThreshold ?? GOVERNOR.QUEUE_ESTIMATE_THRESHOLD;
+        this.degradedSamples = degradedSamples ?? GOVERNOR.DEGRADED_SAMPLES;
+        this.rttAlpha = rttAlpha ?? GOVERNOR.RTT_EWMA_ALPHA;
         this.onTransition = onTransition;
         this.backends = urls.map((url) => ({
             url,
@@ -159,7 +187,10 @@ export class Governor {
             drained: false,
             openedAt: 0,
             probeInFlight: false,
-            bucket: new TokenBucket({ ratePerSecond: RATE.START_PER_SEC, maxPerSecond }),
+            bucket: new TokenBucket({
+                ratePerSecond: Math.max(RATE.MIN_PER_SEC, Math.min(this.maxPerSecond, startPerSecond ?? RATE.START_PER_SEC)),
+                maxPerSecond,
+            }),
             outcomes: {},
             limitMsIntegral: 0,
             rateMsIntegral: 0,
@@ -167,6 +198,9 @@ export class Governor {
             lastAccountedAt: -1,
             backoffs: 0,
             recentPeaks: [],
+            baselineRtt: new Map(),
+            queueEstimate: 0,
+            degradedStreak: 0,
         }));
     }
 
@@ -285,7 +319,54 @@ export class Governor {
         backend.observedMs += elapsed;
     }
 
-    report(url: string, outcome: Outcome, now: number, wasProbe = false): void {
+    /**
+     * The shared consequence of a backend pushing back, whichever way it did so. Failure counting
+     * and the breaker stay with the caller: a slow backend must move the limit without ever being
+     * treated as a broken one.
+     */
+    private pushBack(backend: BackendState, event: "backoff" | "degraded", now: number): void {
+        backend.recentPeaks.push({ limit: backend.limit, ratePerSecond: backend.bucket.getRate(), at: now });
+        if (backend.recentPeaks.length > RECENT_PEAKS) backend.recentPeaks.shift();
+        backend.backoffs++;
+
+        const previous = { limit: backend.limit, ratePerSecond: backend.bucket.getRate() };
+        backend.cleanStreak = 0;
+        backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.floor(backend.limit * GOVERNOR.DECREASE_FACTOR));
+        backend.cooldownUntil = now + GOVERNOR.COOLDOWN_MS;
+        backend.bucket.setRate(backend.bucket.getRate() * GOVERNOR.DECREASE_FACTOR);
+        this.emit(backend, event, previous);
+    }
+
+    /** Near zero while the upstream keeps pace, however many calls are in flight, so a served
+     * guild fan-out reads as nothing; it climbs only as responses stretch against their own best. */
+    private observeLatency(backend: BackendState, sample: LatencySample, now: number): boolean {
+        const seen = backend.baselineRtt.get(sample.uri);
+        if (seen === undefined || sample.latencyMs < seen) {
+            if (seen === undefined && backend.baselineRtt.size >= MAX_BASELINE_URIS) {
+                backend.baselineRtt.delete(backend.baselineRtt.keys().next().value as string);
+            }
+            backend.baselineRtt.set(sample.uri, sample.latencyMs);
+        }
+
+        const baseline = backend.baselineRtt.get(sample.uri) ?? sample.latencyMs;
+        const queued = sample.latencyMs > 0 ? backend.limit * (1 - baseline / sample.latencyMs) : 0;
+        backend.queueEstimate += this.rttAlpha * (queued - backend.queueEstimate);
+
+        if (backend.queueEstimate <= this.queueThreshold) {
+            backend.degradedStreak = 0;
+            return false;
+        }
+        backend.degradedStreak++;
+        if (backend.degradedStreak < this.degradedSamples) return false;
+
+        // Both reset, or the next sample trips again on the same evidence that just caused a cut.
+        backend.degradedStreak = 0;
+        backend.queueEstimate = 0;
+        this.pushBack(backend, "degraded", now);
+        return true;
+    }
+
+    report(url: string, outcome: Outcome, now: number, wasProbe = false, sample?: LatencySample): void {
         const backend = this.backends.find((candidate) => candidate.url === url);
         if (!backend) return;
 
@@ -296,19 +377,8 @@ export class Governor {
         if (wasProbe) backend.probeInFlight = false;
 
         if (affectsHealth(outcome)) {
-            // Captured before the halving below: this is how high the controller had climbed when
-            // the backend pushed back, which is the number the ceiling constants get pinned against.
-            backend.recentPeaks.push({ limit: backend.limit, ratePerSecond: backend.bucket.getRate(), at: now });
-            if (backend.recentPeaks.length > RECENT_PEAKS) backend.recentPeaks.shift();
-            backend.backoffs++;
-
-            const previous = { limit: backend.limit, ratePerSecond: backend.bucket.getRate() };
-            backend.cleanStreak = 0;
             backend.consecutiveFailures++;
-            backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.floor(backend.limit * GOVERNOR.DECREASE_FACTOR));
-            backend.cooldownUntil = now + GOVERNOR.COOLDOWN_MS;
-            backend.bucket.setRate(backend.bucket.getRate() * GOVERNOR.DECREASE_FACTOR);
-            this.emit(backend, "backoff", previous);
+            this.pushBack(backend, "backoff", now);
 
             // A failed probe sends the breaker straight back to open and restarts the interval,
             // regardless of the failure count.
@@ -330,6 +400,7 @@ export class Governor {
             this.emit(backend, "closed");
         }
         if (outcome !== "ok") return;
+        if (sample && this.observeLatency(backend, sample, now)) return;
 
         backend.cleanStreak++;
         if (now < backend.cooldownUntil) return;

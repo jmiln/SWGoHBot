@@ -87,8 +87,6 @@ const SHED_MESSAGES: Record<ShedReason, string> = {
 };
 
 /**
- * The 503 a shed request is answered with, labelled with why.
- *
  * The header is what lets a client tell our shed from an upstream 503, which matters because only
  * shutting_down means the queue is not there to be used. See SHED_REASON_HEADER.
  */
@@ -125,7 +123,7 @@ export class Dispatcher {
     /**
      * Requests waiting out a retry backoff, which are held by a timer rather than by the queue and
      * so cannot be reached by draining it. Tracked so shutdown can settle them too: a Retry-After
-     * honoured from upstream can be tens of seconds, and every one of those is a socket the HTTP
+     * honored from upstream can be tens of seconds, and every one of those is a socket the HTTP
      * layer is still holding open.
      */
     private readonly retryTimers = new Map<TimerHandle, PendingRequest>();
@@ -155,6 +153,9 @@ export class Dispatcher {
         ratePerSecond,
         maxLimit,
         maxPerSecond,
+        queueThreshold,
+        degradedSamples,
+        rttAlpha,
         depthLimits,
         retryDelayMs,
         timeoutMs,
@@ -172,6 +173,9 @@ export class Dispatcher {
         ratePerSecond?: number;
         maxLimit?: number;
         maxPerSecond?: number;
+        queueThreshold?: number;
+        degradedSamples?: number;
+        rttAlpha?: number;
         depthLimits?: readonly number[];
         retryDelayMs?: number;
         timeoutMs?: number;
@@ -186,6 +190,10 @@ export class Dispatcher {
             probeIntervalMs: circuitProbeIntervalMs,
             maxLimit,
             maxPerSecond,
+            startPerSecond: ratePerSecond,
+            queueThreshold,
+            degradedSamples,
+            rttAlpha,
             onTransition: onGovernorTransition,
         });
 
@@ -491,9 +499,9 @@ export class Dispatcher {
 
         const outcome = classifyOutcome(status, status !== undefined && status >= 400 ? readMessage(body) : undefined);
         const now = this.clock.now();
-        this.governor.report(backendUrl, outcome, now, isProbe);
-
         const latency = now - startedAt;
+        this.governor.report(backendUrl, outcome, now, isProbe, { uri: request.uri, latencyMs: latency });
+
         this.latencyTotal += latency;
         if (latency > this.latencyMax) this.latencyMax = latency;
         this.recordEndpointCost(request.uri, latency, body.length);

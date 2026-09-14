@@ -17,14 +17,15 @@ export type ByPriority<T> = readonly [T, T, T, T, T];
 export const PRIORITY_COUNT = Object.keys(PRIORITY).length;
 export const LOWEST_PRIORITY: Priority = PRIORITY.BULK;
 
-// AIMD controller, one per backend: grow on clean completions, halve on a throttle or server
-// failure, then hold still for the cooldown.
+// One controller per backend: grow on clean completions up to a ceiling learned from recentPeaks,
+// cut on a throttle or server failure, then hold still for the cooldown.
 export const GOVERNOR = {
-    START_LIMIT: 5,
+    START_LIMIT: 30,
     MIN_LIMIT: 1,
     // Aggregate across the five comlink containers behind SWAPI_CLIENT_URL, not per-IP. Whole
-    // response bodies are buffered, so in-flight memory is this times mean response size (~400MB).
-    MAX_LIMIT: 150,
+    // response bodies are buffered, so in-flight memory is this times mean response size: a /player
+    // pull averages 2.27MB, making this roughly 680MB at full saturation.
+    MAX_LIMIT: 300,
     INCREASE_AFTER_CLEAN: 10,
     // Softer than a halving because the learned ceiling, not the cut, now keeps the controller off
     // the backend's limit.
@@ -37,15 +38,21 @@ export const GOVERNOR = {
     PEAK_TTL_MS: 600_000,
     CIRCUIT_OPEN_AFTER_FAILURES: 10,
     CIRCUIT_PROBE_INTERVAL_MS: 15_000,
+    // Estimating the upstream queue as limit * (1 - baselineRtt / observedRtt), rather than
+    // comparing raw latency, is what stops a 50-100 call guild fan-out reading as congestion.
+    QUEUE_ESTIMATE_THRESHOLD: 8,
+    DEGRADED_SAMPLES: 20,
+    RTT_EWMA_ALPHA: 0.2,
 } as const;
 
 // Requests-per-second control, paired with GOVERNOR's concurrency control; comlink may enforce
 // either, so both adapt together. BURST_FACTOR lets a quiet period bank a short burst.
 export const RATE = {
-    START_PER_SEC: 5,
+    START_PER_SEC: 50,
     MIN_PER_SEC: 0.5,
-    // Aggregate across the five egress IPs, at the 60/s a single IP sustained.
-    MAX_PER_SEC: 300,
+    // Aggregate across the five egress IPs, and a backstop rather than a target: the learned
+    // ceiling settles below whatever the backend tolerates, so an over-low cap is the worse error.
+    MAX_PER_SEC: 600,
     BURST_FACTOR: 2,
 } as const;
 

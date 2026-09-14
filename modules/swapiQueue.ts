@@ -106,24 +106,34 @@ function markServiceDown(reason: string): void {
     );
 }
 
+/** Raised when swapiServe accepts a request and then never answers it. */
+class ServiceUnresponsiveError extends Error {}
+
 /**
- * Watches a queued call for the service failing to answer at all, without interfering with it.
+ * Bounds how long a caller waits on swapiServe answering at all.
  *
  * A wedged swapiServe is the one failure mode the fallback cannot otherwise see. An absent service
  * refuses the connection and a shutting-down one says so, but a process that accepts a connection and
  * then stops answering produces no error at all, and ComlinkStub gives no way to set a got timeout,
- * so the caller waits forever. Every shard and both updaters queue through that one process.
+ * so the caller would wait forever. Every shard and both updaters queue through that one process.
  *
- * The watched call is deliberately left running rather than abandoned. Abandoning it would leave a
- * loser still holding a socket, a swapiServe slot and a share of the retry budget, which is the trap
- * documented in getStrippedModsWorker. This only stops NEW work being sent into a service that has
- * stopped answering; calls already waiting still get whatever answer eventually arrives.
+ * Losing the race abandons the local hop only. The upstream comlink call it was waiting on is
+ * swapiServe's own, already bounded by UPSTREAM_TIMEOUT_MS in its forwarder, so nothing here strands
+ * an upstream request, a queue slot or retry budget: the cost is one loopback socket to a service
+ * that has already stopped answering, and the fallback latches after the first one.
  */
 async function withWatchdog<T>(priority: Priority, call: Promise<T>): Promise<T> {
-    const timer = setTimeout(() => markServiceDown("unresponsive"), watchdogMsForTier(priority));
-    timer.unref();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const bound = new Promise<never>((_resolve, reject) => {
+        timer = setTimeout(
+            () => reject(new ServiceUnresponsiveError("swapiServe accepted the request and never answered")),
+            watchdogMsForTier(priority),
+        );
+        timer.unref();
+    });
+
     try {
-        return await call;
+        return await Promise.race([call, bound]);
     } finally {
         clearTimeout(timer);
     }
@@ -169,7 +179,13 @@ export async function withStub<T>(priority: Priority, fn: (stub: ComlinkStub) =>
     try {
         return await withWatchdog(priority, fn(stubs().tiers[priority]));
     } catch (err) {
-        const unavailable = isConnectionFailure(err) ? "unreachable" : isServiceShuttingDown(err) ? "shutting down" : null;
+        const unavailable = isConnectionFailure(err)
+            ? "unreachable"
+            : isServiceShuttingDown(err)
+              ? "shutting down"
+              : err instanceof ServiceUnresponsiveError
+                ? "unresponsive"
+                : null;
         if (!unavailable) throw err;
 
         markServiceDown(unavailable);
@@ -193,7 +209,7 @@ export async function withStub<T>(priority: Priority, fn: (stub: ComlinkStub) =>
  *
  * The health check happens once because these are single-cycle processes, not long-lived ones.
  * Falling back keeps a nightly cycle running when the governor is down, which matches the bot's
- * behaviour rather than failing the whole run.
+ * behavior rather than failing the whole run.
  */
 export async function resolveBulkStub(): Promise<{ stub: ComlinkStub; url: string }> {
     const credentials = { accessKey: env.SWAPI_ACCESS_KEY, secretKey: env.SWAPI_SECRET_KEY };

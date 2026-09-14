@@ -193,9 +193,9 @@ describe("swapiQueue fail-open fallback", () => {
  * dead process it never produces a connection error to fall back on. Since every shard and both
  * updaters queue through one process, that is one hang shared by all of them.
  *
- * The watchdog does not abandon the call it is watching. Abandoning would leave a loser still holding
- * a socket, a swapiServe slot and a share of the retry budget, which is the mistake the mod worker's
- * comment documents. It only stops NEW work being sent into a service that has stopped answering.
+ * Losing the race abandons the loopback hop only. The upstream call is swapiServe's own and is
+ * already bounded by UPSTREAM_TIMEOUT_MS in its forwarder, so no upstream request, queue slot or
+ * retry budget is stranded by giving up on a service that has already stopped answering.
  */
 describe("swapiQueue unresponsive-service watchdog", () => {
     beforeEach(() => {
@@ -222,9 +222,8 @@ describe("swapiQueue unresponsive-service watchdog", () => {
         const next = (await withStub(PRIORITY.PUBLIC_COMMAND, (stub) => stub.getPlayer("123456789"))) as { viaDirect: boolean };
         assert.strictEqual(next.viaDirect, true, "new work should go direct rather than queue behind a wedged service");
 
-        // The watched call is left alone, and still returns the service's answer when it arrives.
-        const answered = (await slow) as { viaServe: boolean };
-        assert.strictEqual(answered.viaServe, true, "the watchdog must not abandon the call it was watching");
+        const answered = (await slow) as { viaDirect: boolean };
+        assert.strictEqual(answered.viaDirect, true, "a call that outlasts the bound must fall back, not hang");
     });
 
     it("leaves the service alone when a call answers inside its bound", async () => {

@@ -139,14 +139,16 @@ const envSchema = z.object({
     // open, which is safe only while the service is bound to loopback.
     SWAPI_SERVE_CONTROL_SECRET: z.string().optional(),
 
-    // AIMD controller bounds, defaulting to the values in data/constants/swapiServe.ts, which are
-    // what the test suite pins. Overridable because finding the upstream's real ceiling means
-    // changing them on a live host, and the ceilings are an aggregate across the five comlink
-    // containers behind SWAPI_CLIENT_URL rather than a per-IP budget.
+    // AIMD controller bounds.
     SWAPI_SERVE_START_LIMIT: z.coerce.number().int().positive().default(GOVERNOR.START_LIMIT),
     SWAPI_SERVE_MAX_LIMIT: z.coerce.number().int().positive().default(GOVERNOR.MAX_LIMIT),
     SWAPI_SERVE_START_RATE: z.coerce.number().positive().default(RATE.START_PER_SEC),
     SWAPI_SERVE_MAX_RATE: z.coerce.number().positive().default(RATE.MAX_PER_SEC),
+
+    // Latency backoff sensitivity. RTT_ALPHA is an EWMA weight, so it must stay within (0, 1].
+    SWAPI_SERVE_QUEUE_THRESHOLD: z.coerce.number().positive().default(GOVERNOR.QUEUE_ESTIMATE_THRESHOLD),
+    SWAPI_SERVE_DEGRADED_SAMPLES: z.coerce.number().int().positive().default(GOVERNOR.DEGRADED_SAMPLES),
+    SWAPI_SERVE_RTT_ALPHA: z.coerce.number().positive().max(1).default(GOVERNOR.RTT_EWMA_ALPHA),
 
     // shardStatus: the shard manager's health surface, read by the container healthcheck and later
     // by Uptime Kuma. It carries no secret, so like swapiServe the bind is its only access control:

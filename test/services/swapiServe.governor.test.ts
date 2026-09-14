@@ -6,14 +6,6 @@ import { Governor, type GovernorTransition, RECENT_PEAKS } from "../../services/
 const A = "http://a.test";
 const B = "http://b.test";
 
-// Bounded under CIRCUIT_OPEN_AFTER_FAILURES so this stays a capacity collapse rather than a trip.
-function collapseToMinLimit(governor: Governor, url: string): void {
-    for (let i = 0; i < GOVERNOR.CIRCUIT_OPEN_AFTER_FAILURES - 1; i++) {
-        if (governor.snapshot().find((backend) => backend.url === url)?.limit === GOVERNOR.MIN_LIMIT) return;
-        governor.report(url, "throttled", 0);
-    }
-}
-
 function completeClean(governor: Governor, url: string, times: number, now = 0): void {
     for (let i = 0; i < times; i++) {
         const at = now + i * 1000;
@@ -91,13 +83,15 @@ describe("swapiServe.Governor multiplicative decrease", () => {
         assert.strictEqual(governor.snapshot()[0].limit, Math.floor(GOVERNOR.START_LIMIT * GOVERNOR.DECREASE_FACTOR));
     });
 
+    // Started at the floor, not driven to it: the number of cuts that takes can exceed
+    // CIRCUIT_OPEN_AFTER_FAILURES, which would test the breaker instead of the clamp.
     it("never drops below the minimum limit", () => {
         const governor = new Governor([A]);
-        // Deliberately fewer than CIRCUIT_OPEN_AFTER_FAILURES: this is about the floor on the
-        // limit, not about the breaker, and tripping the breaker would mask it.
-        for (let i = 0; i < GOVERNOR.CIRCUIT_OPEN_AFTER_FAILURES - 1; i++) {
-            governor.report(A, "throttled", 0);
-        }
+        governor.setLimit(A, GOVERNOR.MIN_LIMIT);
+
+        governor.report(A, "throttled", 0);
+        governor.report(A, "throttled", 0);
+
         assert.strictEqual(governor.snapshot()[0].limit, GOVERNOR.MIN_LIMIT);
         assert.strictEqual(governor.snapshot()[0].state, "closed");
     });
@@ -160,7 +154,7 @@ describe("swapiServe.Governor backend selection", () => {
         const governor = new Governor([A, B]);
         // Collapse A to the minimum without tripping its breaker, so this tests selection
         // rather than the circuit.
-        collapseToMinLimit(governor, A);
+        governor.setLimit(A, GOVERNOR.MIN_LIMIT);
 
         assert.strictEqual(governor.snapshot()[0].limit, GOVERNOR.MIN_LIMIT);
         assert.strictEqual(governor.snapshot()[0].state, "closed", "should still be eligible, just small");
@@ -344,7 +338,7 @@ describe("swapiServe.Governor backend selection under collapse", () => {
 
         // B collapses to the minimum but sits completely idle, so by utilisation ratio it looks
         // like the better choice. It is not.
-        collapseToMinLimit(governor, B);
+        governor.setLimit(B, GOVERNOR.MIN_LIMIT);
         assert.strictEqual(governor.snapshot()[1].limit, GOVERNOR.MIN_LIMIT);
 
         // Load A well past B's ratio while leaving it plenty of absolute headroom. Time advances
@@ -534,7 +528,7 @@ describe("swapiServe.Governor settling metrics", () => {
     });
 
     // Only the pre-backoff value says how high the controller got before the backend pushed back,
-    // which is what the ceiling constants are pinned against; the mean only says where it centres.
+    // which is what the ceiling constants are pinned against; the mean only says where it centers.
     it("records the pre-backoff peak, not the halved value", () => {
         const governor = new Governor([A]);
         completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN);
@@ -573,6 +567,95 @@ describe("swapiServe.Governor settling metrics", () => {
         governor.snapshot()[0].recentPeaks[0].limit = -1;
 
         assert.notStrictEqual(governor.snapshot()[0].recentPeaks[0].limit, -1);
+    });
+});
+
+describe("swapiServe.Governor latency backoff", () => {
+    const URI = "/player";
+    const BASELINE_MS = 500;
+
+    function reportAt(governor: Governor, latencyMs: number, now: number): void {
+        governor.report(A, "ok", now, false, { uri: URI, latencyMs });
+    }
+
+    function establishBaseline(governor: Governor): void {
+        for (let i = 0; i < 5; i++) reportAt(governor, BASELINE_MS, i);
+    }
+
+    it("ignores latency that matches the endpoint's own baseline", () => {
+        const governor = new Governor([A]);
+        establishBaseline(governor);
+
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) reportAt(governor, BASELINE_MS, 10 + i);
+
+        assert.strictEqual(governor.snapshot()[0].backoffs, 0);
+    });
+
+    // The case that would otherwise make every guild command back off: 50 concurrent calls all
+    // served promptly raise nothing but the in-flight count, which is not congestion.
+    it("does not back off for a burst the upstream is keeping up with", () => {
+        const governor = new Governor([A]);
+        establishBaseline(governor);
+        for (let i = 0; i < 50; i++) governor.acquire(10 + i);
+
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) reportAt(governor, BASELINE_MS, 100 + i);
+
+        assert.strictEqual(governor.snapshot()[0].backoffs, 0);
+    });
+
+    // Separates estimating the upstream queue from comparing raw latency: doubled response times
+    // with few in flight is capacity being used, not a backend at its limit. A ratio rule fires here.
+    it("treats a modest slowdown at a small limit as capacity, not congestion", () => {
+        const governor = new Governor([A]);
+        governor.setLimit(A, 5);
+        establishBaseline(governor);
+
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) reportAt(governor, BASELINE_MS * 2, 10 + i);
+
+        assert.strictEqual(governor.snapshot()[0].backoffs, 0);
+    });
+
+    it("backs off once the upstream queue estimate stays high", () => {
+        const governor = new Governor([A]);
+        establishBaseline(governor);
+        const before = governor.snapshot()[0].limit;
+
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) reportAt(governor, BASELINE_MS * 20, 10 + i);
+
+        assert.ok(governor.snapshot()[0].limit < before, "sustained upstream queueing should lower the limit");
+        assert.ok(governor.snapshot()[0].recentPeaks.length > 0, "and should record a peak to learn a ceiling from");
+    });
+
+    it("never opens the circuit, however slow the backend gets", () => {
+        const governor = new Governor([A]);
+        establishBaseline(governor);
+
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 20; i++) reportAt(governor, BASELINE_MS * 50, 10 + i);
+
+        assert.strictEqual(governor.snapshot()[0].state, "closed", "slow is not broken");
+    });
+
+    it("honors an overridden sensitivity instead of the constants", () => {
+        const governor = new Governor([A], { degradedSamples: 1, queueThreshold: 0.5, rttAlpha: 1 });
+        establishBaseline(governor);
+
+        reportAt(governor, BASELINE_MS * 20, 10);
+
+        assert.strictEqual(governor.snapshot()[0].backoffs, 1, "one sample should be enough at these settings");
+    });
+
+    it("judges each endpoint against its own baseline", () => {
+        const governor = new Governor([A]);
+        for (let i = 0; i < 5; i++) {
+            governor.report(A, "ok", i, false, { uri: "/guild", latencyMs: 300 });
+            governor.report(A, "ok", i, false, { uri: "/player", latencyMs: 3000 });
+        }
+
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) {
+            governor.report(A, "ok", 10 + i, false, { uri: "/player", latencyMs: 3000 });
+        }
+
+        assert.strictEqual(governor.snapshot()[0].backoffs, 0, "a slow endpoint is not a degraded one");
     });
 });
 
@@ -728,7 +811,7 @@ describe("swapiServe.Governor transition reporting", () => {
         assert.strictEqual(last.ratePerSecond, last.previousRatePerSecond + 1);
     });
 
-    it("honours an overridden ceiling instead of the constant", () => {
+    it("honors an overridden ceiling instead of the constant", () => {
         const maxLimit = GOVERNOR.START_LIMIT + 2;
         const governor = new Governor([A], { maxLimit });
 
