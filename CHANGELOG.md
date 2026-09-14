@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
 4.0.0 and 3.0.0 predate that and stay as written.
 
+## [4.7.0] - 2026-09-14
+
+### Added
+
+- Adjust swapiserve limits some more, adding the limits in .env
+- learn a ceiling from recentPeaks instead of sawtoothing
+- Log additional changes & add bounds env vars
+
 ## [4.6.0] - 2026-09-11
 
 ### Added
