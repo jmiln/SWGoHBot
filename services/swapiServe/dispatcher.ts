@@ -6,6 +6,7 @@ import { type BlockedBy, Governor, type GovernorTransition } from "./governor.ts
 import { classifyOutcome, isRetryable, type Outcome } from "./outcomes.ts";
 import { PriorityQueue, type QueueEntry } from "./queue.ts";
 import { RetryBudget } from "./retryBudget.ts";
+import { RollingWindow, type WindowMetrics } from "./rollingWindow.ts";
 
 export interface ProxyRequest {
     method: string;
@@ -133,6 +134,7 @@ export class Dispatcher {
     private latencyTotal = 0;
     private latencyMax = 0;
     private readonly blocked: Record<BlockedBy, number> = { slot: 0, token: 0, health: 0 };
+    private readonly window = new RollingWindow();
     private readonly terminal: Record<TerminalReason, number> = {
         completed: 0,
         upstream_error: 0,
@@ -194,7 +196,12 @@ export class Dispatcher {
             queueThreshold,
             degradedSamples,
             rttAlpha,
-            onTransition: onGovernorTransition,
+            onTransition: (transition) => {
+                if (transition.event === "backoff" || transition.event === "degraded") {
+                    this.window.record(transition.event, 0, this.clock.now());
+                }
+                onGovernorTransition?.(transition);
+            },
         });
 
         // Tests need deterministic pacing; production uses GOVERNOR.START_LIMIT and RATE.START_PER_SEC.
@@ -295,6 +302,7 @@ export class Dispatcher {
         blocked: Record<BlockedBy, number>;
         terminal: Record<TerminalReason, number>;
         latencyMs: { mean: number; max: number };
+        window: WindowMetrics;
         dispatches: number;
         retries: number;
         retryBudget: ReturnType<RetryBudget["metrics"]>;
@@ -309,6 +317,7 @@ export class Dispatcher {
                 mean: this.dispatchCount > 0 ? Math.round(this.latencyTotal / this.dispatchCount) : 0,
                 max: this.latencyMax,
             },
+            window: this.window.metrics(this.clock.now()),
             dispatches: this.dispatchCount,
             retries: this.retryCount,
             retryBudget: this.retryBudget.metrics(),
@@ -361,7 +370,10 @@ export class Dispatcher {
             // by later arrivals at its own priority.
             const { url: backendUrl, blockedBy, isProbe } = this.governor.acquire(now);
             if (!backendUrl) {
-                if (blockedBy) this.blocked[blockedBy]++;
+                if (blockedBy) {
+                    this.blocked[blockedBy]++;
+                    this.window.record(`blocked.${blockedBy}`, 0, now);
+                }
 
                 // No backend is usable, so anyone who cannot outlive the outage is told now rather
                 // than draining at the circuit-probe rate, one failing request every 15 seconds.
@@ -504,6 +516,7 @@ export class Dispatcher {
 
         this.latencyTotal += latency;
         if (latency > this.latencyMax) this.latencyMax = latency;
+        this.window.record("latencyMs", latency, now);
         this.recordEndpointCost(request.uri, latency, body.length);
 
         if (this.shouldRetry(pending, outcome, now)) {
@@ -584,6 +597,7 @@ export class Dispatcher {
         if (pending.settled) return;
         pending.settled = true;
         this.terminal[reason]++;
+        this.window.record(reason, 0, this.clock.now());
         pending.resolve(response);
     }
 

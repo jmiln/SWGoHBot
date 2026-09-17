@@ -265,9 +265,17 @@ describe("swapiServe end to end", () => {
                 drained: boolean;
                 outcomes: Record<string, number>;
             }[];
-            queue: { depths: number[]; oldestAgeMs: number[]; meanWaitMs: number[]; maxWaitMs: number[] };
+            queue: {
+                depths: number[];
+                oldestAgeMs: number[];
+                meanWaitMs: number[];
+                waitCounts: number[];
+                maxWaitMs: number[];
+                recentWaitMs: { count: number; perSecond: number; mean: number; max: number }[];
+            };
             blocked: Record<string, number>;
             terminal: Record<string, number>;
+            window: { coveredMs: number; series: Record<string, { count: number; perSecond: number; mean: number; max: number }> };
             dispatches: number;
             retries: number;
             retryBudget: { granted: number[]; denied: number[] };
@@ -283,11 +291,23 @@ describe("swapiServe end to end", () => {
         assert.strictEqual(status.backends[0].state, "closed");
         assert.strictEqual(status.backends[0].outcomes.ok, 1);
 
-        for (const series of [status.queue.depths, status.queue.oldestAgeMs, status.queue.meanWaitMs, status.queue.maxWaitMs]) {
+        for (const series of [
+            status.queue.depths,
+            status.queue.oldestAgeMs,
+            status.queue.meanWaitMs,
+            status.queue.waitCounts,
+            status.queue.maxWaitMs,
+            status.queue.recentWaitMs,
+        ]) {
             assert.strictEqual(series.length, 5, "queue metrics are reported per priority tier");
         }
         assert.strictEqual(status.dispatches, 1);
         assert.strictEqual(status.terminal.completed, 1);
+
+        // What a dashboard reads instead of the cumulative counters beside it.
+        assert.strictEqual(status.window.series.completed.count, 1);
+        assert.ok(status.window.series.completed.perSecond > 0, "the window should carry a rate the caller need not derive");
+        assert.ok(status.window.coveredMs > 0, "and say how much time it covers");
         assert.strictEqual(status.endpoints["/player"].count, 1);
         assert.ok("token" in status.blocked, "blocked reasons should be reported");
         for (const series of [status.retryBudget.granted, status.retryBudget.denied]) {

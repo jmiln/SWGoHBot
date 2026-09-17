@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, describe, it } from "node:test";
-import { DEADLINE_MS, PRIORITY, RETRY, SHED_REASON_HEADER, SHED_SHUTTING_DOWN } from "../../data/constants/swapiServe.ts";
+import { DEADLINE_MS, PRIORITY, RETRY, SHED_REASON_HEADER, SHED_SHUTTING_DOWN, STATUS_WINDOW } from "../../data/constants/swapiServe.ts";
 import { Dispatcher } from "../../services/swapiServe/dispatcher.ts";
 import type { Forwarder } from "../../services/swapiServe/forwarder.ts";
 import { FakeClock } from "../helpers/fakeClock.ts";
@@ -844,5 +844,63 @@ describe("swapiServe.Dispatcher shutdown", () => {
         assert.ok(answered, "the caller should be answered as soon as its request comes back");
         assert.strictEqual(clock.pendingTimers(), 0, "no retry timer should be left holding shutdown open");
         assert.strictEqual(attempts, 1, `a stopped service must not send the request again, was sent ${attempts} times`);
+    });
+});
+
+describe("swapiServe.Dispatcher rolling window", () => {
+    // The lifetime counters only ever climb, so a dashboard that keeps no state of its own cannot
+    // turn them into a rate. These are what it reads instead.
+    it("reports served throughput and recent latency over the window, not since startup", async () => {
+        const clock = new FakeClock();
+        const forwarder: Forwarder = async () => {
+            clock.advance(200);
+            return { status: 200, headers: {}, body: Buffer.from("{}") };
+        };
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, clock });
+        after(() => dispatcher.stop());
+
+        for (let i = 0; i < 5; i++) {
+            await settle(clock, dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, DEADLINE_MS[PRIORITY.PUBLIC_COMMAND])));
+        }
+
+        const { series, coveredMs } = dispatcher.status().window;
+        assert.strictEqual(series.completed.count, 5);
+        assert.ok(series.completed.perSecond > 0, "five served requests should read as a positive rate");
+        assert.ok(series.latencyMs.max >= 200, "the forwarder's own 200ms should be inside the measured latency");
+        assert.strictEqual(series.latencyMs.mean, series.latencyMs.max, "every call took the same time here");
+        assert.ok(coveredMs > 0);
+    });
+
+    it("forgets what has aged out, so the widget shows now rather than ever", async () => {
+        const clock = new FakeClock();
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: okForwarder, clock });
+        after(() => dispatcher.stop());
+
+        await settle(clock, dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, DEADLINE_MS[PRIORITY.PUBLIC_COMMAND])));
+        assert.strictEqual(dispatcher.status().window.series.completed.count, 1);
+
+        clock.advance(STATUS_WINDOW.WINDOW_MS * 2);
+
+        assert.strictEqual(dispatcher.status().window.series.completed, undefined, "the window should be empty again");
+        assert.strictEqual(dispatcher.status().terminal.completed, 1, "while the lifetime counter still stands");
+    });
+
+    it("counts what blocked a dispatch, so the widget can say which cap is binding", async () => {
+        const clock = new FakeClock();
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            ratePerSecond: 1,
+            forwarder: okForwarder,
+            clock,
+        });
+        after(() => dispatcher.stop());
+
+        const requests = Array.from({ length: 4 }, () =>
+            dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, DEADLINE_MS[PRIORITY.PUBLIC_COMMAND])),
+        );
+        await settle(clock, Promise.all(requests));
+
+        assert.ok(dispatcher.status().window.series["blocked.token"].count > 0, "the rate cap should show as the binding one");
     });
 });

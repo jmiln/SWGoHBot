@@ -1,4 +1,5 @@
 import { PRIORITY_COUNT, type Priority, QUEUE } from "../../data/constants/swapiServe.ts";
+import { RollingWindow, type WindowSeries } from "./rollingWindow.ts";
 
 export interface QueueEntry<T> {
     priority: Priority;
@@ -19,11 +20,17 @@ export interface QueueMetrics {
     oldestAgeMs: number[];
     /** Mean wait before dispatch per tier, over the entries dispatched so far. */
     meanWaitMs: number[];
+    /** Divisor behind meanWaitMs, published so a caller can difference the totals into a window. */
+    waitCounts: number[];
     /** Longest wait before dispatch seen per tier. */
     maxWaitMs: number[];
+    /** The same waits over STATUS_WINDOW, which unlike the two above can fall again. */
+    recentWaitMs: WindowSeries[];
     droppedExpired: number[];
     droppedCancelled: number[];
 }
+
+const EMPTY_WAIT: WindowSeries = { count: 0, perSecond: 0, mean: 0, max: 0 };
 
 /**
  * Per-tier FIFO queues with deadline dropping, cancellation, and credit-based reservations.
@@ -58,6 +65,7 @@ export class PriorityQueue<T> {
     private readonly waitTotals = new Array(PRIORITY_COUNT).fill(0);
     private readonly waitCounts = new Array(PRIORITY_COUNT).fill(0);
     private readonly waitMaxes = new Array(PRIORITY_COUNT).fill(0);
+    private readonly recentWaits = new RollingWindow();
     private readonly droppedExpired = new Array(PRIORITY_COUNT).fill(0);
     private readonly droppedCancelled = new Array(PRIORITY_COUNT).fill(0);
 
@@ -117,7 +125,7 @@ export class PriorityQueue<T> {
         const entry = this.buckets[priority].shift();
         if (!entry) return null;
         this.charge(priority, entry.cost);
-        this.recordWait(priority, now - entry.enqueuedAt);
+        this.recordWait(priority, now - entry.enqueuedAt, now);
         return entry;
     }
 
@@ -195,16 +203,24 @@ export class PriorityQueue<T> {
             meanWaitMs: this.waitTotals.map((total, priority) =>
                 this.waitCounts[priority] > 0 ? Math.round(total / this.waitCounts[priority]) : 0,
             ),
+            waitCounts: [...this.waitCounts],
             maxWaitMs: [...this.waitMaxes],
+            recentWaitMs: this.recentWaitSeries(now),
             droppedExpired: [...this.droppedExpired],
             droppedCancelled: [...this.droppedCancelled],
         };
     }
 
-    private recordWait(priority: Priority, waitedMs: number): void {
+    private recentWaitSeries(now: number): WindowSeries[] {
+        const { series } = this.recentWaits.metrics(now);
+        return Array.from({ length: PRIORITY_COUNT }, (_, priority) => series[String(priority)] ?? EMPTY_WAIT);
+    }
+
+    private recordWait(priority: Priority, waitedMs: number, now: number): void {
         this.waitTotals[priority] += waitedMs;
         this.waitCounts[priority]++;
         if (waitedMs > this.waitMaxes[priority]) this.waitMaxes[priority] = waitedMs;
+        this.recentWaits.record(String(priority), waitedMs, now);
     }
 
     /**

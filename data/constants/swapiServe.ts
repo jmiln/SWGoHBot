@@ -74,6 +74,14 @@ export const RETRY = {
     MIN_IN_WINDOW: 10,
 } as const;
 
+// Trailing window behind the rate and recent-average figures in /status. A fixed span rather than
+// "since you last asked" because Uptime Kuma and the dashboard both poll: a per-caller window would
+// have each consume the other's, and each would read a different, wrong number.
+export const STATUS_WINDOW = {
+    WINDOW_MS: 60_000,
+    BUCKET_MS: 5_000,
+} as const;
+
 export const UPSTREAM_TIMEOUT_MS = 60_000;
 
 // How long a request is still worth sending. Keep the user-facing tiers at or below

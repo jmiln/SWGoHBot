@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import { PRIORITY } from "../../data/constants/swapiServe.ts";
+import { PRIORITY, STATUS_WINDOW } from "../../data/constants/swapiServe.ts";
 import { PriorityQueue, type QueueEntry } from "../../services/swapiServe/queue.ts";
 
 const FAR_FUTURE = Number.MAX_SAFE_INTEGER;
@@ -250,6 +250,33 @@ describe("swapiServe.PriorityQueue metrics", () => {
         const metrics = queue.metrics(3000);
         assert.strictEqual(metrics.meanWaitMs[PRIORITY.BULK], 2000);
         assert.strictEqual(metrics.maxWaitMs[PRIORITY.BULK], 2000);
+    });
+
+    // meanWaitMs is a lifetime mean, so recovering a recent one means differencing the totals, and
+    // that needs the divisor as well as the mean.
+    it("publishes the wait count behind each mean, so the mean can be windowed by a caller", () => {
+        const queue = new PriorityQueue<string>({});
+        queue.enqueue(entry(PRIORITY.BULK, "first", FAR_FUTURE, 1000));
+        queue.enqueue(entry(PRIORITY.BULK, "second", FAR_FUTURE, 1000));
+        queue.dequeue(2000);
+        queue.dequeue(4000);
+
+        const metrics = queue.metrics(4000);
+        assert.strictEqual(metrics.waitCounts[PRIORITY.BULK], 2);
+        assert.strictEqual(metrics.meanWaitMs[PRIORITY.BULK], 2000);
+        assert.strictEqual(metrics.waitCounts[PRIORITY.ARENA_TICK], 0);
+    });
+
+    it("reports a recent wait per tier that falls again once the slow entries age out", () => {
+        const queue = new PriorityQueue<string>({});
+        queue.enqueue(entry(PRIORITY.ARENA_TICK, "slow", FAR_FUTURE, 0));
+        queue.dequeue(9000);
+
+        assert.strictEqual(queue.metrics(9000).recentWaitMs[PRIORITY.ARENA_TICK].max, 9000);
+
+        const afterWindow = 9000 + STATUS_WINDOW.WINDOW_MS + STATUS_WINDOW.BUCKET_MS;
+        assert.strictEqual(queue.metrics(afterWindow).recentWaitMs[PRIORITY.ARENA_TICK].max, 0);
+        assert.strictEqual(queue.metrics(afterWindow).maxWaitMs[PRIORITY.ARENA_TICK], 9000, "the lifetime max still stands");
     });
 
     it("counts entries dropped for expiry and for cancellation separately", () => {
