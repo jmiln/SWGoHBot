@@ -22,6 +22,7 @@ export interface GovernorTransition {
     ratePerSecond: number;
     previousRatePerSecond?: number;
     consecutiveFailures: number;
+    queueEstimate?: number;
 }
 
 /** One completed request's cost, judged against the best RTT seen for that same endpoint. */
@@ -221,7 +222,12 @@ export class Governor {
         };
     }
 
-    private emit(backend: BackendState, event: GovernorTransition["event"], previous?: { limit: number; ratePerSecond: number }): void {
+    private emit(
+        backend: BackendState,
+        event: GovernorTransition["event"],
+        previous?: { limit: number; ratePerSecond: number },
+        queueEstimate?: number,
+    ): void {
         this.onTransition?.({
             url: backend.url,
             event,
@@ -230,6 +236,7 @@ export class Governor {
             ratePerSecond: backend.bucket.getRate(),
             previousRatePerSecond: previous?.ratePerSecond,
             consecutiveFailures: backend.consecutiveFailures,
+            queueEstimate,
         });
     }
 
@@ -320,11 +327,10 @@ export class Governor {
     }
 
     /**
-     * The shared consequence of a backend pushing back, whichever way it did so. Failure counting
-     * and the breaker stay with the caller: a slow backend must move the limit without ever being
-     * treated as a broken one.
+     * The consequence of a backend pushing back. Failure counting and the breaker stay with the
+     * caller: a throttle must move the limit without ever being treated as a broken backend.
      */
-    private pushBack(backend: BackendState, event: "backoff" | "degraded", now: number): void {
+    private pushBack(backend: BackendState, now: number): void {
         backend.recentPeaks.push({ limit: backend.limit, ratePerSecond: backend.bucket.getRate(), at: now });
         if (backend.recentPeaks.length > RECENT_PEAKS) backend.recentPeaks.shift();
         backend.backoffs++;
@@ -334,12 +340,11 @@ export class Governor {
         backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.floor(backend.limit * GOVERNOR.DECREASE_FACTOR));
         backend.cooldownUntil = now + GOVERNOR.COOLDOWN_MS;
         backend.bucket.setRate(backend.bucket.getRate() * GOVERNOR.DECREASE_FACTOR);
-        this.emit(backend, event, previous);
+        this.emit(backend, "backoff", previous);
     }
 
-    /** Near zero while the upstream keeps pace, however many calls are in flight, so a served
-     * guild fan-out reads as nothing; it climbs only as responses stretch against their own best. */
-    private observeLatency(backend: BackendState, sample: LatencySample, now: number): boolean {
+    /** Estimates the upstream queue and reports it. Deliberately does not act on it - see `report`. */
+    private observeLatency(backend: BackendState, sample: LatencySample): void {
         const seen = backend.baselineRtt.get(sample.uri);
         if (seen === undefined || sample.latencyMs < seen) {
             if (seen === undefined && backend.baselineRtt.size >= MAX_BASELINE_URIS) {
@@ -354,16 +359,15 @@ export class Governor {
 
         if (backend.queueEstimate <= this.queueThreshold) {
             backend.degradedStreak = 0;
-            return false;
+            return;
         }
         backend.degradedStreak++;
-        if (backend.degradedStreak < this.degradedSamples) return false;
+        if (backend.degradedStreak < this.degradedSamples) return;
 
-        // Both reset, or the next sample trips again on the same evidence that just caused a cut.
+        // Only the streak resets, rate-limiting the report to one per sustained run. Zeroing the
+        // estimate too would make the next reported value understate what it measured.
         backend.degradedStreak = 0;
-        backend.queueEstimate = 0;
-        this.pushBack(backend, "degraded", now);
-        return true;
+        this.emit(backend, "degraded", undefined, backend.queueEstimate);
     }
 
     report(url: string, outcome: Outcome, now: number, wasProbe = false, sample?: LatencySample): void {
@@ -378,7 +382,7 @@ export class Governor {
 
         if (affectsHealth(outcome)) {
             backend.consecutiveFailures++;
-            this.pushBack(backend, "backoff", now);
+            this.pushBack(backend, now);
 
             // A failed probe sends the breaker straight back to open and restarts the interval,
             // regardless of the failure count.
@@ -400,7 +404,10 @@ export class Governor {
             this.emit(backend, "closed");
         }
         if (outcome !== "ok") return;
-        if (sample && this.observeLatency(backend, sample, now)) return;
+
+        // Reported, never acted on: the estimate scales with `limit`, so cutting on it made every
+        // slot earned enlarge the estimate that took it away, pinning production at limit 17.
+        if (sample) this.observeLatency(backend, sample);
 
         backend.cleanStreak++;
         if (now < backend.cooldownUntil) return;

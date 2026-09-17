@@ -125,7 +125,7 @@ export async function startSwapiServe({
     /** Overrides the AIMD ceilings. Production passes the SWAPI_SERVE_MAX_* env values. */
     maxLimit?: number;
     maxPerSecond?: number;
-    /** Latency-backoff sensitivity. Production passes the SWAPI_SERVE_QUEUE_THRESHOLD family. */
+    /** Latency-reporting sensitivity. Production passes the SWAPI_SERVE_QUEUE_THRESHOLD family. */
     queueThreshold?: number;
     degradedSamples?: number;
     rttAlpha?: number;
@@ -158,6 +158,7 @@ export async function startSwapiServe({
                 ratePerSecond: transition.ratePerSecond,
                 previousRatePerSecond: transition.previousRatePerSecond,
                 consecutiveFailures: transition.consecutiveFailures,
+                queueEstimate: transition.queueEstimate,
             };
             if (transition.event === "backoff" || transition.event === "degraded" || transition.event === "open") {
                 logger.warn(`Backend ${transition.event}`, fields);
