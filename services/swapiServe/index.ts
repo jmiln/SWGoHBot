@@ -108,8 +108,6 @@ export async function startSwapiServe({
     startLimit,
     maxLimit,
     maxPerSecond,
-    queueThreshold,
-    degradedSamples,
     rttAlpha,
     host,
     controlSecret,
@@ -125,9 +123,7 @@ export async function startSwapiServe({
     /** Overrides the AIMD ceilings. Production passes the SWAPI_SERVE_MAX_* env values. */
     maxLimit?: number;
     maxPerSecond?: number;
-    /** Latency-reporting sensitivity. Production passes the SWAPI_SERVE_QUEUE_THRESHOLD family. */
-    queueThreshold?: number;
-    degradedSamples?: number;
+    /** Weight on each new RTT sample in the `queueEstimate` gauge. Production passes SWAPI_SERVE_RTT_ALPHA. */
     rttAlpha?: number;
     /** Bind address. Defaults to loopback; containers set 0.0.0.0. */
     host?: string;
@@ -146,8 +142,6 @@ export async function startSwapiServe({
         startLimit,
         maxLimit,
         maxPerSecond,
-        queueThreshold,
-        degradedSamples,
         rttAlpha,
         onGovernorTransition: (transition) => {
             const fields = {
@@ -158,9 +152,8 @@ export async function startSwapiServe({
                 ratePerSecond: transition.ratePerSecond,
                 previousRatePerSecond: transition.previousRatePerSecond,
                 consecutiveFailures: transition.consecutiveFailures,
-                queueEstimate: transition.queueEstimate,
             };
-            if (transition.event === "backoff" || transition.event === "degraded" || transition.event === "open") {
+            if (transition.event === "backoff" || transition.event === "open") {
                 logger.warn(`Backend ${transition.event}`, fields);
             } else {
                 logger.log(`Backend ${transition.event}`, "log", fields);
@@ -326,8 +319,6 @@ if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
         ratePerSecond: env.SWAPI_SERVE_START_RATE,
         maxLimit: env.SWAPI_SERVE_MAX_LIMIT,
         maxPerSecond: env.SWAPI_SERVE_MAX_RATE,
-        queueThreshold: env.SWAPI_SERVE_QUEUE_THRESHOLD,
-        degradedSamples: env.SWAPI_SERVE_DEGRADED_SAMPLES,
         rttAlpha: env.SWAPI_SERVE_RTT_ALPHA,
     })
         .then((service) => {

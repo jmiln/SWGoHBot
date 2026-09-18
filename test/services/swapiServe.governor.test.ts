@@ -582,84 +582,88 @@ describe("swapiServe.Governor latency observation", () => {
         for (let i = 0; i < 5; i++) reportAt(governor, BASELINE_MS, i);
     }
 
-    function degradedEvents(seen: GovernorTransition[]): GovernorTransition[] {
-        return seen.filter((transition) => transition.event === "degraded");
+    const SAMPLES = 60;
+
+    function estimate(governor: Governor): number {
+        return governor.snapshot()[0].queueEstimate;
     }
 
-    it("ignores latency that matches the endpoint's own baseline", () => {
-        const seen: GovernorTransition[] = [];
-        const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
+    // Holds `concurrency` requests in flight throughout, so the gauge is driven by a steady
+    // concurrency rather than by whatever the limit happens to be.
+    function driveAt(governor: Governor, concurrency: number, latencyMs: number, samples = SAMPLES): void {
+        for (let i = 0; i < concurrency; i++) governor.acquire(10);
+        for (let i = 0; i < samples; i++) {
+            governor.acquire(10 + i);
+            reportAt(governor, latencyMs, 10 + i);
+        }
+    }
+
+    it("estimates no queueing when latency matches the endpoint's own baseline", () => {
+        const governor = new Governor([A]);
         establishBaseline(governor);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) reportAt(governor, BASELINE_MS, 10 + i);
+        driveAt(governor, 4, BASELINE_MS);
 
-        assert.deepStrictEqual(degradedEvents(seen), []);
+        assert.strictEqual(estimate(governor), 0);
     });
 
     // The case that would otherwise make every guild command look congested: 50 concurrent calls
     // all served promptly raise nothing but the in-flight count, which is not congestion.
-    it("stays quiet for a burst the upstream is keeping up with", () => {
-        const seen: GovernorTransition[] = [];
-        const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
+    it("estimates no queueing for a burst the upstream is keeping up with", () => {
+        const governor = new Governor([A]);
         establishBaseline(governor);
-        for (let i = 0; i < 50; i++) governor.acquire(10 + i);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) reportAt(governor, BASELINE_MS, 100 + i);
+        driveAt(governor, 50, BASELINE_MS);
 
-        assert.deepStrictEqual(degradedEvents(seen), []);
+        assert.strictEqual(estimate(governor), 0);
     });
 
-    // Separates estimating the upstream queue from comparing raw latency: doubled response times
-    // with few in flight is capacity being used, not a backend at its limit. A ratio rule fires here.
-    it("treats a modest slowdown at low concurrency as capacity, not congestion", () => {
-        const seen: GovernorTransition[] = [];
-        const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
-        establishBaseline(governor);
-        for (let i = 0; i < 3; i++) governor.acquire(10);
+    // Production ran for weeks reporting itself degraded on this: the estimate scaled with the
+    // limit, so a ceiling reached by ordinary clean traffic made 2.7 percent over baseline read as 8.
+    it("gives the same estimate at any limit, for the same concurrency", () => {
+        const small = new Governor([A]);
+        const atCeiling = new Governor([A]);
+        small.setLimit(A, 5);
+        atCeiling.setLimit(A, GOVERNOR.MAX_LIMIT);
+        establishBaseline(small);
+        establishBaseline(atCeiling);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) {
-            governor.acquire(10 + i);
-            reportAt(governor, BASELINE_MS * 2, 10 + i);
-        }
+        driveAt(small, 3, BASELINE_MS * 2);
+        driveAt(atCeiling, 3, BASELINE_MS * 2);
 
-        assert.deepStrictEqual(degradedEvents(seen), []);
+        assert.strictEqual(estimate(atCeiling), estimate(small), "the limit must not enter the estimate");
+        assert.ok(estimate(atCeiling) < 4, `a modest slowdown at concurrency 3 is capacity, not a queue: ${estimate(atCeiling)}`);
+        assert.strictEqual(atCeiling.snapshot()[0].limit, GOVERNOR.MAX_LIMIT, "and the ceiling is a healthy resting state");
     });
 
     // Latency here is dominated by EA's round trip, which moves for reasons we neither cause nor
-    // influence, so slowing down cannot drain it. The estimate is reported and nothing more.
-    it("reports a sustained queue estimate without touching the limit or the rate", () => {
-        const seen: GovernorTransition[] = [];
-        const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
+    // influence, so slowing down cannot drain it. The gauge is exported and nothing more.
+    it("estimates a real queue at high concurrency without touching the limit or the rate", () => {
+        const governor = new Governor([A]);
         establishBaseline(governor);
         const before = governor.snapshot()[0];
-        for (let i = 0; i < 20; i++) governor.acquire(10);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) {
-            governor.acquire(10 + i);
-            reportAt(governor, BASELINE_MS * 20, 10 + i);
-        }
+        driveAt(governor, 20, BASELINE_MS * 20);
 
-        const degraded = seen.filter((transition) => transition.event === "degraded");
-        assert.ok(degraded.length > 0, "sustained upstream queueing should still be reported");
-        assert.ok((degraded[0].queueEstimate ?? 0) > GOVERNOR.QUEUE_ESTIMATE_THRESHOLD, "and should carry the estimate that tripped it");
-        assert.ok(governor.snapshot()[0].limit >= before.limit, "but must not lower the limit");
-        assert.ok(governor.snapshot()[0].ratePerSecond >= before.ratePerSecond, "nor the rate");
-        assert.strictEqual(governor.snapshot()[0].backoffs, 0, "and must not count as the backend pushing back");
-        assert.strictEqual(governor.snapshot()[0].recentPeaks.length, 0, "nor train the learned ceiling");
+        const after = governor.snapshot()[0];
+        assert.ok(after.queueEstimate > 15, `most of 20 in flight should read as queued: ${after.queueEstimate}`);
+        assert.ok(after.queueEstimate <= after.inFlight + 1, "and never more than were in flight");
+        assert.ok(after.limit >= before.limit, "but must not lower the limit");
+        assert.ok(after.ratePerSecond >= before.ratePerSecond, "nor the rate");
+        assert.strictEqual(after.backoffs, 0, "and must not count as the backend pushing back");
+        assert.strictEqual(after.recentPeaks.length, 0, "nor train the learned ceiling");
     });
 
     // The production collapse this replaced: a baseline latched onto one fast response pinned the
-    // limit at threshold / (1 - baseline/latency) forever, because the estimate grows with the limit.
+    // limit at threshold / (1 - baseline/latency) forever, because the estimate grew with the limit.
     it("keeps growing the limit while the queue estimate stays high", () => {
         const governor = new Governor([A]);
         establishBaseline(governor);
         const before = governor.snapshot()[0].limit;
 
-        for (let i = 0; i < GOVERNOR.INCREASE_AFTER_CLEAN * 3; i++) {
-            governor.acquire(10 + i);
-            reportAt(governor, BASELINE_MS * 20, 10 + i);
-        }
+        driveAt(governor, 20, BASELINE_MS * 20, GOVERNOR.INCREASE_AFTER_CLEAN * 3);
 
+        assert.ok(estimate(governor) > GOVERNOR.INCREASE_AFTER_CLEAN, "the estimate should be high");
         assert.ok(governor.snapshot()[0].limit > before, "a slow backend that never fails should still earn capacity");
     });
 
@@ -667,56 +671,34 @@ describe("swapiServe.Governor latency observation", () => {
         const governor = new Governor([A]);
         establishBaseline(governor);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 20; i++) reportAt(governor, BASELINE_MS * 50, 10 + i);
+        driveAt(governor, 20, BASELINE_MS * 50, 200);
 
         assert.strictEqual(governor.snapshot()[0].state, "closed", "slow is not broken");
     });
 
-    it("honors an overridden sensitivity instead of the constants", () => {
-        const seen: GovernorTransition[] = [];
-        const governor = new Governor([A], {
-            degradedSamples: 1,
-            queueThreshold: 0.5,
-            rttAlpha: 1,
-            onTransition: (transition) => seen.push(transition),
-        });
+    it("honors an overridden rtt alpha instead of the constant", () => {
+        const governor = new Governor([A], { rttAlpha: 1 });
         establishBaseline(governor);
 
-        reportAt(governor, BASELINE_MS * 20, 10);
+        driveAt(governor, 10, BASELINE_MS * 2, 1);
 
-        assert.strictEqual(degradedEvents(seen).length, 1, "one sample should be enough at these settings");
-    });
-
-    // Production ran for weeks permanently degraded on this: when the estimate scaled with the
-    // limit, a ceiling reached by ordinary clean traffic tripped a threshold of 8 on 2.7 percent.
-    it("stays quiet at the ceiling when almost nothing is in flight", () => {
-        const seen: GovernorTransition[] = [];
-        const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
-        governor.setLimit(A, GOVERNOR.MAX_LIMIT);
-        establishBaseline(governor);
-
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) {
-            governor.acquire(10 + i);
-            reportAt(governor, BASELINE_MS * 1.06, 10 + i);
-        }
-
-        assert.strictEqual(governor.snapshot()[0].limit, GOVERNOR.MAX_LIMIT, "the limit should still be at its ceiling");
-        assert.deepStrictEqual(degradedEvents(seen), []);
+        assert.strictEqual(estimate(governor), 11 * 0.5, "alpha 1 should leave the gauge equal to the latest sample");
     });
 
     it("judges each endpoint against its own baseline", () => {
-        const seen: GovernorTransition[] = [];
-        const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
+        const governor = new Governor([A]);
         for (let i = 0; i < 5; i++) {
             governor.report(A, "ok", i, false, { uri: "/guild", latencyMs: 300 });
             governor.report(A, "ok", i, false, { uri: "/player", latencyMs: 3000 });
         }
+        for (let i = 0; i < 20; i++) governor.acquire(10);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) {
+        for (let i = 0; i < SAMPLES; i++) {
+            governor.acquire(10 + i);
             governor.report(A, "ok", 10 + i, false, { uri: "/player", latencyMs: 3000 });
         }
 
-        assert.deepStrictEqual(degradedEvents(seen), [], "a slow endpoint is not a degraded one");
+        assert.strictEqual(estimate(governor), 0, "a slow endpoint is not a queued one");
     });
 });
 

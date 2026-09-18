@@ -155,8 +155,6 @@ export class Dispatcher {
         ratePerSecond,
         maxLimit,
         maxPerSecond,
-        queueThreshold,
-        degradedSamples,
         rttAlpha,
         depthLimits,
         retryDelayMs,
@@ -175,8 +173,6 @@ export class Dispatcher {
         ratePerSecond?: number;
         maxLimit?: number;
         maxPerSecond?: number;
-        queueThreshold?: number;
-        degradedSamples?: number;
         rttAlpha?: number;
         depthLimits?: readonly number[];
         retryDelayMs?: number;
@@ -193,11 +189,9 @@ export class Dispatcher {
             maxLimit,
             maxPerSecond,
             startPerSecond: ratePerSecond,
-            queueThreshold,
-            degradedSamples,
             rttAlpha,
             onTransition: (transition) => {
-                if (transition.event === "backoff" || transition.event === "degraded") {
+                if (transition.event === "backoff") {
                     this.window.record(transition.event, 0, this.clock.now());
                 }
                 onGovernorTransition?.(transition);

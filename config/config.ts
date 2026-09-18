@@ -146,8 +146,6 @@ const envSchema = z.object({
     SWAPI_SERVE_MAX_RATE: z.coerce.number().positive().default(RATE.MAX_PER_SEC),
 
     // Latency reporting sensitivity. RTT_ALPHA is an EWMA weight, so it must stay within (0, 1].
-    SWAPI_SERVE_QUEUE_THRESHOLD: z.coerce.number().positive().default(GOVERNOR.QUEUE_ESTIMATE_THRESHOLD),
-    SWAPI_SERVE_DEGRADED_SAMPLES: z.coerce.number().int().positive().default(GOVERNOR.DEGRADED_SAMPLES),
     SWAPI_SERVE_RTT_ALPHA: z.coerce.number().positive().max(1).default(GOVERNOR.RTT_EWMA_ALPHA),
 
     // shardStatus: the shard manager's health surface, read by the container healthcheck and later

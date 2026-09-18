@@ -39,7 +39,7 @@ describe("envBoolean", () => {
     });
 
     // LOG_PRETTY is three-state: only an absent variable falls back to TTY detection, so a bare
-    // `LOG_PRETTY=` in a .env is false. example.env keeps the line commented out for this reason.
+    // `LOG_PRETTY=` in a .env is false. .env.example keeps the line commented out for this reason.
     it("distinguishes absent from empty, which is what LOG_PRETTY's TTY fallback depends on", () => {
         assert.strictEqual(schema.parse(undefined), undefined);
         assert.strictEqual(schema.parse(""), false);

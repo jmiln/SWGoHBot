@@ -37,7 +37,7 @@ npm install
 
 3. Configure the bot:
 ```bash
-cp example.env .env
+cp .env.example .env
 ```
 Edit `.env` and add:
 - Your Discord bot token
@@ -56,7 +56,7 @@ npm start
 ```
 
 Running from the published image needs no clone at all: pull `ghcr.io/jmiln/swgohbot`, write a
-`.env` from `example.env`, and bring up `docker-compose.yml`.
+`.env` from `.env.example`, and bring up `docker-compose.yml`.
 
 ## Development Commands
 
@@ -111,14 +111,14 @@ npm run deploy
 
 ## Configuration
 
-Configuration is loaded from a `.env` file using Node.js's built-in `process.loadEnvFile()`. Copy `example.env` to `.env` and fill in your values. Key variables:
+Configuration is loaded from a `.env` file using Node.js's built-in `process.loadEnvFile()`. Copy `.env.example` to `.env` and fill in your values. Key variables:
 
 - **Discord**: `DISCORD_TOKEN`, `CLIENT_ID`, `OWNER_ID`
 - **MongoDB**: `MONGODB_URL`
 - **Game API**: `SWAPI_URL`, `SWAPI_ACCESS_KEY`, `SWAPI_SECRET_KEY`
 - **Optional**: webhook URLs, Patreon integration (`PATREON_*`), image server URL
 
-`example.env` lists every variable, and `config/config.ts` is the authoritative schema: it validates
+`.env.example` lists every variable, and `config/config.ts` is the authoritative schema: it validates
 on startup and names anything missing.
 
 ## Links

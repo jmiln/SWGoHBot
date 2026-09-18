@@ -38,10 +38,8 @@ export const GOVERNOR = {
     PEAK_TTL_MS: 600_000,
     CIRCUIT_OPEN_AFTER_FAILURES: 10,
     CIRCUIT_PROBE_INTERVAL_MS: 15_000,
-    // Estimating the upstream queue as inFlight * (1 - baselineRtt / observedRtt), rather than
-    // comparing raw latency, is what stops a 50-100 call guild fan-out reading as congestion.
-    QUEUE_ESTIMATE_THRESHOLD: 8,
-    DEGRADED_SAMPLES: 20,
+    // Weight on each new sample in the exported `queueEstimate` gauge. What counts as too much
+    // queueing is the monitoring layer's call, so no threshold lives here.
     RTT_EWMA_ALPHA: 0.2,
 } as const;
 

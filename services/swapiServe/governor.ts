@@ -16,13 +16,12 @@ export type CircuitState = "closed" | "open" | "half-open";
 
 export interface GovernorTransition {
     url: string;
-    event: "backoff" | "degraded" | "open" | "half-open" | "closed" | "increase";
+    event: "backoff" | "open" | "half-open" | "closed" | "increase";
     limit: number;
     previousLimit?: number;
     ratePerSecond: number;
     previousRatePerSecond?: number;
     consecutiveFailures: number;
-    queueEstimate?: number;
 }
 
 /** One completed request's cost, judged against the best RTT seen for that same endpoint. */
@@ -71,6 +70,12 @@ export interface BackendSnapshot {
     observedMs: number;
     backoffs: number;
     recentPeaks: BackendPeak[];
+    /**
+     * EWMA of `inFlight * (1 - baselineRtt / observedRtt)`: how many in-flight requests appear to
+     * be queued upstream rather than being served. A gauge for the monitoring layer to threshold,
+     * never acted on here. Read it beside `inFlight`, since it cannot exceed it.
+     */
+    queueEstimate: number;
 }
 
 /**
@@ -122,7 +127,6 @@ interface BackendState {
     /** Best RTT seen per endpoint. A shared baseline would read a mix change as congestion. */
     baselineRtt: Map<string, number>;
     queueEstimate: number;
-    degradedStreak: number;
 }
 
 /**
@@ -142,8 +146,6 @@ export class Governor {
     private readonly probeIntervalMs: number;
     private readonly maxLimit: number;
     private readonly maxPerSecond: number;
-    private readonly queueThreshold: number;
-    private readonly degradedSamples: number;
     private readonly rttAlpha: number;
     private readonly onTransition?: (transition: GovernorTransition) => void;
 
@@ -154,8 +156,6 @@ export class Governor {
             maxLimit,
             maxPerSecond,
             startPerSecond,
-            queueThreshold,
-            degradedSamples,
             rttAlpha,
             onTransition,
         }: {
@@ -164,8 +164,6 @@ export class Governor {
             maxPerSecond?: number;
             /** Sizes the opening token bank. Setting the rate afterwards only ever trims it down. */
             startPerSecond?: number;
-            queueThreshold?: number;
-            degradedSamples?: number;
             rttAlpha?: number;
             onTransition?: (transition: GovernorTransition) => void;
         } = {},
@@ -173,8 +171,6 @@ export class Governor {
         this.probeIntervalMs = probeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
         this.maxLimit = maxLimit ?? GOVERNOR.MAX_LIMIT;
         this.maxPerSecond = maxPerSecond ?? RATE.MAX_PER_SEC;
-        this.queueThreshold = queueThreshold ?? GOVERNOR.QUEUE_ESTIMATE_THRESHOLD;
-        this.degradedSamples = degradedSamples ?? GOVERNOR.DEGRADED_SAMPLES;
         this.rttAlpha = rttAlpha ?? GOVERNOR.RTT_EWMA_ALPHA;
         this.onTransition = onTransition;
         this.backends = urls.map((url) => ({
@@ -201,7 +197,6 @@ export class Governor {
             recentPeaks: [],
             baselineRtt: new Map(),
             queueEstimate: 0,
-            degradedStreak: 0,
         }));
     }
 
@@ -222,12 +217,7 @@ export class Governor {
         };
     }
 
-    private emit(
-        backend: BackendState,
-        event: GovernorTransition["event"],
-        previous?: { limit: number; ratePerSecond: number },
-        queueEstimate?: number,
-    ): void {
+    private emit(backend: BackendState, event: GovernorTransition["event"], previous?: { limit: number; ratePerSecond: number }): void {
         this.onTransition?.({
             url: backend.url,
             event,
@@ -236,7 +226,6 @@ export class Governor {
             ratePerSecond: backend.bucket.getRate(),
             previousRatePerSecond: previous?.ratePerSecond,
             consecutiveFailures: backend.consecutiveFailures,
-            queueEstimate,
         });
     }
 
@@ -343,7 +332,7 @@ export class Governor {
         this.emit(backend, "backoff", previous);
     }
 
-    /** Estimates the upstream queue and reports it. Deliberately does not act on it - see `report`. */
+    /** Maintains the exported `queueEstimate` gauge. Deliberately acts on nothing - see `report`. */
     private observeLatency(backend: BackendState, sample: LatencySample, concurrency: number): void {
         const seen = backend.baselineRtt.get(sample.uri);
         if (seen === undefined || sample.latencyMs < seen) {
@@ -356,18 +345,6 @@ export class Governor {
         const baseline = backend.baselineRtt.get(sample.uri) ?? sample.latencyMs;
         const queued = sample.latencyMs > 0 ? concurrency * (1 - baseline / sample.latencyMs) : 0;
         backend.queueEstimate += this.rttAlpha * (queued - backend.queueEstimate);
-
-        if (backend.queueEstimate <= this.queueThreshold) {
-            backend.degradedStreak = 0;
-            return;
-        }
-        backend.degradedStreak++;
-        if (backend.degradedStreak < this.degradedSamples) return;
-
-        // Only the streak resets, rate-limiting the report to one per sustained run. Zeroing the
-        // estimate too would make the next reported value understate what it measured.
-        backend.degradedStreak = 0;
-        this.emit(backend, "degraded", undefined, backend.queueEstimate);
     }
 
     report(url: string, outcome: Outcome, now: number, wasProbe = false, sample?: LatencySample): void {
@@ -525,6 +502,7 @@ export class Governor {
             observedMs: backend.observedMs,
             backoffs: backend.backoffs,
             recentPeaks: backend.recentPeaks.map((peak) => ({ ...peak })),
+            queueEstimate: backend.queueEstimate,
         }));
     }
 }

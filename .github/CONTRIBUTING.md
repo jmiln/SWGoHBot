@@ -131,7 +131,7 @@ npm install
 ```
 
 Once finished:
-- Copy `example.env` to `.env`
+- Copy `.env.example` to `.env`
 - Edit `.env` and enter your bot's token, client ID, owner ID, and MongoDB connection URL as indicated.
 
 In order to get game data, you'll need to set up and use Comlink and SWGoH-Stats.
