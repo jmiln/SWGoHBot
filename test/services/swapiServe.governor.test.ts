@@ -611,13 +611,16 @@ describe("swapiServe.Governor latency observation", () => {
 
     // Separates estimating the upstream queue from comparing raw latency: doubled response times
     // with few in flight is capacity being used, not a backend at its limit. A ratio rule fires here.
-    it("treats a modest slowdown at a small limit as capacity, not congestion", () => {
+    it("treats a modest slowdown at low concurrency as capacity, not congestion", () => {
         const seen: GovernorTransition[] = [];
         const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
-        governor.setLimit(A, 5);
         establishBaseline(governor);
+        for (let i = 0; i < 3; i++) governor.acquire(10);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) reportAt(governor, BASELINE_MS * 2, 10 + i);
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) {
+            governor.acquire(10 + i);
+            reportAt(governor, BASELINE_MS * 2, 10 + i);
+        }
 
         assert.deepStrictEqual(degradedEvents(seen), []);
     });
@@ -629,8 +632,12 @@ describe("swapiServe.Governor latency observation", () => {
         const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
         establishBaseline(governor);
         const before = governor.snapshot()[0];
+        for (let i = 0; i < 20; i++) governor.acquire(10);
 
-        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) reportAt(governor, BASELINE_MS * 20, 10 + i);
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 2; i++) {
+            governor.acquire(10 + i);
+            reportAt(governor, BASELINE_MS * 20, 10 + i);
+        }
 
         const degraded = seen.filter((transition) => transition.event === "degraded");
         assert.ok(degraded.length > 0, "sustained upstream queueing should still be reported");
@@ -678,6 +685,23 @@ describe("swapiServe.Governor latency observation", () => {
         reportAt(governor, BASELINE_MS * 20, 10);
 
         assert.strictEqual(degradedEvents(seen).length, 1, "one sample should be enough at these settings");
+    });
+
+    // Production ran for weeks permanently degraded on this: when the estimate scaled with the
+    // limit, a ceiling reached by ordinary clean traffic tripped a threshold of 8 on 2.7 percent.
+    it("stays quiet at the ceiling when almost nothing is in flight", () => {
+        const seen: GovernorTransition[] = [];
+        const governor = new Governor([A], { onTransition: (transition) => seen.push(transition) });
+        governor.setLimit(A, GOVERNOR.MAX_LIMIT);
+        establishBaseline(governor);
+
+        for (let i = 0; i < GOVERNOR.DEGRADED_SAMPLES * 3; i++) {
+            governor.acquire(10 + i);
+            reportAt(governor, BASELINE_MS * 1.06, 10 + i);
+        }
+
+        assert.strictEqual(governor.snapshot()[0].limit, GOVERNOR.MAX_LIMIT, "the limit should still be at its ceiling");
+        assert.deepStrictEqual(degradedEvents(seen), []);
     });
 
     it("judges each endpoint against its own baseline", () => {

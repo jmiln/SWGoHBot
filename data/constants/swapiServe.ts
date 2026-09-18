@@ -38,7 +38,7 @@ export const GOVERNOR = {
     PEAK_TTL_MS: 600_000,
     CIRCUIT_OPEN_AFTER_FAILURES: 10,
     CIRCUIT_PROBE_INTERVAL_MS: 15_000,
-    // Estimating the upstream queue as limit * (1 - baselineRtt / observedRtt), rather than
+    // Estimating the upstream queue as inFlight * (1 - baselineRtt / observedRtt), rather than
     // comparing raw latency, is what stops a 50-100 call guild fan-out reading as congestion.
     QUEUE_ESTIMATE_THRESHOLD: 8,
     DEGRADED_SAMPLES: 20,

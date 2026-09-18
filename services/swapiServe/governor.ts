@@ -344,7 +344,7 @@ export class Governor {
     }
 
     /** Estimates the upstream queue and reports it. Deliberately does not act on it - see `report`. */
-    private observeLatency(backend: BackendState, sample: LatencySample): void {
+    private observeLatency(backend: BackendState, sample: LatencySample, concurrency: number): void {
         const seen = backend.baselineRtt.get(sample.uri);
         if (seen === undefined || sample.latencyMs < seen) {
             if (seen === undefined && backend.baselineRtt.size >= MAX_BASELINE_URIS) {
@@ -354,7 +354,7 @@ export class Governor {
         }
 
         const baseline = backend.baselineRtt.get(sample.uri) ?? sample.latencyMs;
-        const queued = sample.latencyMs > 0 ? backend.limit * (1 - baseline / sample.latencyMs) : 0;
+        const queued = sample.latencyMs > 0 ? concurrency * (1 - baseline / sample.latencyMs) : 0;
         backend.queueEstimate += this.rttAlpha * (queued - backend.queueEstimate);
 
         if (backend.queueEstimate <= this.queueThreshold) {
@@ -375,6 +375,8 @@ export class Governor {
         if (!backend) return;
 
         this.account(backend, now);
+
+        const concurrencyDuringRequest = Math.max(1, backend.inFlight);
 
         backend.inFlight = Math.max(0, backend.inFlight - 1);
         backend.outcomes[outcome] = (backend.outcomes[outcome] ?? 0) + 1;
@@ -405,9 +407,9 @@ export class Governor {
         }
         if (outcome !== "ok") return;
 
-        // Reported, never acted on: the estimate scales with `limit`, so cutting on it made every
-        // slot earned enlarge the estimate that took it away, pinning production at limit 17.
-        if (sample) this.observeLatency(backend, sample);
+        // Reported, never acted on. Latency here is dominated by EA's round trip, which slowing
+        // down cannot drain; an earlier version that cut on it pinned production at limit 17.
+        if (sample) this.observeLatency(backend, sample, concurrencyDuringRequest);
 
         backend.cleanStreak++;
         if (now < backend.cooldownUntil) return;
