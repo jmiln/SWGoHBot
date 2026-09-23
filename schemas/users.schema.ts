@@ -7,6 +7,10 @@ const AlertedCyclesSchema = z.object({
     fleetWarn: z.number().optional(),
     charResult: z.number().optional(),
     fleetResult: z.number().optional(),
+    // Rank last successfully DMed to this watcher: the DM-path counterpart of the channel path's
+    // lastCharAnnounced/lastShipAnnounced, so a failed send is retried rather than skipped past.
+    charAnnounced: z.number().optional(),
+    fleetAnnounced: z.number().optional(),
 });
 
 /**

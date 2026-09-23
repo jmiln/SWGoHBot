@@ -316,6 +316,7 @@ const ARENA_DM_CONFIG = {
         settingNames: ARENA_LOG_CONFIG.char.settingNames,
         warnMark: ARENA_LOG_CONFIG.char.warnMark,
         resultMark: ARENA_LOG_CONFIG.char.resultMark,
+        announcedMark: "charAnnounced",
         rankKey: "lastCharRank",
         climbKey: "lastCharClimb",
         displayName: "character",
@@ -325,6 +326,7 @@ const ARENA_DM_CONFIG = {
         settingNames: ARENA_LOG_CONFIG.fleet.settingNames,
         warnMark: ARENA_LOG_CONFIG.fleet.warnMark,
         resultMark: ARENA_LOG_CONFIG.fleet.resultMark,
+        announcedMark: "fleetAnnounced",
         rankKey: "lastShipRank",
         climbKey: "lastShipClimb",
         displayName: "ship",
@@ -1579,6 +1581,29 @@ class PatreonFuncs {
                     ? null
                     : `${formatDuration(timeLeft, Language.getLanguages()[defaultGuildSettings.language])} until payout.`;
 
+            const markKey = String(player.allyCode);
+            // Optional chaining rather than a default, or every watched account persists an empty `{}`.
+            const marks = user.arenaAlert.alerted?.[markKey];
+            const markCycle = (
+                field: "charWarn" | "fleetWarn" | "charResult" | "fleetResult" | "charAnnounced" | "fleetAnnounced",
+                cycleId: number,
+            ) => {
+                user.arenaAlert.alerted ??= {};
+                user.arenaAlert.alerted[markKey] ??= {};
+                user.arenaAlert.alerted[markKey][field] = cycleId;
+            };
+
+            // Anchored on the rank this watcher was last told about, so a drop survives however many
+            // ticks fail. Resolved before the fetch because that is itself a failure path, and a
+            // first-ever drop needs its anchor persisted even when nothing else this tick runs.
+            const announced = marks?.[config.announcedMark];
+            const dropAnchor = announced ?? prev.rank;
+            const dropOwed = arenaData.rank > dropAnchor && dropAnchor > 0;
+            if (dropOwed && announced === undefined) {
+                markCycle(config.announcedMark, dropAnchor);
+                userChanged = true;
+            }
+
             try {
                 // Fetch inside the try so a transient users.fetch failure is contained here and the
                 // rank/climb tracking below still runs, instead of rejecting out of the whole function.
@@ -1588,16 +1613,6 @@ class PatreonFuncs {
                     // which case the payout-timed alerts below are skipped. The once-per-cycle
                     // markers live on the user's own arenaAlert, keyed by ally code.
                     const cycle = timeLeft === null ? null : payoutCycleInfo(now, timeLeft);
-                    const markKey = String(player.allyCode);
-                    // Read-only view of this account's markers. The doc itself is only touched by
-                    // markCycle below, once an alert has actually been delivered - reading through
-                    // optional chaining keeps us from persisting an empty `{}` per watched account.
-                    const marks = user.arenaAlert.alerted?.[markKey];
-                    const markCycle = (field: "charWarn" | "fleetWarn" | "charResult" | "fleetResult", cycleId: number) => {
-                        user.arenaAlert.alerted ??= {};
-                        user.arenaAlert.alerted[markKey] ??= {};
-                        user.arenaAlert.alerted[markKey][field] = cycleId;
-                    };
 
                     // Payout warning: fire once per cycle on the first tick inside the window
                     // (payoutWarning minutes before payout, but not past it). Keying on the payout
@@ -1650,25 +1665,32 @@ class PatreonFuncs {
                         }
                     }
 
-                    // Rank drop alert
-                    const lastRank = prev.rank;
                     const lastClimb = prev.climb;
-                    if (arenaData.rank > lastRank && lastRank > 0) {
-                        await pUser
-                            .send({
-                                embeds: [
-                                    {
-                                        author: { name: `${config.capitalName} Arena` },
-                                        description: `**${player.name}'s** rank just dropped from ${lastRank} to **${arenaData.rank}**\nDown by **${
-                                            arenaData.rank - lastClimb
-                                        }** since last climb`,
-                                        color: constants.colors.red,
-                                        // No payout footer when the payout time is unknown
-                                        ...(payoutTime !== null ? { footer: { text: payoutTime } } : {}),
-                                    },
-                                ],
-                            })
-                            .catch((err) => logger.error(`[handleArenaAlerts] Failed to send rank drop alert: ${err}`));
+                    if (dropOwed) {
+                        // Anything but this tick's own change means earlier ticks went undelivered.
+                        const late = announced !== undefined && announced !== prev.rank;
+                        const outcome = await this.sendAlertDM(
+                            pUser,
+                            {
+                                author: { name: `${config.capitalName} Arena` },
+                                description: `**${player.name}'s** rank just dropped from ${dropAnchor} to **${arenaData.rank}**\nDown by **${
+                                    arenaData.rank - lastClimb
+                                }** since last climb${late ? "\n-# Delayed: we could not reach you when this happened." : ""}`,
+                                color: constants.colors.red,
+                                // No payout footer when the payout time is unknown
+                                ...(payoutTime !== null ? { footer: { text: payoutTime } } : {}),
+                            },
+                            "rank drop",
+                        );
+                        if (outcome !== SEND_OUTCOME.FAILED) {
+                            markCycle(config.announcedMark, arenaData.rank);
+                            userChanged = true;
+                        }
+                    } else if (arenaData.rank < dropAnchor && announced !== undefined) {
+                        // A climb needs the anchor to follow it down, or the next drop would be
+                        // measured from a rank the watcher has long since improved on.
+                        markCycle(config.announcedMark, arenaData.rank);
+                        userChanged = true;
                     }
                 }
             } catch (e) {

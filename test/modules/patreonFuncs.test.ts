@@ -642,6 +642,120 @@ describe("PatreonFuncs Module", () => {
         });
     });
 
+    // Rank-drop DMs anchor on the rank last announced to this watcher, not the shared observed
+    // rank, so an outage spanning several ticks is recovered instead of being skipped past.
+    describe("handleArenaAlerts() rank-drop recovery", () => {
+        const ALLY = 888777444;
+        const now = 1_000_000_000_000;
+
+        const mkPlayer = (rank: number): PlayerArenaRes => ({
+            name: "DropTest",
+            allyCode: ALLY,
+            arena: { char: { rank }, ship: { rank: null } },
+            poUTCOffsetMinutes: 0,
+        });
+
+        const mkUser = (): UserConfig =>
+            ({
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            }) as unknown as UserConfig;
+
+        // `prev` is the tick-start shared rank, which keeps advancing even while DMs fail, so each
+        // tick passes the rank the doc actually holds by then.
+        const tick = (funcs: unknown, user: UserConfig, rank: number, prevRank: number, acc: ArenaPlayer) =>
+            (funcs as any).handleArenaAlerts(
+                "char",
+                mkPlayer(rank),
+                acc,
+                user,
+                { discordID: "drop_user" },
+                // 50 minutes out with a 30-minute warning, so no payout DM competes with the drop.
+                50 * constants.minMS,
+                {
+                    rank: prevRank,
+                    climb: prevRank,
+                },
+                now,
+            );
+
+        function clientThatFailsFirst(captured: { embeds?: { description?: string }[] }[], failFor: { count: number }) {
+            return {
+                user: { id: "bot123" },
+                users: {
+                    fetch: async () => {
+                        if (failFor.count-- > 0) throw new Error("Internal Server Error");
+                        return { send: async (msg: never) => captured.push(msg) };
+                    },
+                },
+            } as unknown as Client<true>;
+        }
+
+        it("re-sends a rank drop the next tick when the first attempt failed", async () => {
+            const captured: { embeds?: { description?: string }[] }[] = [];
+            const funcs = new PatreonFuncs();
+            funcs.init(clientThatFailsFirst(captured, { count: 1 }));
+            const user = mkUser();
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "DropTest" };
+
+            await tick(funcs, user, 15, 10, acc);
+            assert.strictEqual(captured.length, 0, "the first attempt fails, so nothing is delivered");
+
+            // The shared rank has advanced to 15 by now; only the announce anchor remembers 10.
+            await tick(funcs, user, 15, 15, acc);
+
+            assert.strictEqual(captured.length, 1, "the drop must be re-sent once the fetch recovers");
+            assert.match(
+                captured[0]?.embeds?.[0]?.description ?? "",
+                /from 10 to \*\*15\*\*/,
+                "the recovered DM must measure from the last rank the watcher was told about",
+            );
+            assert.match(captured[0]?.embeds?.[0]?.description ?? "", /^-# Delayed:/m, "a recovered drop must say it is late");
+        });
+
+        it("re-sends a rank drop the next tick when the send itself failed", async () => {
+            const captured: { embeds?: { description?: string }[] }[] = [];
+            let sendOk = false;
+            const client = {
+                user: { id: "bot123" },
+                users: {
+                    fetch: async () => ({
+                        send: async (msg: never) => {
+                            if (!sendOk) throw new Error("Internal Server Error");
+                            captured.push(msg);
+                        },
+                    }),
+                },
+            } as unknown as Client<true>;
+            const funcs = new PatreonFuncs();
+            funcs.init(client);
+            const user = mkUser();
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "DropTest" };
+
+            await tick(funcs, user, 15, 10, acc);
+            assert.strictEqual(captured.length, 0, "the send failed, so nothing was delivered");
+
+            sendOk = true;
+            await tick(funcs, user, 15, 15, acc);
+
+            assert.strictEqual(captured.length, 1, "a failed send must not advance the anchor");
+            assert.match(captured[0]?.embeds?.[0]?.description ?? "", /from 10 to \*\*15\*\*/, "and the retry still spans the whole drop");
+        });
+
+        it("does not re-send a rank drop that was delivered", async () => {
+            const captured: { embeds?: { description?: string }[] }[] = [];
+            const funcs = new PatreonFuncs();
+            funcs.init(clientThatFailsFirst(captured, { count: 0 }));
+            const user = mkUser();
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "DropTest" };
+
+            await tick(funcs, user, 15, 10, acc);
+            await tick(funcs, user, 15, 15, acc);
+
+            assert.strictEqual(captured.length, 1, "a delivered drop must advance the anchor so it fires exactly once");
+            assert.doesNotMatch(captured[0]?.embeds?.[0]?.description ?? "", /Delayed/, "an on-time drop must carry no late note");
+        });
+    });
+
     describe("handleArenaAlerts() arena selection", () => {
         const ALLY = 888777555;
         const now = 1_000_000_000_000;

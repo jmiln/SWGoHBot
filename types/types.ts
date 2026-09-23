@@ -226,8 +226,18 @@ export interface UserConfig {
         payoutWarning: number;
         enablePayoutResult?: boolean;
         payoutResult?: string;
-        // Per-cycle DM warn/result markers keyed by ally code - see users.schema.ts
-        alerted?: Record<string, { charWarn?: number; fleetWarn?: number; charResult?: number; fleetResult?: number }>;
+        // Per-cycle DM warn/result markers and rank-drop anchors keyed by ally code - see users.schema.ts
+        alerted?: Record<
+            string,
+            {
+                charWarn?: number;
+                fleetWarn?: number;
+                charResult?: number;
+                fleetResult?: number;
+                charAnnounced?: number;
+                fleetAnnounced?: number;
+            }
+        >;
     };
     updated: number;
     lang?: {
