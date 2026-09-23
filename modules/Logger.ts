@@ -141,6 +141,11 @@ export class Logger {
         this.shardId = shardId;
     }
 
+    /** True on shard 0, and in unsharded contexts (dataUpdater, tests) where the id stays -1. */
+    get isPrimaryShard(): boolean {
+        return this.shardId <= 0;
+    }
+
     log(content: unknown, type: LogType = "log", opts?: boolean | LogOptions): void {
         const { pinoLevel, color } = this.logConfigs[type];
         const { webhook, fields } = splitLogOptions(opts);

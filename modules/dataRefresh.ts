@@ -82,9 +82,13 @@ export async function checkAndRefresh(sources: RefreshSource[], now: number = Da
         return false;
     }
 
+    // Every shard polls and refreshes independently, so the summary is identical on all of them.
+    const summaryLevel = logger.isPrimaryShard ? "log" : "debug";
+
     const changed = stats.filter((entry) => entry.mtimeMs > lastAppliedMtimeMs).map((entry) => path.basename(entry.file));
     logger.log(
         `[DataRefresh] Detected ${changed.length} updated files (${changed.join(", ")}), newest write ${agoLabel(settledForMs)} ago. Refreshing.`,
+        summaryLevel,
     );
 
     const startedAt = Date.now();
@@ -100,7 +104,7 @@ export async function checkAndRefresh(sources: RefreshSource[], now: number = Da
     }
 
     lastAppliedMtimeMs = newestMtimeMs;
-    logger.log(`[DataRefresh] Refreshed in ${Date.now() - startedAt}ms: ${counts.map(formatCount).join(", ")}`);
+    logger.log(`[DataRefresh] Refreshed in ${Date.now() - startedAt}ms: ${counts.map(formatCount).join(", ")}`, summaryLevel);
     return true;
 }
 
