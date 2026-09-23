@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
 4.0.0 and 3.0.0 predate that and stay as written.
 
+## [4.8.0] - 2026-09-23
+
+### Fixed
+
+- More work towards reliable arena alerts
+- scale the queue estimate by in-flight, not the limit
+- Add rolling window and wait counts to /status
+- stop backing off on latency, report the estimate instead
+
+### Refactoring
+
+- export queueEstimate as a gauge, drop the degraded alarm
+
+### Chores
+
+- Reduce log spam / duplication from shard refreshes
+
 ## [4.7.0] - 2026-09-14
 
 ### Added
