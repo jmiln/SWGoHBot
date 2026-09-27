@@ -127,33 +127,15 @@ export const indexConfig: DatabaseIndexes = {
         // Command usage statistics
         commandStats: [
             {
-                key: { timestamp: 1 },
+                key: { commandName: 1, createdAt: 1 },
                 options: {
-                    name: "idx_commandstats_timestamp",
+                    name: "idx_commandstats_command_createdat",
                 },
             },
             {
-                key: { commandName: 1, timestamp: 1 },
-                options: {
-                    name: "idx_commandstats_command_timestamp",
-                },
-            },
-            {
-                key: { userId: 1, timestamp: 1 },
-                options: {
-                    name: "idx_commandstats_user_timestamp",
-                },
-            },
-            {
-                key: { guildId: 1, timestamp: 1 },
-                options: {
-                    name: "idx_commandstats_guild_timestamp",
-                    sparse: true,
-                },
-            },
-            {
-                // TTL index to auto-delete old stats after 90 days
-                key: { timestamp: 1 },
+                // TTL index to auto-delete old stats after 90 days. Also serves the plain createdAt
+                // range queries: MongoDB rejects a second index on the same key with other options.
+                key: { createdAt: 1 },
                 options: {
                     name: "idx_commandstats_ttl",
                     expireAfterSeconds: 7776000, // 90 days

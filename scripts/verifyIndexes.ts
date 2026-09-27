@@ -28,9 +28,28 @@ interface IndexStatus {
     database: string;
     collection: string;
     indexName: string;
-    status: "exists" | "created" | "failed" | "would_create" | "extra";
+    status: "exists" | "created" | "failed" | "would_create" | "extra" | "mismatch";
     error?: string;
     details?: string;
+}
+
+const COMPARED_FLAGS = ["unique", "sparse"] as const;
+
+// A key match alone is not enough: a plain index once passed as "exists" for a TTL index on the
+// same key, and nothing ever expired
+export function indexOptionMismatches(existing: IndexDescription, target: IndexDefinition): string[] {
+    const mismatches: string[] = [];
+    for (const flag of COMPARED_FLAGS) {
+        const expected = target.options?.[flag] ?? false;
+        const found = existing[flag] ?? false;
+        if (expected !== found) mismatches.push(`${flag}: expected ${expected}, found ${found}`);
+    }
+    const expectedTtl = target.options?.expireAfterSeconds;
+    const foundTtl = existing.expireAfterSeconds;
+    if (expectedTtl !== foundTtl) {
+        mismatches.push(`expireAfterSeconds: expected ${expectedTtl ?? "none"}, found ${foundTtl ?? "none"}`);
+    }
+    return mismatches;
 }
 
 class IndexVerifier {
@@ -106,7 +125,19 @@ class IndexVerifier {
             const indexName = requiredIndex.options?.name || this.generateIndexName(requiredIndex.key);
             const existing = this.indexExists(existingIndexes, requiredIndex);
 
-            if (existing) {
+            const mismatches = existing ? indexOptionMismatches(existing, requiredIndex) : [];
+
+            if (existing && mismatches.length) {
+                // Never altered automatically: fixing an option means collMod or a drop and rebuild,
+                // which is a production decision
+                this.results.push({
+                    database: dbName,
+                    collection: collectionName,
+                    indexName: indexName,
+                    status: "mismatch",
+                    details: `${existing.name} has ${mismatches.join("; ")}. Fix by hand with collMod, or drop it and re-run`,
+                });
+            } else if (existing) {
                 // Index exists
                 this.results.push({
                     database: dbName,
@@ -224,6 +255,7 @@ class IndexVerifier {
             failed: 0,
             would_create: 0,
             extra: 0,
+            mismatch: 0,
         };
 
         // Group by database and collection
@@ -254,7 +286,9 @@ class IndexVerifier {
                                 ? "?"
                                 : idx.status === "extra"
                                   ? "!"
-                                  : "✗";
+                                  : idx.status === "mismatch"
+                                    ? "~"
+                                    : "✗";
                     logger.info(`    ${statusIcon} ${idx.indexName} [${idx.status}]`);
                     if (idx.error) {
                         logger.error(`      Error: ${idx.error}`);
@@ -275,6 +309,7 @@ class IndexVerifier {
         logger.info(`  ✗ Failed to create: ${summary.failed}`);
         logger.info(`  ? Would create: ${summary.would_create}`);
         logger.info(`  ! Extra indexes: ${summary.extra}`);
+        logger.info(`  ~ Option mismatches: ${summary.mismatch}`);
         logger.info("========================================\n");
 
         if (this.dryRun) {
@@ -287,7 +322,7 @@ class IndexVerifier {
      * Exit with appropriate code
      */
     getExitCode(): number {
-        const hasFailed = this.results.some((r) => r.status === "failed");
+        const hasFailed = this.results.some((r) => r.status === "failed" || r.status === "mismatch");
         const hasMissing = this.results.some((r) => r.status === "would_create");
 
         if (hasFailed) return 1;
@@ -332,4 +367,6 @@ async function main() {
     }
 }
 
-main();
+if (import.meta.main) {
+    main();
+}

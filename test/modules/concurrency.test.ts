@@ -39,16 +39,6 @@ describe("eachLimit", () => {
         assert.strictEqual(peak, 5, `expected peak in-flight of 5, saw ${peak}`);
     });
 
-    it("actually runs work concurrently rather than serially", async () => {
-        // 8 items x 10ms: ~80ms serial, ~20ms at 4 wide. 60ms tolerates a loaded box, fails serial.
-        const start = Date.now();
-        await eachLimit([1, 2, 3, 4, 5, 6, 7, 8], 4, async () => {
-            await sleep(10);
-        });
-        const elapsed = Date.now() - start;
-        assert.ok(elapsed < 60, `expected concurrent execution, took ${elapsed}ms`);
-    });
-
     it("caps concurrency at the item count when the limit is larger", async () => {
         let peak = 0;
         let inFlight = 0;

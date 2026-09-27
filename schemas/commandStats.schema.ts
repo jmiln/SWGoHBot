@@ -6,7 +6,6 @@ import { z } from "zod";
 export const CommandOptionSchema = z.object({
     name: z.string(),
     type: z.number(), // Discord.js ApplicationCommandOptionType enum value
-    value: z.union([z.string(), z.number(), z.boolean()]),
 });
 
 /**
@@ -25,13 +24,8 @@ export const CommandStatsSchema = z.object({
     // Options used (for detailed analytics)
     options: z.array(CommandOptionSchema).optional(),
 
-    // Context information
-    userId: z.string(),
-    guildId: z.string().optional(),
-    channelId: z.string().optional(),
-
     // Timing
-    timestamp: z.number(), // Unix timestamp in milliseconds
+    createdAt: z.date(), // Must stay a Date: the TTL index never expires a document whose field is a number
     executionTime: z.number().optional(), // Time taken to execute in ms
 
     // Success/failure tracking

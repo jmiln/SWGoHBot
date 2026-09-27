@@ -5,7 +5,7 @@
  * Stats are stored in MongoDB for analysis and reporting.
  */
 
-import type { ChatInputCommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, type ChatInputCommandInteraction, type CommandInteractionOption } from "discord.js";
 import { env } from "../config/config.ts";
 import type { CommandStats } from "../schemas/index.ts";
 import database from "./database.ts";
@@ -37,6 +37,16 @@ let statsBatch: CommandStats[] = [];
 let flushTimeout: NodeJS.Timeout | null = null;
 let isFlushing = false;
 
+// options.data is the raw tree: a subcommand (or group) is the sole top-level option, with the
+// arguments the user actually filled in nested under it
+function argumentOptions(options: readonly CommandInteractionOption[]): readonly CommandInteractionOption[] {
+    const [first] = options;
+    if (first?.type === ApplicationCommandOptionType.SubcommandGroup || first?.type === ApplicationCommandOptionType.Subcommand) {
+        return argumentOptions(first.options ?? []);
+    }
+    return options;
+}
+
 /**
  * Records a command execution
  * Batches writes for performance
@@ -50,11 +60,10 @@ export async function recordCommandUsage(interaction: ChatInputCommandInteractio
         const subcommandGroup = interaction.options.getSubcommandGroup(false);
         const subcommand = interaction.options.getSubcommand(false);
 
-        // Extract options (limited to name/type/value for privacy)
-        const options = interaction.options.data.map((opt) => ({
+        // Names and types only: values are user input (ally codes, user IDs, free text)
+        const options = argumentOptions(interaction.options.data).map((opt) => ({
             name: opt.name,
             type: opt.type,
-            value: opt.value as string | number | boolean,
         }));
 
         // Build stats document
@@ -64,10 +73,7 @@ export async function recordCommandUsage(interaction: ChatInputCommandInteractio
             subcommand: subcommand || undefined,
             count: 1,
             options: options.length > 0 ? options : undefined,
-            userId: interaction.user.id,
-            guildId: interaction.guildId || undefined,
-            channelId: interaction.channelId,
-            timestamp: Date.now(),
+            createdAt: new Date(),
             executionTime,
             success: !error,
             errorType: error ? error.constructor.name : undefined,
@@ -145,7 +151,7 @@ export async function getCommandStats(startTime: number, endTime: number): Promi
         const pipeline = [
             {
                 $match: {
-                    timestamp: { $gte: startTime, $lte: endTime },
+                    createdAt: { $gte: new Date(startTime), $lte: new Date(endTime) },
                 },
             },
             {
@@ -186,7 +192,7 @@ export async function getTopCommands(startTime: number, endTime: number, limit =
         const pipeline = [
             {
                 $match: {
-                    timestamp: { $gte: startTime, $lte: endTime },
+                    createdAt: { $gte: new Date(startTime), $lte: new Date(endTime) },
                 },
             },
             {
@@ -237,7 +243,7 @@ export async function getCommandDetail(commandName: string, startTime: number, e
             {
                 $match: {
                     commandName,
-                    timestamp: { $gte: startTime, $lte: endTime },
+                    createdAt: { $gte: new Date(startTime), $lte: new Date(endTime) },
                 },
             },
             {

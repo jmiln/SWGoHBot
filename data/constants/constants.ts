@@ -106,7 +106,8 @@ export default {
     botIntents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 
     // Partials your bot may need should go here, CHANNEL is required for DM's
-    partials: [Partials.Channel],
+    // GUILD_MEMBER: the member cache is swept hourly, and discord.js drops guildMemberRemove for uncached members without it
+    partials: [Partials.Channel, Partials.GuildMember],
 
     // Let it register global commands or not
     enableGlobalCmds: true,
