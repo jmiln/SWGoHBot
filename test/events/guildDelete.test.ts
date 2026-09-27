@@ -11,9 +11,11 @@ describe("guildDelete event", () => {
     let client: MongoClient;
     const db = () => client.db(env.MONGODB_SWGOHBOT_DB);
 
-    // Distinctive IDs scoped to this suite - the shared test DB runs suites in parallel
-    const LEFT_GUILD = "884000000000000001";
-    const OTHER_GUILD = "884000000000000002";
+    // Distinctive IDs scoped to this suite - the shared test DB runs suites in parallel. A fresh
+    // guild per test, since other suites' ensureGuildSupporter can write back a stale supporters list.
+    const usedGuilds: string[] = [];
+    let LEFT_GUILD = "";
+    const OTHER_GUILD = "884999999999999999";
     const PATRON_OF_LEFT = "885000000000000001";
     const SECOND_PATRON_OF_LEFT = "885000000000000002";
     const PATRON_OF_OTHER = "885000000000000003";
@@ -28,7 +30,7 @@ describe("guildDelete event", () => {
     async function cleanup() {
         await db()
             .collection("guildConfigs")
-            .deleteMany({ guildId: { $in: [LEFT_GUILD, OTHER_GUILD] } });
+            .deleteMany({ guildId: { $in: [...usedGuilds, OTHER_GUILD] } });
         await db()
             .collection("users")
             .deleteMany({ id: { $in: USER_IDS } });
@@ -41,6 +43,8 @@ describe("guildDelete event", () => {
 
     beforeEach(async () => {
         await cleanup();
+        LEFT_GUILD = `88400000000000${String(usedGuilds.length + 1).padStart(4, "0")}`;
+        usedGuilds.push(LEFT_GUILD);
         await db()
             .collection("users")
             .insertMany([

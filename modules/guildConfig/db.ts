@@ -15,6 +15,11 @@ export const guildConfigDB = {
     put<T extends Document>(matchCondition: Filter<T>, saveObject: T, autoUpdate = false) {
         return cache.put<T>(DB, COL, matchCondition, saveObject, autoUpdate);
     },
+    // For rewriting fields read earlier: if the config was deleted meanwhile (the bot left the
+    // server), an upsert would rebuild it holding nothing but these fields
+    updateExisting<T extends Document>(matchCondition: Filter<T>, fields: T) {
+        return cache.put<T>(DB, COL, matchCondition, fields, false, false);
+    },
     remove(matchCondition: Filter<Document>): Promise<DeleteResult> {
         return cache.remove(DB, COL, matchCondition);
     },

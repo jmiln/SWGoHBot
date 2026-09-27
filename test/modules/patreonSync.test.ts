@@ -11,8 +11,10 @@ describe("patreonSync", () => {
     let client: MongoClient;
     const db = () => client.db(env.MONGODB_SWGOHBOT_DB);
 
-    // Distinctive IDs scoped to this suite - the shared test DB runs suites in parallel
-    const GUILD = "882000000000000001";
+    // Distinctive IDs scoped to this suite - the shared test DB runs suites in parallel. A fresh
+    // guild per test, since other suites' ensureGuildSupporter can write back a stale supporters list.
+    const usedGuilds: string[] = [];
+    let GUILD = "";
     const USER_LEFT = "883000000000000001";
     const USER_STAYED = "883000000000000002";
     const USER_NO_ACCESS = "883000000000000003";
@@ -49,7 +51,9 @@ describe("patreonSync", () => {
     }
 
     async function cleanup() {
-        await db().collection("guildConfigs").deleteMany({ guildId: GUILD });
+        await db()
+            .collection("guildConfigs")
+            .deleteMany({ guildId: { $in: usedGuilds } });
         await db()
             .collection("users")
             .deleteMany({ id: { $in: USER_IDS } });
@@ -62,6 +66,8 @@ describe("patreonSync", () => {
 
     beforeEach(async () => {
         await cleanup();
+        GUILD = `88200000000000${String(usedGuilds.length + 1).padStart(4, "0")}`;
+        usedGuilds.push(GUILD);
         await db()
             .collection("users")
             .insertMany([

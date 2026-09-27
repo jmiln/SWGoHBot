@@ -225,7 +225,7 @@ export async function ensureGuildSupporter() {
 
         // Otherwise, resave it, then keep going so every remaining guild is checked too
         await guildConfigDB
-            .put({ guildId: guild.guildId }, { "patreonSettings.supporters": guild.supporters }, false)
+            .updateExisting({ guildId: guild.guildId }, { "patreonSettings.supporters": guild.supporters })
             .catch((error: Error) => {
                 logger.error(`[guildConfig/patreonSettings/ensureGuildSupporter] Error updating guild ${guild.guildId}: ${error.message}`);
             });
@@ -252,7 +252,7 @@ export async function ensureBonusServerSet({ userId, amount_cents }: { userId: s
 
         existingSupporter.tier = currentTier;
         await guildConfigDB
-            .put({ guildId: userConf.bonusServer }, { "patreonSettings.supporters": guildSupArr }, false)
+            .updateExisting({ guildId: userConf.bonusServer }, { "patreonSettings.supporters": guildSupArr })
             .catch((error: Error) => {
                 logger.error(
                     `[guildConfig/patreonSettings/ensureBonusServerSet] Error updating tier for guild ${userConf.bonusServer}: ${error.message}`,

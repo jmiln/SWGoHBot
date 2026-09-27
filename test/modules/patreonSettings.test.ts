@@ -94,6 +94,51 @@ describe("guildConfig/patreonSettings", () => {
         });
     });
 
+    // Both rewrite a supporters list they read earlier. If the config is deleted in between (the bot
+    // left the server), the write must not rebuild it as a document holding nothing but that list.
+    describe("never recreate a config deleted between read and write", () => {
+        const configOf = (guildId: string) => client.db(testDbName).collection("guildConfigs").findOne({ guildId });
+        const deleteConfig = (guildId: string) => client.db(testDbName).collection("guildConfigs").deleteOne({ guildId });
+
+        it("ensureGuildSupporter()", async (t) => {
+            await client.db(testDbName).collection("users").insertOne({ id: USER_ONE, bonusServer: "999999999999999999" });
+            await client
+                .db(testDbName)
+                .collection("guildConfigs")
+                .insertOne({ guildId: GUILD_ONE, patreonSettings: { supporters: [{ userId: USER_ONE, tier: 1 }] } });
+
+            // The per-supporter user lookup sits between the guild read and the write
+            const getOne = cache.getOne.bind(cache);
+            t.mock.method(cache, "getOne", async (...args: Parameters<typeof cache.getOne>) => {
+                if (args[1] === "users" && (args[2] as { id?: string }).id === USER_ONE) await deleteConfig(GUILD_ONE);
+                return getOne(...args);
+            });
+
+            await ensureGuildSupporter();
+
+            assert.strictEqual(await configOf(GUILD_ONE), null, "Expected the deleted config to stay deleted");
+        });
+
+        it("ensureBonusServerSet()", async (t) => {
+            await client.db(testDbName).collection("users").insertOne({ id: USER_ONE, bonusServer: GUILD_ONE });
+            await client
+                .db(testDbName)
+                .collection("guildConfigs")
+                .insertOne({ guildId: GUILD_ONE, patreonSettings: { supporters: [{ userId: USER_ONE, tier: 1 }] } });
+
+            const getOne = cache.getOne.bind(cache);
+            t.mock.method(cache, "getOne", async (...args: Parameters<typeof cache.getOne>) => {
+                const result = await getOne(...args);
+                if (args[1] === "guildConfigs" && (args[2] as { guildId?: string }).guildId === GUILD_ONE) await deleteConfig(GUILD_ONE);
+                return result;
+            });
+
+            await ensureBonusServerSet({ userId: USER_ONE, amount_cents: 500 });
+
+            assert.strictEqual(await configOf(GUILD_ONE), null, "Expected the deleted config to stay deleted");
+        });
+    });
+
     describe("ensureBonusServerSet()", () => {
         it("refreshes the stored tier when the pledge amount has changed", async () => {
             // User pledged $1 when they linked, but now pays $5
