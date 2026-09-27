@@ -79,14 +79,22 @@ class DatabaseCleanup {
         try {
             logger.log("Starting database cleanup...");
 
-            const results = await Promise.allSettled([this.cleanOldPlayerStats(), this.cleanOldGuilds(), this.cleanEmptyRosters()]);
+            const results = await Promise.allSettled([
+                this.cleanOldPlayerStats(),
+                this.cleanOldGuilds(),
+                this.cleanOldRawPlayers(),
+                this.cleanOldRawGuilds(),
+                this.cleanEmptyRosters(),
+            ]);
 
             // Log results
             let successCount = 0;
             let failCount = 0;
 
             for (const [index, result] of results.entries()) {
-                const taskName = ["cleanOldPlayerStats", "cleanOldGuilds", "cleanEmptyRosters"][index];
+                const taskName = ["cleanOldPlayerStats", "cleanOldGuilds", "cleanOldRawPlayers", "cleanOldRawGuilds", "cleanEmptyRosters"][
+                    index
+                ];
 
                 if (result.status === "fulfilled") {
                     successCount++;
@@ -115,13 +123,8 @@ class DatabaseCleanup {
      * @returns Deletion summary
      */
     async cleanOldPlayerStats(daysOld = 7): Promise<string> {
-        const cutoffTime = Date.now() - daysOld * constants.dayMS;
-
-        const result = await cache.delete(env.MONGODB_SWAPI_DB, "playerStats", {
-            updated: { $lt: cutoffTime },
-        });
-
-        return `Deleted ${result.deletedCount} player records older than ${daysOld} days`;
+        const deleted = await this.deleteOlderThan("playerStats", daysOld);
+        return `Deleted ${deleted} player records older than ${daysOld} days`;
     }
 
     /**
@@ -130,13 +133,25 @@ class DatabaseCleanup {
      * @returns Deletion summary
      */
     async cleanOldGuilds(daysOld = 7): Promise<string> {
+        const deleted = await this.deleteOlderThan("guilds", daysOld);
+        return `Deleted ${deleted} guild records older than ${daysOld} days`;
+    }
+
+    async cleanOldRawPlayers(daysOld = 7): Promise<string> {
+        const deleted = await this.deleteOlderThan("rawPlayers", daysOld);
+        return `Deleted ${deleted} raw player records older than ${daysOld} days`;
+    }
+
+    async cleanOldRawGuilds(daysOld = 7): Promise<string> {
+        const deleted = await this.deleteOlderThan("rawGuilds", daysOld);
+        return `Deleted ${deleted} raw guild records older than ${daysOld} days`;
+    }
+
+    // A document without `updated` never matches, so it is kept rather than treated as ancient
+    private async deleteOlderThan(collection: string, daysOld: number): Promise<number> {
         const cutoffTime = Date.now() - daysOld * constants.dayMS;
-
-        const result = await cache.delete(env.MONGODB_SWAPI_DB, "guilds", {
-            updated: { $lt: cutoffTime },
-        });
-
-        return `Deleted ${result.deletedCount} guild records older than ${daysOld} days`;
+        const result = await cache.delete(env.MONGODB_SWAPI_DB, collection, { updated: { $lt: cutoffTime } });
+        return result.deletedCount;
     }
 
     /**
@@ -158,22 +173,28 @@ class DatabaseCleanup {
     async getCleanupStats(daysOld = 7): Promise<{
         oldPlayerStats: number;
         oldGuilds: number;
+        oldRawPlayers: number;
+        oldRawGuilds: number;
         emptyRosters: number;
         totalToClean: number;
     }> {
         const cutoffTime = Date.now() - daysOld * constants.dayMS;
 
-        const [oldPlayerStats, oldGuilds, emptyRosters] = await Promise.all([
+        const [oldPlayerStats, oldGuilds, oldRawPlayers, oldRawGuilds, emptyRosters] = await Promise.all([
             cache.count(env.MONGODB_SWAPI_DB, "playerStats", { updated: { $lt: cutoffTime } }),
             cache.count(env.MONGODB_SWAPI_DB, "guilds", { updated: { $lt: cutoffTime } }),
+            cache.count(env.MONGODB_SWAPI_DB, "rawPlayers", { updated: { $lt: cutoffTime } }),
+            cache.count(env.MONGODB_SWAPI_DB, "rawGuilds", { updated: { $lt: cutoffTime } }),
             cache.count(env.MONGODB_SWAPI_DB, "playerStats", { roster: { $size: 0 } }),
         ]);
 
         return {
             oldPlayerStats,
             oldGuilds,
+            oldRawPlayers,
+            oldRawGuilds,
             emptyRosters,
-            totalToClean: oldPlayerStats + oldGuilds + emptyRosters,
+            totalToClean: oldPlayerStats + oldGuilds + oldRawPlayers + oldRawGuilds + emptyRosters,
         };
     }
 

@@ -27,8 +27,9 @@ const FORCE_GAMEDATA = process.argv.includes("--force-gamedata") || false;
 // runtime. Everything else in the cycle is independent of them.
 const SKIP_MODS = process.argv.includes("--skip-mods") || false;
 
-// databaseCleanup deletes old player stats/guilds/rosters, so it's opt-in rather than opt-out: a
-// manual run must never quietly destroy data. The scheduled crontab line passes this explicitly.
+// databaseCleanup deletes old player stats/guilds (parsed and raw)/rosters, so it's opt-in rather
+// than opt-out: a manual run must never quietly destroy data. The scheduled crontab line passes this
+// explicitly.
 const RUN_CLEANUP = process.argv.includes("--cleanup") || false;
 
 // GAC counter ingestion. It shares nothing with the comlink phases, so it can be skipped on its own
@@ -2572,9 +2573,9 @@ Options:
   --counters-only       Run only the counter ingestion, skipping metadata, game data, mods and
                         the command doc export. For an ad-hoc ingest without a full cycle.
                         Mutually exclusive with --skip-counters.
-  --cleanup             Run the database cleanup (deletes old player stats, guilds and empty
-                        rosters). Off by default so a manual run never destroys data; the
-                        scheduled crontab line passes it explicitly.
+  --cleanup             Run the database cleanup (deletes old player stats, guilds, their raw
+                        copies and empty rosters). Off by default so a manual run never
+                        destroys data; the scheduled crontab line passes it explicitly.
   --max-concurrent N    Max in-flight player fetches queued to the worker pool (default 80).
   --counter-concurrency N
                         Concurrent GAC player fetches during counter ingestion (default 50).

@@ -3,7 +3,18 @@ import { parentPort, workerData } from "node:worker_threads";
 import type { SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerGuildLog, SWAPIWorkerPlayerLog } from "../../types/swapi_types.ts";
 
 const guildLogOut: SWAPIWorkerGuildLog = {};
-const cacheUpdatesOut: Array<{ updateOne: { filter: { allyCode: number }; update: { $set: SWAPIPlayer }; upsert: boolean } }> = [];
+type RawPlayerWrite = { updateOne: { filter: { allyCode: number }; update: { $set: Partial<SWAPIPlayer> }; upsert?: boolean } };
+const cacheUpdatesOut: RawPlayerWrite[] = [];
+
+// `updated` means "last fetched", not "last changed": databaseCleanup ages rawPlayers out on it, and
+// a tracked player whose roster sits still must keep the baseline their next change is diffed against
+const fetchedAt = Date.now();
+const saveBaseline = (player: SWAPIPlayer): RawPlayerWrite => ({
+    updateOne: { filter: { allyCode: player.allyCode }, update: { $set: { ...player, updated: fetchedAt } }, upsert: true },
+});
+const stampFetched = (player: SWAPIPlayer): RawPlayerWrite => ({
+    updateOne: { filter: { allyCode: player.allyCode }, update: { $set: { updated: fetchedAt } } },
+});
 const defIdList = new Set<string>();
 const skillIdList = new Set<string>();
 
@@ -19,18 +30,15 @@ async function init(workerData: {
         const oldPlayer = workerData.oldMembers.find((p: SWAPIPlayer) => p.allyCode === newPlayer.allyCode);
         if (!oldPlayer?.roster) {
             // If they've not been in there before, stick em into the db
-            cacheUpdatesOut.push({
-                updateOne: {
-                    filter: { allyCode: newPlayer.allyCode },
-                    update: { $set: newPlayer },
-                    upsert: true,
-                },
-            });
+            cacheUpdatesOut.push(saveBaseline(newPlayer));
 
             // Then move on, since there's no old data to compare against
             continue;
         }
-        if (JSON.stringify(oldPlayer.roster) === JSON.stringify(newPlayer.roster)) continue;
+        if (JSON.stringify(oldPlayer.roster) === JSON.stringify(newPlayer.roster)) {
+            cacheUpdatesOut.push(stampFetched(newPlayer));
+            continue;
+        }
 
         const playerLog: SWAPIWorkerPlayerLog = {
             abilities: [],
@@ -133,13 +141,9 @@ async function init(workerData: {
         }
         if (isPlayerUpdated(playerLog)) {
             guildLogOut[newPlayer.name] = playerLog;
-            cacheUpdatesOut.push({
-                updateOne: {
-                    filter: { allyCode: newPlayer.allyCode },
-                    update: { $set: newPlayer },
-                    upsert: true,
-                },
-            });
+            cacheUpdatesOut.push(saveBaseline(newPlayer));
+        } else {
+            cacheUpdatesOut.push(stampFetched(newPlayer));
         }
     }
 }

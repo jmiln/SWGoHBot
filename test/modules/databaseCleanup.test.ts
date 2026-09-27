@@ -9,6 +9,7 @@ import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 describe("DatabaseCleanup Module", () => {
     let mongoClient: MongoClient;
     const testDbName = "test_database_cleanup";
+    const RAW_KEYS = ["old", "recent"];
     let originalSwapiDb: string;
 
     before(async () => {
@@ -28,6 +29,14 @@ describe("DatabaseCleanup Module", () => {
         // Clean up test data
         await mongoClient.db(testDbName).collection("playerStats").deleteMany({});
         await mongoClient.db(testDbName).collection("guilds").deleteMany({});
+        await mongoClient
+            .db(testDbName)
+            .collection("rawPlayers")
+            .deleteMany({ allyCode: { $in: RAW_KEYS } });
+        await mongoClient
+            .db(testDbName)
+            .collection("rawGuilds")
+            .deleteMany({ id: { $in: RAW_KEYS } });
 
         // Close MongoDB client
         await closeMongoClient();
@@ -122,6 +131,39 @@ describe("DatabaseCleanup Module", () => {
             assert.equal(remaining[0].id, "recent-guild");
         });
     });
+
+    // The raw collections age out exactly like their parsed counterparts: by `updated`, after 7 days.
+    // Cleanup is scoped to RAW_KEYS so these tests never delete documents they did not create.
+    for (const { collection, key, clean, summary } of [
+        { collection: "rawPlayers", key: "allyCode", clean: () => databaseCleanup.cleanOldRawPlayers(7), summary: /Deleted 1 raw player/ },
+        { collection: "rawGuilds", key: "id", clean: () => databaseCleanup.cleanOldRawGuilds(7), summary: /Deleted 1 raw guild/ },
+    ]) {
+        describe(`cleanOld${collection[0].toUpperCase()}${collection.slice(1)}`, () => {
+            it(`should delete ${collection} older than threshold`, async () => {
+                const now = Date.now();
+                await mongoClient
+                    .db(testDbName)
+                    .collection(collection)
+                    .deleteMany({ [key]: { $in: RAW_KEYS } });
+                await mongoClient
+                    .db(testDbName)
+                    .collection(collection)
+                    .insertMany([
+                        { [key]: "old", updated: now - 10 * 24 * 60 * 60 * 1000 },
+                        { [key]: "recent", updated: now - 3 * 24 * 60 * 60 * 1000 },
+                    ]);
+
+                const result = await clean();
+
+                assert.match(result, summary);
+                const remaining = await cache.get(testDbName, collection, { [key]: { $in: RAW_KEYS } });
+                assert.deepEqual(
+                    remaining.map((doc) => doc[key]),
+                    ["recent"],
+                );
+            });
+        });
+    }
 
     describe("cleanEmptyRosters", () => {
         it("should delete player records with empty rosters", async () => {
