@@ -648,7 +648,7 @@ export default class extends Language {
             COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
             COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repeating every ${eventDays} days, ${eventHours} hours, and ${eventMins} minutes\n`,
-            COMMAND_EVENT_MESSAGE: (eventMsg) => `Event Message: \n\`\`\`md\n${eventMsg}\`\`\``,
+            COMMAND_EVENT_MESSAGE: (eventMsg) => `Event Message: \n${eventMsg}`,
             COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Sorry, but I cannot find the event \`${eventName}\``,
             COMMAND_EVENT_NO_EVENT: "You don't currently have any events scheduled.",
             COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Here's your server's Event Schedule \n(${eventCount} total event${eventCount > 1 ? "s" : ""}) Showing page ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,

@@ -115,6 +115,9 @@ const envSchema = z.object({
     // Premium Configuration
     PREMIUM: envBoolean().default(false),
 
+    // Command usage statistics (the commandStats collection)
+    COMMAND_STATS_ENABLED: envBoolean().default(true),
+
     // Image Server Configuration
     IMAGE_SERVER_URL: urlString({ default: "http://localhost:3600" }),
 

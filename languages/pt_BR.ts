@@ -285,7 +285,7 @@ export default class extends Language {
             COMMAND_EVENT_CHAN: (eventChan) => `Canal destino: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repetição: ${repeatDays}\n`,
             COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repetindo-se a cada ${eventDays} dias, ${eventHours} horas e ${eventMins} minutos\n`,
-            COMMAND_EVENT_MESSAGE: (eventMsg) => `Mensagem do Evento: \n\`\`\`md\n${eventMsg}\`\`\``,
+            COMMAND_EVENT_MESSAGE: (eventMsg) => `Mensagem do Evento: \n${eventMsg}`,
             COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Desculpe-me, mas não localizei o evento \`${eventName}\``,
             COMMAND_EVENT_NO_EVENT: "Atualmente não há eventos agendados.",
             COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Aqui está a agenda de eventos do seu servidor: \n(${eventCount} total de evento${eventCount > 1 ? "s" : ""}) Exibindo página ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,

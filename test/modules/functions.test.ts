@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
-import type { Client } from "discord.js";
+import { type Client, Collection, type Guild } from "discord.js";
 import constants from "../../data/constants/constants.ts";
 import {
     buildAllyCodeChoices,
@@ -8,6 +8,7 @@ import {
     chunkArray,
     convertMS,
     expandSpaces,
+    fetchMembersById,
     findCharOrShip,
     formatCurrentTime,
     formatDuration,
@@ -41,6 +42,46 @@ const ZWS = "\u200b";
 
 const makeUnit = (name: string, uniqueName = name.toLowerCase()): BotUnit =>
     ({ name, uniqueName, side: "light", combatType: 1, aliases: [] }) as unknown as BotUnit;
+
+describe("fetchMembersById", () => {
+    // Answers like discord.js: a Collection of the requested members that are in the guild
+    function fakeGuild(memberIds: readonly string[]) {
+        const requests: string[][] = [];
+        const guild = {
+            members: {
+                fetch: async ({ user }: { user: string[] }) => {
+                    requests.push(user);
+                    return new Collection(user.filter((id) => memberIds.includes(id)).map((id) => [id, { id, displayName: `name-${id}` }]));
+                },
+            },
+        } as unknown as Guild;
+        return { guild, requests };
+    }
+
+    it("makes no request when there are no IDs", async () => {
+        const { guild, requests } = fakeGuild([]);
+
+        const members = await fetchMembersById(guild, []);
+
+        assert.strictEqual(members.size, 0);
+        assert.deepStrictEqual(requests, []);
+    });
+
+    it("asks for at most 100 IDs per request and merges the results", async () => {
+        const ids = Array.from({ length: 230 }, (_, i) => `1000000000000${String(i).padStart(5, "0")}`);
+        const { guild, requests } = fakeGuild(ids.filter((_, i) => i !== 150));
+
+        const members = await fetchMembersById(guild, ids);
+
+        assert.deepStrictEqual(
+            requests.map((r) => r.length),
+            [100, 100, 30],
+        );
+        assert.strictEqual(members.size, 229);
+        assert.strictEqual(members.get(ids[229])?.displayName, `name-${ids[229]}`);
+        assert.ok(!members.has(ids[150]), "A user no longer in the guild is simply absent");
+    });
+});
 
 describe("buildAllyCodeChoices", () => {
     const playerMap = new Map<number, ArenaPlayer>([

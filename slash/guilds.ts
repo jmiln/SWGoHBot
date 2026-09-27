@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { characters, raidNames, ships } from "../data/constants/units.ts";
 import {
     expandSpaces,
+    fetchMembersById,
     formatDuration,
     getAllyCode,
     makeTable,
@@ -1062,9 +1063,9 @@ export default class Guilds extends Command {
                 ),
             ];
 
-            // Bulk-fetch Discord guild members in one API call
-            const guildMembers = interaction.guild?.members
-                ? await interaction.guild.members.fetch({ user: allDiscordIds }).catch((err: unknown) => {
+            // Bulk-fetch the Discord guild members in as few requests as possible
+            const guildMembers = interaction.guild
+                ? await fetchMembersById(interaction.guild, allDiscordIds).catch((err: unknown) => {
                       const message = err instanceof Error ? err.message : String(err);
                       logger.error(`Failed to bulk-fetch members in guild ${interaction.guild?.id}: ${message}`);
                       return null;

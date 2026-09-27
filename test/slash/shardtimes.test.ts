@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
+import { Collection } from "discord.js";
 import cache from "../../modules/cache.ts";
 import { setGuildShardTimes } from "../../modules/guildConfig/shardTimes.ts";
 import Shardtimes from "../../slash/shardtimes.ts";
@@ -143,6 +144,63 @@ describe("Shardtimes", () => {
             const badField = fields.find((f) => f.value.includes("LegacyPlayer"));
             assert.ok(badField, "Expected the invalid entry to be rendered too");
             assert.strictEqual(badField.name, "??:??", "Expected the unusable entry to show a placeholder");
+        });
+
+        it("looks up every ID entry in one request and shows display names", async () => {
+            const ALICE = "111111111111111111";
+            const GONE = "222222222222222222";
+            await setGuildShardTimes({
+                guildId: GUILD_ID,
+                stOut: [
+                    {
+                        channelId: CHANNEL_ID,
+                        times: {
+                            [ALICE]: { type: "id", timezone: "America/New_York", zoneType: "zone", flag: "" },
+                            [GONE]: { type: "id", timezone: "America/New_York", zoneType: "zone", flag: "" },
+                            NamedPlayer: { type: "name", timezone: "America/New_York", zoneType: "zone", flag: "" },
+                        },
+                    },
+                ],
+            });
+
+            const interaction = makeShardInteraction({ _subcommand: "view" });
+            const requests: unknown[] = [];
+            (interaction.guild as any).members.fetch = async (arg: unknown) => {
+                requests.push(arg);
+                return new Collection([[ALICE, { id: ALICE, displayName: "Alice" }]]);
+            };
+            await new Shardtimes().run(createCommandContext({ interaction }));
+
+            assert.deepStrictEqual(requests, [{ user: [ALICE, GONE] }], "Expected one lookup for both ID entries");
+            const replies = (interaction as any)._getReplies();
+            const embedData = replies[replies.length - 1].embeds[0].data || replies[replies.length - 1].embeds[0];
+            const values = (embedData.fields as { value: string }[]).map((f) => f.value).join("\n");
+            assert.ok(values.includes("**Alice**"), `Expected the member's display name, got: ${values}`);
+            assert.ok(values.includes(`**${GONE}**`), `Expected the raw ID for a user no longer in the server, got: ${values}`);
+            assert.ok(values.includes("NamedPlayer"), "Expected name entries unchanged");
+        });
+
+        it("still renders the table with raw IDs when the member lookup fails", async () => {
+            const ALICE = "111111111111111111";
+            await setGuildShardTimes({
+                guildId: GUILD_ID,
+                stOut: [
+                    {
+                        channelId: CHANNEL_ID,
+                        times: { [ALICE]: { type: "id", timezone: "America/New_York", zoneType: "zone", flag: "" } },
+                    },
+                ],
+            });
+
+            const interaction = makeShardInteraction({ _subcommand: "view" });
+            (interaction.guild as any).members.fetch = async () => {
+                throw new Error("Members didn't arrive in time.");
+            };
+            await new Shardtimes().run(createCommandContext({ interaction }));
+
+            const replies = (interaction as any)._getReplies();
+            const embedData = replies[replies.length - 1].embeds[0].data || replies[replies.length - 1].embeds[0];
+            assert.ok(embedData.fields[0].value.includes(`**${ALICE}**`), "Expected the raw ID as the fallback name");
         });
 
         it("never reports a negative time until payout, whatever the local time is", async () => {

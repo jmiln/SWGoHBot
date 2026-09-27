@@ -442,7 +442,7 @@ export default class extends Language {
             COMMAND_EVENT_CHAN: (eventChan) => `Sende an Kanal: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Wiederholung: ${repeatDays}\n`,
             COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Wiederhole alle ${eventDays} Tage, ${eventHours} Stunden und ${eventMins} Minuten\n`,
-            COMMAND_EVENT_MESSAGE: (eventMsg) => `Event Nachricht: \n\`\`\`md\n${eventMsg}\`\`\``,
+            COMMAND_EVENT_MESSAGE: (eventMsg) => `Event Nachricht: \n${eventMsg}`,
             COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Event konnte nicht gefunden werden \`${eventName}\``,
             COMMAND_EVENT_NO_EVENT: "Es gibt aktuell keine geplanten Events.",
             COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Hier ist der Eventplan \n(${eventCount} Gesamtevents: ${eventCount > 1 ? "s" : ""}) Seite ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,

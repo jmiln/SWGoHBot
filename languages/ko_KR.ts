@@ -304,7 +304,7 @@ export default class extends Language {
             COMMAND_EVENT_CHAN: (eventChan) => `채널로 전송중입니다: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `반복 일정: ${repeatDays}\n`,
             COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `매 ${eventDays} 일, ${eventHours} 시간  ${eventMins} 분 마다 반복합니다\n`,
-            COMMAND_EVENT_MESSAGE: (eventMsg) => `이벤트 메시지: \n\`\`\`md\n${eventMsg}\`\`\``,
+            COMMAND_EVENT_MESSAGE: (eventMsg) => `이벤트 메시지: \n${eventMsg}`,
             COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `해당 이벤트를 찾을 수 없습니다 \`${eventName}\``,
             COMMAND_EVENT_NO_EVENT: "현재 계획된 이벤트가 없습니다.",
             COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `이벤트 일정입니다 \n(총 ${eventCount} 개 이벤트) ${PAGE_SELECTED} 페이지/${PAGES_NEEDED}: \n${eventKeys}`,

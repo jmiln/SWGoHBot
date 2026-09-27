@@ -15,7 +15,7 @@ import logger from "./Logger.ts";
 const COLLECTION_NAME = "commandStats";
 
 // Configuration
-const ENABLE_TRACKING = process.env.COMMAND_STATS_ENABLED !== "false"; // Enabled by default
+const ENABLE_TRACKING = env.COMMAND_STATS_ENABLED;
 const BATCH_SIZE = 100;
 const MAX_BATCH_SIZE = 1000;
 const FLUSH_INTERVAL_MS = 60000; // Flush every 60 seconds

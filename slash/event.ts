@@ -2,11 +2,11 @@ import {
     ApplicationCommandOptionType,
     type AutocompleteFocusedOption,
     type AutocompleteInteraction,
-    type ChatInputCommandInteraction,
     codeBlock,
     type GuildBasedChannel,
     InteractionContextType,
     MessageFlags,
+    type MessageMentionOptions,
 } from "discord.js";
 
 import Command from "../base/slashCommand.ts";
@@ -36,6 +36,9 @@ interface EventInput {
     repeatDays?: number[];
     eventDT?: number | null;
 }
+
+// Viewing an event shows its message as it will be announced, mentions included, but must not ping
+const NO_PINGS: MessageMentionOptions = { parse: [] };
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
@@ -476,9 +479,9 @@ export default class Event extends Command {
                     }
                     if (!minimal && eventIn.message?.length) {
                         // If they want to show all available events without the message showing
-                        eventString += language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, eventIn.message));
+                        eventString += language.get("COMMAND_EVENT_MESSAGE", eventIn.message);
                     }
-                    return interaction.reply({ content: eventString });
+                    return interaction.reply({ content: eventString, allowedMentions: NO_PINGS });
                 }
                 if (evFilter?.length) {
                     const filterArr = evFilter.split(" ");
@@ -651,42 +654,6 @@ export default class Event extends Command {
                     return super.error(interaction, e instanceof Error ? e.message : String(e));
                 }
             }
-        }
-
-        function removeTags(interaction: ChatInputCommandInteraction, message: string) {
-            if (!message) return message;
-            const userReg = /<@!?(1|\d{17,19})>/g;
-            const roleReg = /<@&(1|\d{17,19})>/g;
-            const chanReg = /<#(1|\d{17,19})>/g;
-
-            let messStr = message?.toString();
-
-            const userResult = messStr.match(userReg);
-            const roleResult = messStr.match(roleReg);
-            const chanResult = messStr.match(chanReg);
-            if (userResult !== null) {
-                for (const user of userResult) {
-                    const userID = user.replace(/\D/g, "");
-                    const thisUser = interaction.guild?.members.cache.get(userID);
-                    const userName = thisUser?.displayName ?? interaction.client.users.cache.get(userID)?.username ?? "Unknown User";
-                    messStr = messStr.replace(user, userName);
-                }
-            }
-            if (roleResult !== null) {
-                for (const role of roleResult) {
-                    const roleID = role.replace(/\D/g, "");
-                    const roleName = interaction.guild?.roles.cache.get(roleID)?.name ?? roleID;
-                    messStr = messStr.replace(role, `@${roleName}`);
-                }
-            }
-            if (chanResult !== null) {
-                for (const chan of chanResult) {
-                    const chanID = chan.replace(/\D/g, "");
-                    const chanName = interaction.guild?.channels.cache.get(chanID)?.name ?? chanID;
-                    messStr = messStr.replace(chan, `#${chanName}`);
-                }
-            }
-            return messStr.replace(/`/g, "");
         }
 
         function validateEvents(eventArr: EventInput[], guildEvArray: GuildConfigEvent[]) {
@@ -921,8 +888,7 @@ export default class Event extends Command {
                 }
                 if (!minimal && event.message?.length) {
                     // If they want to show all available events with the message showing
-                    const msg = removeTags(interaction, event.message);
-                    eventString += language.get("COMMAND_EVENT_MESSAGE", msg);
+                    eventString += language.get("COMMAND_EVENT_MESSAGE", event.message);
                 }
                 evOutArr.push(eventString);
             }
@@ -932,18 +898,25 @@ export default class Event extends Command {
                     return interaction.reply({ content: language.get("COMMAND_EVENT_NO_EVENT") });
                 }
                 if (evArray.length === 1) {
-                    return interaction.reply({ content: language.get("COMMAND_EVENT_SHOW", eventCount, evArray[0]) });
+                    return interaction.reply({
+                        content: language.get("COMMAND_EVENT_SHOW", eventCount, evArray[0]),
+                        allowedMentions: NO_PINGS,
+                    });
                 }
                 for (const [ix, evMsg] of evArray.entries()) {
                     if (guildConf.useEventPages) {
                         return interaction.reply({
                             content: language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg),
+                            allowedMentions: NO_PINGS,
                         });
                     }
                     if (ix === 0) {
-                        await interaction.reply({ content: language.get("COMMAND_EVENT_SHOW", eventCount, evMsg) });
+                        await interaction.reply({
+                            content: language.get("COMMAND_EVENT_SHOW", eventCount, evMsg),
+                            allowedMentions: NO_PINGS,
+                        });
                     } else if (interaction.channel?.isSendable()) {
-                        await interaction.channel.send({ content: evMsg });
+                        await interaction.channel.send({ content: evMsg, allowedMentions: NO_PINGS });
                     }
                 }
             } catch (err) {

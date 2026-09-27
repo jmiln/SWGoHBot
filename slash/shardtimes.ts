@@ -9,7 +9,15 @@ import {
 } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
+import {
+    convertMS,
+    fetchMembersById,
+    getStartOfDay,
+    getUTCFromOffset,
+    hasViewAndSend,
+    isUserID,
+    isValidZone,
+} from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
 import logger from "../modules/Logger.ts";
 import type { GuildConfigShardTimes } from "../types/guildConfig_types.ts";
@@ -427,6 +435,15 @@ export default class Shardtimes extends Command {
 
             const sortedShardTimes = Object.keys(shardOut).sort((a, b) => (a > b ? 1 : -1));
 
+            const isIdEntry = (user: string) => !shardTimes.times[user].type || shardTimes.times[user].type === "id";
+            const members = await fetchMembersById(interaction.guild, Object.keys(shardTimes.times).filter(isIdEntry)).catch(
+                (err: unknown) => {
+                    const message = err instanceof Error ? err.message : String(err);
+                    logger.error(`Failed to fetch members in guild ${interaction.guild.id}: ${message}`);
+                    return null;
+                },
+            );
+
             const fields: APIEmbedField[] = [];
             const maxLen = 20;
             for (const time of sortedShardTimes) {
@@ -436,13 +453,8 @@ export default class Shardtimes extends Command {
                     if (!userFlag) userFlag = shardTimes.times[user]?.flag;
 
                     let uName = "";
-                    if (!shardTimes.times[user].type || shardTimes.times[user].type === "id") {
-                        const thisUser = await interaction.guild.members.fetch(user).catch((err: unknown) => {
-                            const message = err instanceof Error ? err.message : String(err);
-                            logger.error(`Failed to fetch member ${user} in guild ${interaction.guild.id}: ${message}`);
-                            return null;
-                        });
-                        const userName = thisUser ? thisUser.displayName : user;
+                    if (isIdEntry(user)) {
+                        const userName = members?.get(user)?.displayName ?? user;
                         uName = `**${userName.length > maxLen ? userName.substring(0, maxLen) : userName}**`;
                     } else {
                         // Type is name, don't try looking it up

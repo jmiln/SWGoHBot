@@ -222,6 +222,48 @@ describe("Event", () => {
         assert.ok(content.includes("could not find any events"), `Expected the no-events message, got: ${content}`);
     });
 
+    describe("view shows mentions as Discord renders them, without pinging anyone", () => {
+        const MENTIONS = "Raid now <@555555555555555555> <@&666666666666666666> in <#777777777777777777> @everyone";
+        const storedEvent = {
+            name: "raidcall",
+            eventDT: Date.now() + 3_600_000,
+            message: MENTIONS,
+            channel: "",
+            countdown: false,
+            repeatDay: "0",
+        } as any;
+
+        function assertRenderedWithoutPings(reply: any) {
+            assert.ok(reply.content.includes(MENTIONS), `Expected the mentions left intact, got: ${reply.content}`);
+            assert.ok(!reply.content.includes("```"), "A code block would stop the mentions rendering as names");
+            assert.deepStrictEqual(reply.allowedMentions, { parse: [] }, "Expected every ping suppressed");
+        }
+
+        it("for a single event", async () => {
+            const interaction = createMockInteraction({
+                guild: createMockGuild() as any,
+                optionsData: { _subcommand: "view", name: "raidcall" },
+            });
+            eventSocket.getEventByName = async () => storedEvent;
+
+            await new Event().run(realCtx(interaction, 0));
+
+            assertRenderedWithoutPings((interaction as any)._getReplies()[0]);
+        });
+
+        it("for the event list", async () => {
+            const interaction = createMockInteraction({
+                guild: createMockGuild() as any,
+                optionsData: { _subcommand: "view" },
+            });
+            eventSocket.getEventsByGuild = async () => [storedEvent];
+
+            await new Event().run(realCtx(interaction, 0));
+
+            assertRenderedWithoutPings((interaction as any)._getReplies()[0]);
+        });
+    });
+
     it("should reject createjson with invalid JSON", async () => {
         const interaction = createMockInteraction({
             guild: createMockGuild() as any,

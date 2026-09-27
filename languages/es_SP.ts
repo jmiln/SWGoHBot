@@ -318,7 +318,7 @@ export default class extends Language {
             COMMAND_EVENT_CHAN: (eventChan) => `Enviándolo al canal: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repetir horario: ${repeatDays}\n`,
             COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repitiendo cada ${eventDays} días, ${eventHours} horas y ${eventMins} minutos\n`,
-            COMMAND_EVENT_MESSAGE: (eventMsg) => `Mensaje Evento: \n\`\`\`md\n${eventMsg}\`\`\``,
+            COMMAND_EVENT_MESSAGE: (eventMsg) => `Mensaje Evento: \n${eventMsg}`,
             COMMAND_EVENT_UNFOUND_EVENT: (eventName) => `Lo siento, pero no he podido encontrar el evento \`${eventName}\``,
             COMMAND_EVENT_NO_EVENT: "Actualmente no tienes ningún evento programado.",
             COMMAND_EVENT_SHOW_PAGED: (eventCount, PAGE_SELECTED, PAGES_NEEDED, eventKeys) => `Aquí tienes el Evento Programado de tu servidor \n(${eventCount} eventos totales${eventCount > 1 ? "s" : ""}) Mostrando página ${PAGE_SELECTED}/${PAGES_NEEDED}: \n${eventKeys}`,

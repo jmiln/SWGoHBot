@@ -3,6 +3,7 @@ import { inspect } from "node:util";
 import {
     type ChatInputCommandInteraction,
     type Client,
+    Collection,
     type Guild,
     type GuildBasedChannel,
     GuildMember,
@@ -641,6 +642,20 @@ export function trimFloat(num: number, trimTo = 1): string {
         return num.toString();
     }
     return num.toFixed(trimTo);
+}
+
+// Discord answers at most this many user_ids per gateway member request
+const MEMBER_LOOKUP_BATCH_SIZE = 100;
+
+// A gateway lookup by user ID, which unlike a full member list needs no GuildMembers intent. Users
+// no longer in the guild are simply absent from the result.
+export async function fetchMembersById(guild: Guild, userIds: string[]): Promise<Collection<string, GuildMember>> {
+    const members = new Collection<string, GuildMember>();
+    for (const batch of chunkArray(userIds, MEMBER_LOOKUP_BATCH_SIZE)) {
+        const fetched = await guild.members.fetch({ user: batch });
+        for (const [id, member] of fetched) members.set(id, member);
+    }
+    return members;
 }
 
 // Function to see if we have permission to see/ send messages in a given channel
