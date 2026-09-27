@@ -17,22 +17,6 @@ export const setconfOptions: Record<keyof GuildConfigSettings, SetconfOption> = 
         isArray: true,
         description: "A list of the roles that are allowed to mess with settings/ events.",
     },
-    enableWelcome: {
-        type: ApplicationCommandOptionType.Boolean,
-        description: "Toggle the welcome message",
-    },
-    welcomeMessage: {
-        type: ApplicationCommandOptionType.String,
-        description: "Set the welcome message text",
-    },
-    enablePart: {
-        type: ApplicationCommandOptionType.Boolean,
-        description: "Toggle the parting/ leaving message",
-    },
-    partMessage: {
-        type: ApplicationCommandOptionType.String,
-        description: "Set the part message text",
-    },
     timezone: {
         type: ApplicationCommandOptionType.String,
         description: "Set the timezone to be referenced for events and such in the guild",

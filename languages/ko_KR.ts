@@ -817,35 +817,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "enableWelcome",
-                        actionDesc: "환영 인사를 키거나 끕니다.",
-                        usage: ";setconf enableWelcome <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "welcomeMessage",
-                        actionDesc: "환영 인사말을 켰을 경우에 사용할 인사말",
-                        usage: ";setconf welcomeMessage <message>",
-                        args: {
-                            "{{user}}":  "새로운 사용자의 이름",
-                            "{{userMention}}": "새로운 사용자를 언급."
-                        }
-                    },
-                    {
-                        action: "enablePart",
-                        actionDesc: "서버 탈퇴 인사말을 키거나 끕니다.",
-                        usage: ";setconf enablePart <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "partMessage",
-                        actionDesc: "탈퇴 인사말을 켰을 때 사용할 인사말",
-                        usage: ";setconf partMessage <message>",
-                        args: {
-                            "{{user}}":  "떠나는 사용자의 이름으로 변경됨",
-                        }
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "시간 관련한 모든 명령어에 적용되는 타임존을 설정합니다. 타임존 목록이 필요한 경우 다음을 확인하십시오 https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <timezone>",

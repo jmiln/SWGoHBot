@@ -1294,35 +1294,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "enableWelcome",
-                        actionDesc: "Schaltet die Willkommensnachricht ein bzw. aus.",
-                        usage: ";setconf enableWelcome <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "welcomeMessage",
-                        actionDesc: "Die Willkommensnachricht, die gesendet wird, wenn sie eingeschaltet ist (besondere Variablen unten)",
-                        usage: ";setconf welcomeMessage <Nachricht>",
-                        args: {
-                            "{{user}}":  "Wird durch den Benutzernamen ersetzt.",
-                            "{{userMention}}": "Taggt den neuen Benutzer."
-                        }
-                    },
-                    {
-                        action: "enablePart",
-                        actionDesc: "Schaltet die Abschiedsnachricht an/ aus.",
-                        usage: ";setconf enablePart <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "partMessage",
-                        actionDesc: "Die Abschiedsnachricht die gesendet wird, sofern diese eingeschaltet wurde (spezielle Variablen siehe unten)",
-                        usage: ";setconf partMessage <Nachricht>",
-                        args: {
-                            "{{user}}":  "wird ersetzt durch den Usernamen.",
-                        }
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Setzt die Zeitzone die genutzt werden soll. Hier eine Liste der Zeitzonen https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <Zeitzone>",

@@ -876,35 +876,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "enableWelcome",
-                        actionDesc: "Activa/desactiva el mensaje de bienvenida.",
-                        usage: ";setconf enableWelcome <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "welcomeMessage",
-                        actionDesc: "El mensaje de bienvenida para enviar si tienes la opción activada. (Variables especiales abajo).",
-                        usage: ";setconf welcomeMessage <mensaje>",
-                        args: {
-                            "{{user}}":  "Es remplazado con el nombre del nuevo usuario.",
-                            "{{userMention}}": "Menciona al nuevo usuario de ahí."
-                        }
-                    },
-                    {
-                        action: "enablePart",
-                        actionDesc: "Activa/desactiva el mensaje de despedida.",
-                        usage: ";setconf enablePart <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "partMessage",
-                        actionDesc: "El mensaje de despedida a enviar si tienes la opción activada. (Variables especiales abajo)",
-                        usage: ";setconf partMessage <mensaje>",
-                        args: {
-                            "{{user}}":  "Es remplazado con el nombre del nuevo usuario.",
-                        }
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Establece la zona horaria la cual deseas que todos los comandos relacionados con los horarios los usen. Mira aquí si necesitas una lista https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <zonaHoraria>",

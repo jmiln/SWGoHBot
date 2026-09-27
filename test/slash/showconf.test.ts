@@ -79,17 +79,16 @@ describe("Showconf", () => {
         const embedData = getEmbed(interaction);
         // MockLanguage returns raw keys and drops args (serverName)
         assert.strictEqual(embedData.title, "COMMAND_SHOWCONF_TITLE");
+        assert.deepStrictEqual(
+            embedData.fields.map((f: any) => f.name),
+            ["COMMAND_SHOWCONF_HEADER_GENERAL", "COMMAND_SHOWCONF_HEADER_EVENTS", "COMMAND_SHOWCONF_HEADER_SUPPORTERS"],
+        );
 
         const general = getField(embedData, "COMMAND_SHOWCONF_HEADER_GENERAL");
         // Default adminRole is the plain name "Administrator" - no mention formatting
         assert.ok(general.value.includes("COMMAND_SHOWCONF_LABEL_ADMIN_ROLES"), "Expected admin roles label");
         assert.ok(general.value.includes("Administrator"), "Expected default admin role name");
         assert.ok(general.value.includes("America/Los_Angeles"), "Expected default timezone");
-
-        const welcome = getField(embedData, "COMMAND_SHOWCONF_HEADER_WELCOME");
-        // Both toggles default to false
-        assert.ok(welcome.value.includes("BASE_OFF"), "Expected OFF toggles");
-        assert.ok(!welcome.value.includes("BASE_ON"), "Expected no ON toggles by default");
 
         const events = getField(embedData, "COMMAND_SHOWCONF_HEADER_EVENTS");
         assert.ok(events.value.includes("BASE_NA"), "Expected N/A announce channel");
@@ -109,7 +108,6 @@ describe("Showconf", () => {
                 settings: {
                     adminRole: [ROLE_ID, "Officers"],
                     announceChan: CHANNEL_ID,
-                    enableWelcome: true,
                 },
             },
         );
@@ -124,36 +122,6 @@ describe("Showconf", () => {
 
         const events = getField(embedData, "COMMAND_SHOWCONF_HEADER_EVENTS");
         assert.ok(events.value.includes(`<#${CHANNEL_ID}>`), "Expected channel mention");
-
-        const welcome = getField(embedData, "COMMAND_SHOWCONF_HEADER_WELCOME");
-        assert.ok(welcome.value.includes("BASE_ON"), "Expected welcome toggle ON");
-        // Default welcomeMessage is quoted under the toggle
-        assert.ok(welcome.value.includes("> Say hello to {{user}}"), "Expected quoted welcome message");
-
-        await cache.remove(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID });
-    });
-
-    it("should truncate long messages to 100 chars with an ellipsis", async () => {
-        const longMessage = "x".repeat(150);
-        await cache.put(
-            testDbName,
-            "guildConfigs",
-            { guildId: TEST_GUILD_ID },
-            {
-                guildId: TEST_GUILD_ID,
-                settings: {
-                    enableWelcome: true,
-                    welcomeMessage: longMessage,
-                },
-            },
-        );
-
-        const interaction = makeInteraction();
-        await new Showconf().run(createCommandContext({ interaction }));
-
-        const welcome = getField(getEmbed(interaction), "COMMAND_SHOWCONF_HEADER_WELCOME");
-        assert.ok(welcome.value.includes(`> ${"x".repeat(100)}…`), "Expected 100-char preview with ellipsis");
-        assert.ok(!welcome.value.includes("x".repeat(101)), "Expected message to be truncated");
 
         await cache.remove(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID });
     });

@@ -833,35 +833,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "enableWelcome",
-                        actionDesc: "Liga/desliga a mensagem de boas vindas",
-                        usage: ";setconf enableWelcome <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "welcomeMessage",
-                        actionDesc: "A mensagem de boas vindas que será enviada caso este recurso esteja habilitado (Variáveis especiais abaixo)",
-                        usage: ";setconf welcomeMessage <message>",
-                        args: {
-                            "{{user}}":  "substituido pelo nome do novo usuário",
-                            "{{userMention}}": "menção ao novo usuário."
-                        }
-                    },
-                    {
-                        action: "enablePart",
-                        actionDesc: "Liga/desliga a mensagem de despedida.",
-                        usage: ";setconf enablePart <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "partMessage",
-                        actionDesc: "A mensagem de despedida que será enviada caso este recurso esteja habilitado (Variáveis especiais abaixo)",
-                        usage: ";setconf partMessage <message>",
-                        args: {
-                            "{{user}}":  "substituído pelo nome do usuário que deixou o servidor.",
-                        }
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Configura o fuso horário para todos os comandos baseados em data\\hora. Acesse o site https://goo.gl/Vqwe49. caso precise de uma lista",
                         usage: ";setconf timezone <timezone>",

@@ -2,7 +2,7 @@ import { readdirSync } from "node:fs";
 import type { Client } from "discord.js";
 import logger from "../modules/Logger.ts";
 
-const needsClient = ["error", "clientReady", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
+const needsClient = ["clientReady"];
 const evDir = `${import.meta.dirname}/../events/`;
 
 const loadedEventNames = new Set<string>();

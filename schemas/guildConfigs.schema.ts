@@ -48,10 +48,6 @@ export const SWGOH_LANGUAGES = [
 export const GuildConfigSettingsSchema = z.object({
     useEventPages: z.boolean().optional(),
     adminRole: z.array(z.string()),
-    enableWelcome: z.boolean(),
-    welcomeMessage: z.string(),
-    enablePart: z.boolean(),
-    partMessage: z.string(),
     timezone: z.string(),
     announceChan: z.string(),
     eventCountdown: z.array(z.number()),
@@ -197,10 +193,6 @@ export type GuildAlias = z.infer<typeof GuildAliasSchema>;
  */
 export const defaultGuildSettings: GuildConfigSettings = {
     adminRole: ["Administrator"],
-    enableWelcome: false,
-    welcomeMessage: "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
-    enablePart: false,
-    partMessage: "Goodbye {{user}}, thanks for stopping by!",
     timezone: "America/Los_Angeles",
     announceChan: "",
     useEventPages: false,

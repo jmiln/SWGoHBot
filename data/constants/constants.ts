@@ -103,11 +103,10 @@ export default {
 
     // No message intents: the bot is slash-command only. Fetching/editing older messages still
     // works via REST (interaction.editReply, channel.messages.fetch).
-    botIntents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+    botIntents: [GatewayIntentBits.Guilds],
 
     // Partials your bot may need should go here, CHANNEL is required for DM's
-    // GUILD_MEMBER: the member cache is swept hourly, and discord.js drops guildMemberRemove for uncached members without it
-    partials: [Partials.Channel, Partials.GuildMember],
+    partials: [Partials.Channel],
 
     // Let it register global commands or not
     enableGlobalCmds: true,

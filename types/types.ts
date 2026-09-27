@@ -163,10 +163,6 @@ export interface AutocompleteContext {
 
 export interface BotDefaultSettings {
     adminRole: string[];
-    enableWelcome: boolean;
-    welcomeMessage: string;
-    enablePart: boolean;
-    partMessage: string;
     timezone: string;
     announceChan: string;
     eventCountdown: number[];

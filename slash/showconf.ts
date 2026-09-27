@@ -5,9 +5,6 @@ import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConf
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { CommandContext } from "../types/types.ts";
 
-// Max length for the welcome/part message previews
-const MESSAGE_PREVIEW_LENGTH = 100;
-
 // Discord rejects embed field values longer than this
 const EMBED_FIELD_MAX_LENGTH = 1024;
 
@@ -31,7 +28,6 @@ export default class Showconf extends Command {
 
         const notAvailable = language.get("BASE_NA");
         const onOff = (val?: boolean) => `**${language.get(val ? "BASE_ON" : "BASE_OFF")}**`;
-        const truncate = (msg: string) => (msg.length > MESSAGE_PREVIEW_LENGTH ? `${msg.slice(0, MESSAGE_PREVIEW_LENGTH)}…` : msg);
 
         // General - roles render as mentions when stored as IDs, names stay as-is
         const roleArr = (guildConf.adminRole ?? []).map((role: string) => (isUserID(role) ? `<@&${role}>` : role)).sort();
@@ -42,12 +38,6 @@ export default class Showconf extends Command {
                 "COMMAND_SHOWCONF_LABEL_GAME_DATA",
             )}: ${guildConf.swgohLanguage}`,
         ].join("\n");
-
-        // Welcome / Part - toggle state with the message quoted underneath
-        const welcomeLines = [`${language.get("COMMAND_SHOWCONF_LABEL_WELCOME")}: ${onOff(guildConf.enableWelcome)}`];
-        if (guildConf.welcomeMessage?.length) welcomeLines.push(`> ${truncate(guildConf.welcomeMessage)}`);
-        welcomeLines.push(`${language.get("COMMAND_SHOWCONF_LABEL_PART")}: ${onOff(guildConf.enablePart)}`);
-        if (guildConf.partMessage?.length) welcomeLines.push(`> ${truncate(guildConf.partMessage)}`);
 
         // Events - channel renders as a mention when stored as an ID
         const announceChan = guildConf.announceChan?.length
@@ -90,7 +80,6 @@ export default class Showconf extends Command {
                     title: language.get("COMMAND_SHOWCONF_TITLE", interaction.guild.name || ""),
                     fields: [
                         { name: language.get("COMMAND_SHOWCONF_HEADER_GENERAL"), value: generalValue },
-                        { name: language.get("COMMAND_SHOWCONF_HEADER_WELCOME"), value: welcomeLines.join("\n") },
                         { name: language.get("COMMAND_SHOWCONF_HEADER_EVENTS"), value: eventsValue },
                         {
                             name: language.get("COMMAND_SHOWCONF_HEADER_SUPPORTERS", totalSuppTier),

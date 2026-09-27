@@ -1578,35 +1578,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "enableWelcome",
-                        actionDesc: "Toggles the welcome message on/ off.",
-                        usage: ";setconf enableWelcome <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "welcomeMessage",
-                        actionDesc: "The welcome message to send if you have it enabled (Special variables below)",
-                        usage: ";setconf welcomeMessage <message>",
-                        args: {
-                            "{{user}}":  "gets replaced with the new user's name.",
-                            "{{userMention}}": "makes it mention the new user there."
-                        }
-                    },
-                    {
-                        action: "enablePart",
-                        actionDesc: "Toggles the parting message on/ off.",
-                        usage: ";setconf enablePart <true|false>",
-                        args: {}
-                    },
-                    {
-                        action: "partMessage",
-                        actionDesc: "The part message to send if you have it enabled (Special variables below)",
-                        usage: ";setconf partMessage <message>",
-                        args: {
-                            "{{user}}":  "gets replaced with the new user's name.",
-                        }
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <timezone>",
@@ -1756,15 +1727,12 @@ export default class extends Language {
             // Showconf Command
             COMMAND_SHOWCONF_TITLE: (serverName: string) => `Configuration for ${serverName}`,
             COMMAND_SHOWCONF_HEADER_GENERAL: "General",
-            COMMAND_SHOWCONF_HEADER_WELCOME: "Welcome / Part",
             COMMAND_SHOWCONF_HEADER_EVENTS: "Events",
             COMMAND_SHOWCONF_HEADER_SUPPORTERS: (tier: number) => (tier > 0 ? `Supporters (Combined tier: $${tier})` : "Supporters"),
             COMMAND_SHOWCONF_LABEL_ADMIN_ROLES: "Admin roles",
             COMMAND_SHOWCONF_LABEL_TIMEZONE: "Timezone",
             COMMAND_SHOWCONF_LABEL_LANGUAGE: "Language",
             COMMAND_SHOWCONF_LABEL_GAME_DATA: "Game data",
-            COMMAND_SHOWCONF_LABEL_WELCOME: "Welcome",
-            COMMAND_SHOWCONF_LABEL_PART: "Part",
             COMMAND_SHOWCONF_LABEL_ANNOUNCE_CHAN: "Announce channel",
             COMMAND_SHOWCONF_LABEL_EVENT_PAGES: "Event pages",
             COMMAND_SHOWCONF_LABEL_SHARDTIME_VERTICAL: "Shardtime vertical",

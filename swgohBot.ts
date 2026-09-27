@@ -39,7 +39,7 @@ const client = new Client({
         },
     }),
     // Default sweepers only handle threads. The member cache is otherwise unbounded and never read
-    // directly (events supply the member, interactions supply interaction.member), so sweep it hourly.
+    // directly (interactions supply interaction.member), so sweep it hourly.
     // The bot's own member is preserved by the filter.
     sweepers: {
         ...Options.DefaultSweeperSettings,
