@@ -129,7 +129,7 @@ function setupBackgroundTasks(client: Client<true>, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
     if (shardId === 0) {
         if (env.PREMIUM) {
-            setupDataUpdateTasks(shardId);
+            setupDataUpdateTasks(client, shardId);
         }
     }
 
@@ -142,7 +142,7 @@ function setupBackgroundTasks(client: Client<true>, shardId: number): void {
 /**
  * Sets up periodic data update tasks (arena ranks, guild tickets, etc.)
  */
-function setupDataUpdateTasks(shardId: number): void {
+function setupDataUpdateTasks(client: Client<true>, shardId: number): void {
     let isRunning = false;
     let lastGuildsUpdateHour = -1;
 
@@ -184,6 +184,7 @@ function setupDataUpdateTasks(shardId: number): void {
                 // Sync Patreon supporter info every 15 minutes
                 if (currentMinute % 15 === 0) {
                     await patreonSync.updatePatrons();
+                    await patreonSync.clearDepartedBonusServers(client.rest);
                 }
 
                 // Run hourly - guard against re-running if isRunning resets within the same minute

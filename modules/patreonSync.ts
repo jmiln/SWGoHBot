@@ -1,3 +1,4 @@
+import { RESTJSONErrorCodes as APIErrors, DiscordAPIError, type REST, Routes } from "discord.js";
 import { env } from "../config/config.ts";
 import type { PatreonAPIUser, PatreonMember, UserConfig } from "../types/types.ts";
 import cache from "./cache.ts";
@@ -240,4 +241,39 @@ async function updatePatrons() {
     }
 }
 
-export default { updatePatrons };
+// Polls instead of using guildMemberRemove, which needs the privileged GuildMembers intent; the
+// single-member lookup does not. Only Unknown Member clears: any other failure proves nothing.
+export async function clearDepartedBonusServers(rest: Pick<REST, "get">): Promise<void> {
+    const bonusUsers = await cache.get<Pick<UserConfig, "id" | "bonusServer">>(
+        env.MONGODB_SWGOHBOT_DB,
+        "users",
+        { bonusServer: { $nin: [null, ""] } },
+        { id: 1, bonusServer: 1 },
+    );
+
+    for (const { id, bonusServer } of bonusUsers) {
+        if (!bonusServer) continue;
+        try {
+            await rest.get(Routes.guildMember(bonusServer, id));
+            continue;
+        } catch (err) {
+            if (!(err instanceof DiscordAPIError && err.code === APIErrors.UnknownMember)) {
+                logger.error(
+                    `[patreonSync/clearDepartedBonusServers] Could not check ${id} in ${bonusServer}: ${err instanceof Error ? err.message : String(err)}`,
+                );
+                continue;
+            }
+        }
+
+        const { user: userRes, guild: guildRes } = await clearSupporterInfo({ userId: id });
+        if (userRes?.error || guildRes?.error) {
+            logger.error(
+                `[patreonSync/clearDepartedBonusServers] Issue clearing bonus server ${bonusServer} for ${id}\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`,
+            );
+        } else {
+            logger.log(`[patreonSync/clearDepartedBonusServers] Cleared bonus server ${bonusServer} for ${id}, who has left it`);
+        }
+    }
+}
+
+export default { updatePatrons, clearDepartedBonusServers };

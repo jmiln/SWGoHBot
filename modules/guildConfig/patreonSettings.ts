@@ -187,6 +187,14 @@ export async function clearSupporterInfo({ userId }: { userId: string }): Promis
     return resOut;
 }
 
+// Clear the bonusServer of every user pointing at the given guild, for when the bot has left it
+export async function clearBonusServersFor({ guildId }: { guildId: string }): Promise<number> {
+    const res = await cache.putMany<UserConfig>(env.MONGODB_SWGOHBOT_DB, "users", [
+        { updateMany: { filter: { bonusServer: guildId }, update: { $set: { bonusServer: null } } } },
+    ]);
+    return res.modifiedCount;
+}
+
 // Go through each server that has anyone in their supports array, and make sure those users still have it set to that server
 export async function ensureGuildSupporter() {
     // Grab all guilds' patreonSettings that have someone listed

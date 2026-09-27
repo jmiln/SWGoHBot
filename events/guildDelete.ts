@@ -1,4 +1,5 @@
 import { Events, type Guild } from "discord.js";
+import { clearBonusServersFor } from "../modules/guildConfig/patreonSettings.ts";
 import { deleteGuildConfig } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 
@@ -10,6 +11,7 @@ export default {
 
         // The bot isn't in the server anymore, so get rid of the config
         await deleteGuildConfig({ guildId: guild.id });
+        await clearBonusServersFor({ guildId: guild.id });
 
         // Log that the bot left
         logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);

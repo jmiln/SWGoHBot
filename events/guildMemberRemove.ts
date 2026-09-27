@@ -1,9 +1,7 @@
 import { type Client, Events, type GuildMember } from "discord.js";
 import { announceMsg } from "../modules/functions.ts";
-import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
-import userReg from "../modules/users.ts";
 
 export default {
     name: Events.GuildMemberRemove,
@@ -32,14 +30,5 @@ export default {
                 );
             }
         }
-
-        // Check if user has this server marked as their bonus server
-        const userConf = await userReg.getUser(member.id);
-        if (!userConf?.bonusServer || userConf.bonusServer !== member.guild.id) {
-            return;
-        }
-
-        // Remove bonus server setting
-        await clearSupporterInfo({ userId: member.id });
     },
 };
