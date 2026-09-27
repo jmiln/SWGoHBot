@@ -8,6 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
 4.0.0 and 3.0.0 predate that and stay as written.
 
+## [5.0.0] - 2026-09-27
+
+### Fixed
+
+- Buncha little cleanups and small fixes
+- Old records not expiring, and remove unused fields
+
+### Refactoring
+
+- Move patreon guild config cleanup from event to schedule
+
+### Chores
+
+- Package updates
+
+### Unclassified (no conventional prefix)
+
+-   feat!: Remove welcome and leave messages
+
 ## [4.8.0] - 2026-09-23
 
 ### Fixed
