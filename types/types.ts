@@ -271,6 +271,7 @@ export interface UserConfig {
         tickets?: number;
         updateType?: string;
         nextChallengesRefresh?: string;
+        lastSentRefresh?: string;
         showMax?: boolean;
     };
     // null is written to explicitly clear the linked server (forces a MongoDB $set overwrite)

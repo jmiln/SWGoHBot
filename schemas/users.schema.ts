@@ -108,6 +108,7 @@ export const UserConfigSchema = z.object({
             tickets: z.number(),
             updateType: z.string(),
             nextChallengesRefresh: z.string(),
+            lastSentRefresh: z.string(),
             showMax: z.boolean(),
         })
         .partial()

@@ -1134,7 +1134,9 @@ class PatreonFuncs {
     }
 
     // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
-    async guildTickets(): Promise<void> {
+    //  - Called every minute so a "msg" watcher's pre-reset window can't fall between two checks;
+    //    "update" watchers edit their message on the 5-minute checks only (includeUpdateWatchers)
+    async guildTickets({ includeUpdateWatchers = true }: { includeUpdateWatchers?: boolean } = {}): Promise<void> {
         const patrons = await this.getActivePatrons();
         const eligibleIds = patrons.filter((p) => p.discordID && p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
         const userMap = await userReg.getUsersByIds(eligibleIds);
@@ -1156,6 +1158,7 @@ class PatreonFuncs {
             //     msgId: messageID,                    // The ID for the saved message, if we're updating it each time
             //     // NOTE This can help it not be checked constantly, for the msg type, so less game pulls
             //     nextChallengesRefresh: refreshTime,  // The last rawGuild.nextChallengesRefresh that was checked
+            //     lastSentRefresh: refreshTime,        // The nextChallengesRefresh a "msg" watcher last sent for, so it sends once per reset
             // }
 
             // Get the user's saved data
@@ -1170,10 +1173,13 @@ class PatreonFuncs {
 
             const MAX_TICKETS = gt?.tickets || 600;
             const isMsgType = gt?.updateType === "msg";
+            if (!isMsgType && !includeUpdateWatchers) continue;
 
             // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
+            // Only while the saved reset is still ahead: once it passes, the fetch is what learns the next one.
             const savedRefreshMs = Number.parseInt(gt.nextChallengesRefresh ?? "", 10) * 1000;
-            if (isMsgType && savedRefreshMs && !this.isWithinTime(savedRefreshMs, nowTime, 1, 5) && savedRefreshMs > nowTime) {
+            const alreadySentForReset = !!gt.lastSentRefresh && gt.lastSentRefresh === gt.nextChallengesRefresh;
+            if (isMsgType && savedRefreshMs > nowTime && (alreadySentForReset || !this.isWithinTime(savedRefreshMs, nowTime, 1, 5))) {
                 continue;
             }
 
@@ -1271,8 +1277,13 @@ class PatreonFuncs {
             )) as Message;
             // A whole-doc updateUser would `$set` the snapshot loaded before the BACKGROUND-priority
             // guild fetch, rolling back the markers and ranks arenaTick has written since.
-            if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
-                await userReg.updateUserFields(patron.discordID, { "guildTickets.msgId": sentMsg.id });
+            if (sentMsg) {
+                const sentFields: Record<string, string> = {};
+                if (gt.msgId !== sentMsg.id) sentFields["guildTickets.msgId"] = sentMsg.id;
+                if (isMsgType) sentFields["guildTickets.lastSentRefresh"] = rawGuild.nextChallengesRefresh;
+                if (Object.keys(sentFields).length) {
+                    await userReg.updateUserFields(patron.discordID, sentFields);
+                }
             }
         }
     }

@@ -176,10 +176,11 @@ function setupDataUpdateTasks(client: Client<true>, shardId: number): void {
                 const currentHour = now.getHours();
 
                 // Run every 5 minutes
-                if (currentMinute % 5 === 0) {
+                const isFiveMinuteTick = currentMinute % 5 === 0;
+                if (isFiveMinuteTick) {
                     await patreonFuncs.shardTimes();
-                    await patreonFuncs.guildTickets();
                 }
+                await patreonFuncs.guildTickets({ includeUpdateWatchers: isFiveMinuteTick });
 
                 // Sync Patreon supporter info every 15 minutes
                 if (currentMinute % 15 === 0) {

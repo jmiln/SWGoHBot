@@ -2625,6 +2625,41 @@ describe("PatreonFuncs Module", () => {
             );
             assert.strictEqual(saved?.guildTickets?.msgId, "gt-msg-1", "guildTickets must still persist the message id");
         });
+
+        it("sends a msg-type watcher's list once per reset across repeated checks in the window", async (t) => {
+            const nextReset = resetInSeconds(3 * constants.minMS);
+            await saveWatcher({ updateType: "msg", nextChallengesRefresh: nextReset });
+            const fetch = t.mock.method(swgohAPI, "getRawGuild", async () => guildWithReset(nextReset));
+
+            await gtFuncs.guildTickets();
+            await gtFuncs.guildTickets();
+
+            assert.strictEqual(sentEmbeds.length, 1, "a second check inside the same window must not message again");
+            assert.strictEqual(fetch.mock.callCount(), 1, "a reset already sent for should not be fetched again");
+        });
+
+        it("fetches the next reset once the one it already sent for has passed", async (t) => {
+            const passedReset = resetInSeconds(-10 * constants.minMS);
+            const nextReset = resetInSeconds(22 * constants.hrMS);
+            await saveWatcher({ updateType: "msg", nextChallengesRefresh: passedReset, lastSentRefresh: passedReset });
+            const fetch = t.mock.method(swgohAPI, "getRawGuild", async () => guildWithReset(nextReset));
+
+            await gtFuncs.guildTickets();
+
+            assert.strictEqual(fetch.mock.callCount(), 1, "a passed reset should be refetched, not treated as already sent");
+            const saved = await loadWatcher();
+            assert.strictEqual(saved?.guildTickets?.nextChallengesRefresh, nextReset, "the next reset time should be persisted");
+        });
+
+        it("leaves update-type watchers alone on checks between their 5-minute refreshes", async (t) => {
+            await saveWatcher({ updateType: "update" });
+            const fetch = t.mock.method(swgohAPI, "getRawGuild", async () => guildWithReset(resetInSeconds(2 * constants.hrMS)));
+
+            await gtFuncs.guildTickets({ includeUpdateWatchers: false });
+
+            assert.strictEqual(fetch.mock.callCount(), 0, "an update watcher should only be fetched on its own cadence");
+            assert.strictEqual(sentEmbeds.length, 0, "and its message should not be edited");
+        });
     });
 });
 
