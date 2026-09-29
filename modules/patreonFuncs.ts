@@ -1172,8 +1172,8 @@ class PatreonFuncs {
             const isMsgType = gt?.updateType === "msg";
 
             // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
-            const refresh = Number.parseInt(gt.nextChallengesRefresh ?? "", 10);
-            if (isMsgType && refresh && !this.isWithinTime(refresh, nowTime, 1, 5) && refresh > nowTime) {
+            const savedRefreshMs = Number.parseInt(gt.nextChallengesRefresh ?? "", 10) * 1000;
+            if (isMsgType && savedRefreshMs && !this.isWithinTime(savedRefreshMs, nowTime, 1, 5) && savedRefreshMs > nowTime) {
                 continue;
             }
 
@@ -1195,8 +1195,10 @@ class PatreonFuncs {
             }
 
             // Set the nextChallengesRefresh to avoid extra api calls in the future
+            // Saved on its own rather than with msgId: a "msg" watcher sends nothing on most
+            // fetches, and the skip above only works once the post-reset value is stored.
             if (gt?.nextChallengesRefresh !== rawGuild?.nextChallengesRefresh && rawGuild?.nextChallengesRefresh) {
-                gt.nextChallengesRefresh = rawGuild.nextChallengesRefresh;
+                await userReg.updateUserFields(patron.discordID, { "guildTickets.nextChallengesRefresh": rawGuild.nextChallengesRefresh });
             }
 
             if (!rawGuild?.roster?.length || !rawGuild?.profile) {
@@ -1267,10 +1269,10 @@ class PatreonFuncs {
                 gt.channel,
                 outEmbed,
             )) as Message;
+            // A whole-doc updateUser would `$set` the snapshot loaded before the BACKGROUND-priority
+            // guild fetch, rolling back the markers and ranks arenaTick has written since.
             if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
-                gt.msgId = sentMsg.id;
-                user.guildTickets = gt;
-                await userReg.updateUser(patron.discordID, user);
+                await userReg.updateUserFields(patron.discordID, { "guildTickets.msgId": sentMsg.id });
             }
         }
     }

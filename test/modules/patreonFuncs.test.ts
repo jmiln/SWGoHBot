@@ -22,6 +22,7 @@ import {
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
 import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
+import type { RawGuild } from "../../types/swapi_types.ts";
 import type {
     ActivePatron,
     ArenaPlayer,
@@ -2495,6 +2496,134 @@ describe("PatreonFuncs Module", () => {
             );
             assert.strictEqual(entry?.lastCharAnnounced, 12, "shardTimes must not roll back the last-announced rank");
             assert.strictEqual(saved?.arenaWatch?.payout?.char?.msgID, "st-msg-1", "shardTimes must still persist the payout msgID");
+        });
+    });
+
+    describe("guildTickets()", () => {
+        const GT_ALLY_CODE = 666555444;
+        const GT_USER_ID = "guildtickets_test_user";
+        let gtFuncs: PatreonFuncs;
+        let sentEmbeds: { description?: string }[];
+
+        // Comlink reports nextChallengesRefresh as epoch seconds, in a string
+        const resetInSeconds = (offsetMs: number) => String(Math.floor((Date.now() + offsetMs) / 1000));
+
+        const guildWithReset = (nextChallengesRefresh: string) =>
+            ({
+                profile: { name: "Ticket Guild" },
+                nextChallengesRefresh,
+                roster: [{ playerName: "Short On Tickets", memberContribution: { 2: { currentValue: "150" } } }],
+            }) as unknown as RawGuild;
+
+        const saveWatcher = async (guildTickets: NonNullable<UserConfig["guildTickets"]>, extra: Record<string, unknown> = {}) => {
+            const patron: ActivePatron = { discordID: GT_USER_ID, amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: GT_USER_ID }, patron);
+            const user = {
+                id: GT_USER_ID,
+                accounts: [],
+                ...extra,
+                guildTickets: { enabled: true, allyCode: GT_ALLY_CODE, channel: "gt-chan", ...guildTickets },
+            } as unknown as UserConfig;
+            await cache.put(testDbName, "users", { id: GT_USER_ID }, user);
+        };
+
+        const loadWatcher = async () =>
+            (await client.db(testDbName).collection("users").findOne({ id: GT_USER_ID })) as unknown as UserConfig | null;
+
+        before(() => {
+            sentEmbeds = [];
+            const fakeChannel = {
+                id: "gt-chan",
+                type: 0,
+                guild: {},
+                permissionsFor: () => ({ has: () => true }),
+                send: async (payload: { embeds: { description?: string }[] }) => {
+                    sentEmbeds.push(...payload.embeds);
+                    return { id: "gt-msg-1" };
+                },
+            };
+            const channelsCache = {
+                get: (id: string) => (id === "gt-chan" ? fakeChannel : undefined),
+                find: (pred: (chan: typeof fakeChannel) => boolean) => (pred(fakeChannel) ? fakeChannel : undefined),
+            };
+            const gtClient = {
+                user: { id: "bot123", username: "TestBot" },
+                channels: { cache: channelsCache },
+                shard: {
+                    broadcastEval: async (fn: (client: unknown, ctx: unknown) => unknown, opts: { context: unknown }) => [
+                        await fn({ channels: { cache: channelsCache }, user: { id: "bot123" } }, opts.context),
+                    ],
+                },
+            } as unknown as Client<true>;
+            gtFuncs = new PatreonFuncs();
+            gtFuncs.init(gtClient);
+        });
+
+        beforeEach(async () => {
+            sentEmbeds.length = 0;
+            await client.db(testDbName).collection("users").deleteMany({ id: GT_USER_ID });
+        });
+
+        after(async () => {
+            await client.db(testDbName).collection("users").deleteMany({ id: GT_USER_ID });
+        });
+
+        it("skips the guild fetch for a msg-type watcher whose saved reset is hours away", async (t) => {
+            const nextReset = resetInSeconds(2 * constants.hrMS);
+            await saveWatcher({ updateType: "msg", nextChallengesRefresh: nextReset });
+            const fetch = t.mock.method(swgohAPI, "getRawGuild", async () => guildWithReset(nextReset));
+
+            await gtFuncs.guildTickets();
+
+            assert.strictEqual(fetch.mock.callCount(), 0, "a reset two hours out should not trigger a guild fetch");
+        });
+
+        it("saves the next reset from a fetch that sends nothing, so later ticks can skip", async (t) => {
+            const nextReset = resetInSeconds(2 * constants.hrMS);
+            await saveWatcher({ updateType: "msg", nextChallengesRefresh: resetInSeconds(-22 * constants.hrMS) });
+            t.mock.method(swgohAPI, "getRawGuild", async () => guildWithReset(nextReset));
+
+            await gtFuncs.guildTickets();
+
+            assert.strictEqual(sentEmbeds.length, 0, "no message is due two hours before reset");
+            const saved = await loadWatcher();
+            assert.strictEqual(saved?.guildTickets?.nextChallengesRefresh, nextReset, "the fetched reset time should be persisted");
+        });
+
+        it("still fetches and sends a msg-type watcher's list inside the pre-reset window", async (t) => {
+            const nextReset = resetInSeconds(3 * constants.minMS);
+            await saveWatcher({ updateType: "msg", nextChallengesRefresh: nextReset });
+            t.mock.method(swgohAPI, "getRawGuild", async () => guildWithReset(nextReset));
+
+            await gtFuncs.guildTickets();
+
+            assert.strictEqual(sentEmbeds.length, 1, "expected the pre-reset ticket list");
+            const description = sentEmbeds[0]?.description ?? "";
+            assert.ok(description.includes("Short On Tickets"), `expected the short member listed, got: ${description}`);
+        });
+
+        it("persists the message id without rolling back arena markers written during the guild fetch", async (t) => {
+            await saveWatcher(
+                { updateType: "update" },
+                { arenaWatch: { allyCodes: [{ allyCode: GT_ALLY_CODE, mention: null, poOffset: 0 }] } },
+            );
+            t.mock.method(swgohAPI, "getRawGuild", async () => {
+                await client
+                    .db(testDbName)
+                    .collection("users")
+                    .updateOne({ id: GT_USER_ID }, { $set: { "arenaWatch.allyCodes.0.alerted": { charWarn: 1234, charResult: 5678 } } });
+                return guildWithReset(resetInSeconds(2 * constants.hrMS));
+            });
+
+            await gtFuncs.guildTickets();
+
+            const saved = await loadWatcher();
+            assert.deepStrictEqual(
+                saved?.arenaWatch?.allyCodes?.[0]?.alerted,
+                { charWarn: 1234, charResult: 5678 },
+                "guildTickets must not roll back the payout markers arenaTick wrote",
+            );
+            assert.strictEqual(saved?.guildTickets?.msgId, "gt-msg-1", "guildTickets must still persist the message id");
         });
     });
 });

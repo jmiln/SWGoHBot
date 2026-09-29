@@ -180,6 +180,9 @@ export default class GuildTickets extends Command {
                     // Invalid code
                     return super.error(interaction, language.get("BASE_ALLY_CODE_NO_MATCH"));
                 }
+                // The saved reset belongs to the old guild, and guildTickets() skips fetching until
+                // it is due, so keeping it could skip past the new guild's reset entirely.
+                if (gt.allyCode !== allyCode) gt.nextChallengesRefresh = "";
                 gt.allyCode = allyCode;
                 updatedArr.push(`Ally Code: **${allyCode}**`);
             }
