@@ -667,11 +667,16 @@ class PatreonFuncs {
                     return false;
                 })) || userChanged;
             if (userChanged) {
+                // Only the two fields the consumers write: guildTickets() runs on its own interval
+                // and saves into this same user mid-tick, which a whole-doc write would roll back
+                const ownedFields: Record<string, unknown> = {};
+                if (user.arenaWatch) ownedFields.arenaWatch = user.arenaWatch;
+                if (user.arenaAlert) ownedFields.arenaAlert = user.arenaAlert;
                 await userReg
-                    .updateUser(patron.discordID, user)
+                    .updateUserFields(patron.discordID, ownedFields)
                     .catch((err) =>
                         logger.error(
-                            `[arenaTick] updateUser error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
+                            `[arenaTick] updateUserFields error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                         ),
                     );
             }
@@ -1140,10 +1145,10 @@ class PatreonFuncs {
         const patrons = await this.getActivePatrons();
         const eligibleIds = patrons.filter((p) => p.discordID && p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
         const userMap = await userReg.getUsersByIds(eligibleIds);
-        const nowTime = Date.now();
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
+            const nowTime = Date.now();
 
             // This is what will be in the user.guildTickets
             // gt = {
@@ -1203,8 +1208,15 @@ class PatreonFuncs {
             // Set the nextChallengesRefresh to avoid extra api calls in the future
             // Saved on its own rather than with msgId: a "msg" watcher sends nothing on most
             // fetches, and the skip above only works once the post-reset value is stored.
+            // The fetch can queue long enough for /guildtickets to repoint the watcher, and the old
+            // guild's results must not land on the new one
+            const stillWatchingFetchedGuild = { "guildTickets.allyCode": gt.allyCode };
             if (gt?.nextChallengesRefresh !== rawGuild?.nextChallengesRefresh && rawGuild?.nextChallengesRefresh) {
-                await userReg.updateUserFields(patron.discordID, { "guildTickets.nextChallengesRefresh": rawGuild.nextChallengesRefresh });
+                await userReg.updateUserFields(
+                    patron.discordID,
+                    { "guildTickets.nextChallengesRefresh": rawGuild.nextChallengesRefresh },
+                    stillWatchingFetchedGuild,
+                );
             }
 
             if (!rawGuild?.roster?.length || !rawGuild?.profile) {
@@ -1282,7 +1294,7 @@ class PatreonFuncs {
                 if (gt.msgId !== sentMsg.id) sentFields["guildTickets.msgId"] = sentMsg.id;
                 if (isMsgType) sentFields["guildTickets.lastSentRefresh"] = rawGuild.nextChallengesRefresh;
                 if (Object.keys(sentFields).length) {
-                    await userReg.updateUserFields(patron.discordID, sentFields);
+                    await userReg.updateUserFields(patron.discordID, sentFields, stillWatchingFetchedGuild);
                 }
             }
         }

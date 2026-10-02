@@ -149,6 +149,9 @@ function setupDataUpdateTasks(client: Client<true>, shardId: number): void {
     // Separate from isRunning below: arenaTick must land on a specific minute, and one dropped
     // behind a slow task recurs daily, since the payout cycle and poll interval are multiples.
     let arenaTickRunning = false;
+    // Also separate: a "msg" watcher's send window is a few minutes wide, and the hourly
+    // guildsUpdate can hold isRunning for longer than that
+    let guildTicketsRunning = false;
 
     setTimeout(() => {
         const arenaTickIntervalId = setInterval(async () => {
@@ -167,6 +170,23 @@ function setupDataUpdateTasks(client: Client<true>, shardId: number): void {
 
         activeIntervals.push(arenaTickIntervalId);
 
+        const guildTicketsIntervalId = setInterval(async () => {
+            if (guildTicketsRunning) return;
+            guildTicketsRunning = true;
+            try {
+                // "update" watchers edit their message on the 5-minute ticks only
+                await patreonFuncs.guildTickets({ includeUpdateWatchers: new Date().getMinutes() % 5 === 0 });
+            } catch (err) {
+                const message = err instanceof Error ? err.message : String(err);
+                logger.error(`[${shardId}] Error in guildTickets: ${message}`);
+                logger.error(err instanceof Error ? err.stack : String(err));
+            } finally {
+                guildTicketsRunning = false;
+            }
+        }, MINUTE_MS);
+
+        activeIntervals.push(guildTicketsIntervalId);
+
         const intervalId = setInterval(async () => {
             if (isRunning) return;
             isRunning = true;
@@ -176,11 +196,9 @@ function setupDataUpdateTasks(client: Client<true>, shardId: number): void {
                 const currentHour = now.getHours();
 
                 // Run every 5 minutes
-                const isFiveMinuteTick = currentMinute % 5 === 0;
-                if (isFiveMinuteTick) {
+                if (currentMinute % 5 === 0) {
                     await patreonFuncs.shardTimes();
                 }
-                await patreonFuncs.guildTickets({ includeUpdateWatchers: isFiveMinuteTick });
 
                 // Sync Patreon supporter info every 15 minutes
                 if (currentMinute % 15 === 0) {

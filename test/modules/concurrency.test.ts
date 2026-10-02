@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import { eachLimit } from "../../modules/utils/concurrency.ts";
+import { eachLimit, TimeoutError, withTimeout } from "../../modules/utils/concurrency.ts";
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -115,5 +115,23 @@ describe("eachLimit", () => {
             eachLimit([1, 2], 2.5, async () => {}),
             RangeError,
         );
+    });
+});
+
+describe("withTimeout", () => {
+    it("resolves with the value when the promise settles in time", async () => {
+        assert.strictEqual(await withTimeout(Promise.resolve("sent"), 50, "event send"), "sent");
+    });
+
+    it("passes the promise's own rejection through", async () => {
+        await assert.rejects(withTimeout(Promise.reject(new Error("Missing Access")), 50, "event send"), /Missing Access/);
+    });
+
+    it("rejects with a TimeoutError naming the operation when the promise never settles", async () => {
+        await assert.rejects(withTimeout(new Promise(() => {}), 20, "event send"), (err: unknown) => {
+            assert.ok(err instanceof TimeoutError, `expected a TimeoutError, got: ${err}`);
+            assert.match(err.message, /event send timed out after 20ms/);
+            return true;
+        });
     });
 });

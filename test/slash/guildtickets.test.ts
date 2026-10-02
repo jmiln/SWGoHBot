@@ -43,7 +43,7 @@ describe("GuildTickets", () => {
         assertErrorReply(interaction, "BASE_DATA_NOT_FOUND");
     });
 
-    describe("set allycode", () => {
+    describe("set", () => {
         const GT_SLASH_USER_ID = "guildtickets_slash_user";
 
         beforeEach(async () => {
@@ -80,6 +80,69 @@ describe("GuildTickets", () => {
             assert.ok(
                 !saved?.guildTickets?.nextChallengesRefresh,
                 `expected the old reset time cleared, got: ${saved?.guildTickets?.nextChallengesRefresh}`,
+            );
+        });
+
+        it("saves the change without rolling back what the background jobs wrote during the ally code lookup", async (t) => {
+            await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: GT_SLASH_USER_ID }, {
+                id: GT_SLASH_USER_ID,
+                accounts: [],
+                arenaWatch: { allyCodes: [{ allyCode: 111222333, mention: null, poOffset: 0 }] },
+                guildTickets: { enabled: true, allyCode: 111222333, channel: "gt-chan", updateType: "update" },
+            } as unknown as UserConfig);
+            t.mock.method(patreonFuncs, "getPatronUser", async () => ({ amount_cents: 100 }) as PatronUser);
+            t.mock.method(swgohAPI, "unitStats", async () => {
+                await cache.put(
+                    env.MONGODB_SWGOHBOT_DB,
+                    "users",
+                    { id: GT_SLASH_USER_ID },
+                    { "arenaWatch.allyCodes.0.alerted": { charWarn: 1234 }, "guildTickets.msgId": "gt-msg-from-tick" },
+                    false,
+                    false,
+                );
+                return [{ allyCode: 444555666 }];
+            });
+
+            const interaction = createMockInteraction({
+                user: { id: GT_SLASH_USER_ID, username: "TicketWatcher" },
+                optionsData: { _subcommand: "set", allycode: "444555666" },
+            });
+            await new GuildTickets().run(createCommandContext({ interaction }));
+
+            const saved = await userReg.getUser(GT_SLASH_USER_ID);
+            assert.strictEqual(saved?.guildTickets?.allyCode, 444555666, "the new ally code should be saved");
+            assert.deepStrictEqual(
+                saved?.arenaWatch?.allyCodes?.[0]?.alerted,
+                { charWarn: 1234 },
+                "arenaTick's payout marker must survive",
+            );
+            assert.strictEqual(saved?.guildTickets?.msgId, "gt-msg-from-tick", "the message id guildTickets() saved must survive");
+        });
+
+        it("saves a first-time setup with the default settings filled in", async (t) => {
+            await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: GT_SLASH_USER_ID }, {
+                id: GT_SLASH_USER_ID,
+                accounts: [],
+            } as unknown as UserConfig);
+            t.mock.method(patreonFuncs, "getPatronUser", async () => ({ amount_cents: 100 }) as PatronUser);
+
+            const interaction = createMockInteraction({
+                user: { id: GT_SLASH_USER_ID, username: "TicketWatcher" },
+                optionsData: { _subcommand: "set", enabled: true },
+            });
+            await new GuildTickets().run(createCommandContext({ interaction }));
+
+            const saved = await userReg.getUser(GT_SLASH_USER_ID);
+            assert.deepStrictEqual(
+                {
+                    enabled: saved?.guildTickets?.enabled,
+                    sortBy: saved?.guildTickets?.sortBy,
+                    tickets: saved?.guildTickets?.tickets,
+                    updateType: saved?.guildTickets?.updateType,
+                    showMax: saved?.guildTickets?.showMax,
+                },
+                { enabled: true, sortBy: "name", tickets: 600, updateType: "msg", showMax: false },
+                "a new watcher should be saved with the defaults alongside the setting that was changed",
             );
         });
     });

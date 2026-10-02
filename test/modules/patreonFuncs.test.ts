@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import type { Client } from "discord.js";
-import type { MongoClient } from "mongodb";
+import type { Document, MongoClient } from "mongodb";
 import Language from "../../base/Language.ts";
 import { env } from "../../config/config.ts";
 import constants from "../../data/constants/constants.ts";
@@ -44,6 +44,19 @@ describe("PatreonFuncs Module", () => {
     // This has to use the same database as name as the main bot, since that's what the patreonFuncs module uses
     const testDbName = env.MONGODB_SWGOHBOT_DB;
 
+    // The jobs under test read every patron, so each test clears the last one's, scoped to the ids
+    // recorded here so another file's patrons are never touched
+    const writtenPatronIds = new Set<string>();
+    const putPatron = async (filter: { discordID: string }, patron: Document) => {
+        writtenPatronIds.add(filter.discordID);
+        await cache.put(testDbName, "patrons", filter, patron);
+    };
+    const clearWrittenPatrons = () =>
+        client
+            .db(testDbName)
+            .collection("patrons")
+            .deleteMany({ discordID: { $in: [...writtenPatronIds] } });
+
     before(async () => {
         // Get shared MongoDB client from testcontainer
         client = await getMongoClient();
@@ -76,7 +89,7 @@ describe("PatreonFuncs Module", () => {
 
     after(async () => {
         try {
-            await client.db(testDbName).collection("patrons").deleteMany({});
+            await clearWrittenPatrons();
         } catch (_e) {
             // Ignore cleanup errors
         }
@@ -90,7 +103,7 @@ describe("PatreonFuncs Module", () => {
     beforeEach(async () => {
         // Clear patrons collection before each test
         try {
-            await client.db(testDbName).collection("patrons").deleteMany({});
+            await clearWrittenPatrons();
         } catch (_e) {
             // Collection might not exist yet
         }
@@ -118,7 +131,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "123",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "123" }, patronData);
+            await putPatron({ discordID: "123" }, patronData);
 
             const result = await patreonFuncs.getPatronUser("123");
 
@@ -147,7 +160,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier1",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier1" }, patronData);
+            await putPatron({ discordID: "tier1" }, patronData);
 
             const result = await patreonFuncs.getPatronUser("tier1");
 
@@ -163,7 +176,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier5",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier5" }, patronData);
+            await putPatron({ discordID: "tier5" }, patronData);
 
             const result = await patreonFuncs.getPatronUser("tier5");
 
@@ -180,7 +193,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier10",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier10" }, patronData);
+            await putPatron({ discordID: "tier10" }, patronData);
 
             const result = await patreonFuncs.getPatronUser("tier10");
 
@@ -209,7 +222,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "cooldown_patron",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "cooldown_patron" }, patronData);
+            await putPatron({ discordID: "cooldown_patron" }, patronData);
 
             const defaultCooldown = await patreonFuncs.getPlayerCooldown("nonpatron");
             const patronCooldown = await patreonFuncs.getPlayerCooldown("cooldown_patron");
@@ -240,8 +253,8 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier10_cooldown",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier1_cooldown" }, tier1Patron);
-            await cache.put(testDbName, "patrons", { discordID: "tier10_cooldown" }, tier10Patron);
+            await putPatron({ discordID: "tier1_cooldown" }, tier1Patron);
+            await putPatron({ discordID: "tier10_cooldown" }, tier10Patron);
 
             const tier1Cooldown = await patreonFuncs.getPlayerCooldown("tier1_cooldown");
             const tier10Cooldown = await patreonFuncs.getPlayerCooldown("tier10_cooldown");
@@ -260,7 +273,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier0",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier0" }, patron);
+            await putPatron({ discordID: "tier0" }, patron);
 
             const result = await patreonFuncs.getPatronUser("tier0");
 
@@ -275,7 +288,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier1_range",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier1_range" }, patron);
+            await putPatron({ discordID: "tier1_range" }, patron);
 
             const result = await patreonFuncs.getPatronUser("tier1_range");
 
@@ -290,7 +303,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier5_range",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier5_range" }, patron);
+            await putPatron({ discordID: "tier5_range" }, patron);
 
             const result = await patreonFuncs.getPatronUser("tier5_range");
 
@@ -306,7 +319,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "tier10_range",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "tier10_range" }, patron);
+            await putPatron({ discordID: "tier10_range" }, patron);
 
             const result = await patreonFuncs.getPatronUser("tier10_range");
 
@@ -324,7 +337,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "active",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "active" }, activePatron);
+            await putPatron({ discordID: "active" }, activePatron);
 
             const result = await patreonFuncs.getPatronUser("active");
 
@@ -341,7 +354,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "exactly_1",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "exactly_1" }, patron);
+            await putPatron({ discordID: "exactly_1" }, patron);
 
             const result = await patreonFuncs.getPatronUser("exactly_1");
 
@@ -356,7 +369,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "exactly_5",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "exactly_5" }, patron);
+            await putPatron({ discordID: "exactly_5" }, patron);
 
             const result = await patreonFuncs.getPatronUser("exactly_5");
 
@@ -371,7 +384,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "exactly_10",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "exactly_10" }, patron);
+            await putPatron({ discordID: "exactly_10" }, patron);
 
             const result = await patreonFuncs.getPatronUser("exactly_10");
 
@@ -386,7 +399,7 @@ describe("PatreonFuncs Module", () => {
                 userId: "whale",
             };
 
-            await cache.put(testDbName, "patrons", { discordID: "whale" }, patron);
+            await putPatron({ discordID: "whale" }, patron);
 
             const result = await patreonFuncs.getPatronUser("whale");
 
@@ -824,7 +837,7 @@ describe("PatreonFuncs Module", () => {
 
         it("updates lastCharRank and lastShipRank in arenaPlayers for a patron with no arenaAlert config", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+            await putPatron({ discordID: "hist_test_user" }, patron);
 
             // User has accounts but NO arenaAlert - history/rank tracking should still run
             const user = {
@@ -867,7 +880,7 @@ describe("PatreonFuncs Module", () => {
 
         it("sends a rank drop DM when the rank worsens since the stored rank", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+            await putPatron({ discordID: "hist_test_user" }, patron);
 
             const user = {
                 id: "hist_test_user",
@@ -909,7 +922,7 @@ describe("PatreonFuncs Module", () => {
 
         it("still sends rank drop DMs without a payout footer when poUTCOffsetMinutes is missing", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+            await putPatron({ discordID: "hist_test_user" }, patron);
 
             const user = {
                 id: "hist_test_user",
@@ -956,7 +969,7 @@ describe("PatreonFuncs Module", () => {
 
         it("advances climb tracking when the rank improves", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+            await putPatron({ discordID: "hist_test_user" }, patron);
 
             const user = {
                 id: "hist_test_user",
@@ -998,7 +1011,7 @@ describe("PatreonFuncs Module", () => {
 
         it("adds changed ally codes to changedCodes and skips unchanged ones on a repeat run", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+            await putPatron({ discordID: "hist_test_user" }, patron);
 
             const user = {
                 id: "hist_test_user",
@@ -1047,7 +1060,7 @@ describe("PatreonFuncs Module", () => {
 
         it("refreshes the stored name when the API reports a rename", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+            await putPatron({ discordID: "hist_test_user" }, patron);
 
             const user = {
                 id: "hist_test_user",
@@ -1137,7 +1150,7 @@ describe("PatreonFuncs Module", () => {
 
         it("does not clobber the stored name with an empty API name", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+            await putPatron({ discordID: "hist_test_user" }, patron);
 
             const user = {
                 id: "hist_test_user",
@@ -1574,6 +1587,51 @@ describe("PatreonFuncs Module", () => {
                 -5,
                 "watch pass must compute the change from the tick-start rank, not the already-updated doc",
             );
+        });
+    });
+
+    describe("arenaTick() persistence", () => {
+        const AT_USER_ID = "arenatick_write_user";
+        const AT_ALLY_CODE = 888777655;
+
+        beforeEach(async () => {
+            await client.db(testDbName).collection("users").deleteMany({ id: AT_USER_ID });
+        });
+
+        after(async () => {
+            await client.db(testDbName).collection("users").deleteMany({ id: AT_USER_ID });
+        });
+
+        it("saves its arena markers without rolling back fields other jobs wrote during the tick", async (t) => {
+            await putPatron({ discordID: AT_USER_ID }, { discordID: AT_USER_ID, amount_cents: 100 });
+            await cache.put(testDbName, "users", { id: AT_USER_ID }, {
+                id: AT_USER_ID,
+                accounts: [],
+                arenaWatch: { allyCodes: [{ allyCode: AT_ALLY_CODE, mention: null, poOffset: 0 }] },
+                guildTickets: { enabled: true, allyCode: AT_ALLY_CODE, channel: "gt-chan", updateType: "msg", msgId: "old-msg" },
+            } as unknown as UserConfig);
+            t.mock.method(swgohAPI, "getPlayersArena", async () => []);
+            // Stands in for a watch pass that marked an alert this tick, while guildTickets(), on its
+            // own interval, saved a send that landed after arenaTick loaded the user
+            t.mock.method(patreonFuncs as any, "processShardPatron", async (_patron: ActivePatron, user: UserConfig) => {
+                await client
+                    .db(testDbName)
+                    .collection("users")
+                    .updateOne(
+                        { id: AT_USER_ID },
+                        { $set: { "guildTickets.msgId": "new-msg", "guildTickets.lastSentRefresh": "1790713776" } },
+                    );
+                const entry = user.arenaWatch.allyCodes[0];
+                if (entry) entry.alerted = { charWarn: 42 };
+                return true;
+            });
+
+            await patreonFuncs.arenaTick();
+
+            const saved = (await client.db(testDbName).collection("users").findOne({ id: AT_USER_ID })) as unknown as UserConfig | null;
+            assert.deepStrictEqual(saved?.arenaWatch?.allyCodes?.[0]?.alerted, { charWarn: 42 }, "arenaTick's own marker should be saved");
+            assert.strictEqual(saved?.guildTickets?.msgId, "new-msg", "guildTickets' message id must survive");
+            assert.strictEqual(saved?.guildTickets?.lastSentRefresh, "1790713776", "guildTickets' sent marker must survive");
         });
     });
 
@@ -2415,7 +2473,7 @@ describe("PatreonFuncs Module", () => {
 
         it("sends a payout schedule hydrated with name and rank from the arenaPlayers collection", async () => {
             const patron: ActivePatron = { discordID: ST_USER_ID, amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: ST_USER_ID }, patron);
+            await putPatron({ discordID: ST_USER_ID }, patron);
 
             const user = {
                 id: ST_USER_ID,
@@ -2453,7 +2511,7 @@ describe("PatreonFuncs Module", () => {
             // shardTimes (5 min) and arenaTick (1 min) each load their own copy of the user doc, so
             // shardTimes must write only msgIDs or it rolls back markers arenaTick set since.
             const patron: ActivePatron = { discordID: ST_USER_ID, amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: ST_USER_ID }, patron);
+            await putPatron({ discordID: ST_USER_ID }, patron);
 
             const user = {
                 id: ST_USER_ID,
@@ -2502,6 +2560,8 @@ describe("PatreonFuncs Module", () => {
     describe("guildTickets()", () => {
         const GT_ALLY_CODE = 666555444;
         const GT_USER_ID = "guildtickets_test_user";
+        const GT_SECOND_ALLY_CODE = 666555443;
+        const GT_SECOND_USER_ID = "guildtickets_test_user2";
         let gtFuncs: PatreonFuncs;
         let sentEmbeds: { description?: string }[];
 
@@ -2515,16 +2575,20 @@ describe("PatreonFuncs Module", () => {
                 roster: [{ playerName: "Short On Tickets", memberContribution: { 2: { currentValue: "150" } } }],
             }) as unknown as RawGuild;
 
-        const saveWatcher = async (guildTickets: NonNullable<UserConfig["guildTickets"]>, extra: Record<string, unknown> = {}) => {
-            const patron: ActivePatron = { discordID: GT_USER_ID, amount_cents: 100 };
-            await cache.put(testDbName, "patrons", { discordID: GT_USER_ID }, patron);
+        const saveWatcher = async (
+            guildTickets: NonNullable<UserConfig["guildTickets"]>,
+            extra: Record<string, unknown> = {},
+            userId = GT_USER_ID,
+        ) => {
+            const patron: ActivePatron = { discordID: userId, amount_cents: 100 };
+            await putPatron({ discordID: userId }, patron);
             const user = {
-                id: GT_USER_ID,
+                id: userId,
                 accounts: [],
                 ...extra,
                 guildTickets: { enabled: true, allyCode: GT_ALLY_CODE, channel: "gt-chan", ...guildTickets },
             } as unknown as UserConfig;
-            await cache.put(testDbName, "users", { id: GT_USER_ID }, user);
+            await cache.put(testDbName, "users", { id: userId }, user);
         };
 
         const loadWatcher = async () =>
@@ -2561,11 +2625,17 @@ describe("PatreonFuncs Module", () => {
 
         beforeEach(async () => {
             sentEmbeds.length = 0;
-            await client.db(testDbName).collection("users").deleteMany({ id: GT_USER_ID });
+            await client
+                .db(testDbName)
+                .collection("users")
+                .deleteMany({ id: { $in: [GT_USER_ID, GT_SECOND_USER_ID] } });
         });
 
         after(async () => {
-            await client.db(testDbName).collection("users").deleteMany({ id: GT_USER_ID });
+            await client
+                .db(testDbName)
+                .collection("users")
+                .deleteMany({ id: { $in: [GT_USER_ID, GT_SECOND_USER_ID] } });
         });
 
         it("skips the guild fetch for a msg-type watcher whose saved reset is hours away", async (t) => {
@@ -2659,6 +2729,63 @@ describe("PatreonFuncs Module", () => {
 
             assert.strictEqual(fetch.mock.callCount(), 0, "an update watcher should only be fetched on its own cadence");
             assert.strictEqual(sentEmbeds.length, 0, "and its message should not be edited");
+        });
+
+        it("judges each watcher's window against the time it is reached, not when the loop started", async (t) => {
+            const start = Date.now();
+            t.mock.timers.enable({ apis: ["Date"], now: start });
+            // The first watcher's fetch queues at BACKGROUND priority long enough for the second's
+            // reset, 12 minutes out when the loop starts, to come inside its 1-5 minute window
+            await saveWatcher({ updateType: "update" });
+            const secondReset = String(Math.floor((start + 12 * constants.minMS) / 1000));
+            await saveWatcher(
+                { updateType: "msg", allyCode: GT_SECOND_ALLY_CODE, nextChallengesRefresh: secondReset },
+                {},
+                GT_SECOND_USER_ID,
+            );
+            const fetchedAllyCodes: number[] = [];
+            t.mock.method(swgohAPI, "getRawGuild", async (allyCode: number) => {
+                fetchedAllyCodes.push(allyCode);
+                if (allyCode === GT_ALLY_CODE) {
+                    t.mock.timers.setTime(start + 10 * constants.minMS);
+                    return guildWithReset(String(Math.floor((start + 2 * constants.hrMS) / 1000)));
+                }
+                return guildWithReset(secondReset);
+            });
+
+            await gtFuncs.guildTickets();
+
+            assert.deepStrictEqual(
+                fetchedAllyCodes,
+                [GT_ALLY_CODE, GT_SECOND_ALLY_CODE],
+                "the second watcher is now due and should be fetched",
+            );
+            assert.strictEqual(sentEmbeds.length, 2, "the update edit, plus the second watcher's pre-reset list");
+        });
+
+        it("drops the fetched reset time when the watcher was repointed to another guild during the fetch", async (t) => {
+            await saveWatcher({ updateType: "msg", nextChallengesRefresh: resetInSeconds(-22 * constants.hrMS) });
+            t.mock.method(swgohAPI, "getRawGuild", async () => {
+                // What /guildtickets set allycode writes while this fetch for the old guild is queued
+                await client
+                    .db(testDbName)
+                    .collection("users")
+                    .updateOne(
+                        { id: GT_USER_ID },
+                        { $set: { "guildTickets.allyCode": GT_SECOND_ALLY_CODE, "guildTickets.nextChallengesRefresh": "" } },
+                    );
+                return guildWithReset(resetInSeconds(2 * constants.hrMS));
+            });
+
+            await gtFuncs.guildTickets();
+
+            const saved = await loadWatcher();
+            assert.strictEqual(saved?.guildTickets?.allyCode, GT_SECOND_ALLY_CODE, "the repoint should stand");
+            assert.strictEqual(
+                saved?.guildTickets?.nextChallengesRefresh,
+                "",
+                "the old guild's reset time must not land on the new guild, or the skip could pass its reset",
+            );
         });
     });
 });

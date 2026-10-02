@@ -136,6 +136,8 @@ export default class GuildTickets extends Command {
 
         // Whether it's setting values or view
         if (subCommand === "set") {
+            const isFirstSetup = !user.guildTickets;
+            const savedGt = { ...gt };
             const updatedArr: string[] = [];
             const channel = interaction.options.getChannel("channel");
             const isEnabled = interaction.options.getBoolean("enabled");
@@ -200,8 +202,12 @@ export default class GuildTickets extends Command {
             }
 
             if (updatedArr.length) {
-                user.guildTickets = gt;
-                await userReg.updateUser(userID, user);
+                // By path: arenaTick and guildTickets() write this user during the ally code lookup
+                const changedKeys = (Object.keys(gt) as (keyof typeof gt)[]).filter((key) => gt[key] !== savedGt[key]);
+                const fields = isFirstSetup
+                    ? { guildTickets: gt }
+                    : Object.fromEntries(changedKeys.map((key) => [`guildTickets.${key}`, gt[key]]));
+                await userReg.updateUserFields(userID, fields);
                 // The allycode branch may have deferred; route accordingly.
                 const settingsPayload = {
                     embeds: [

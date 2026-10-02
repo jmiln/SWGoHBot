@@ -6,9 +6,19 @@ import type { GuildConfigEvent, GuildConfigEventWithGuild } from "../types/guild
 import { formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 import logger from "./Logger.ts";
+import { withTimeout } from "./utils/concurrency.ts";
+
+// broadcastEval has no timeout, and a shard exiting mid-eval drops the pending reply without
+// rejecting it. Well under the minute between checks, so a lost send costs one retry, not a skip.
+const SEND_TIMEOUT_MS = 30_000;
 
 class EventFuncs {
     private client!: Client<true>;
+    private readonly sendTimeoutMs: number;
+
+    constructor({ sendTimeoutMs = SEND_TIMEOUT_MS }: { sendTimeoutMs?: number } = {}) {
+        this.sendTimeoutMs = sendTimeoutMs;
+    }
 
     // Time constants
     private readonly dayMS = 86400000;
@@ -24,15 +34,53 @@ class EventFuncs {
     }
 
     // Handle any events that have been found via the checker
+    //  - Each announce rewrites the guild's whole events array, so two in one guild running at once
+    //    would each save over the other's change. Guilds share nothing, so they still run in parallel.
+    //  - Never rejects: the caller fires this and forgets it, so a failure is logged here or nowhere.
+    //  - Countdowns write nothing, so they skip both the ordering and the in-progress guard below. A
+    //    skipped countdown would be lost: eventServe returns each one in a single minute only.
     async manageEvents(eventList: GuildConfigEventWithGuild[]): Promise<void> {
-        for (const event of eventList) {
+        const countdowns = eventList.filter((event) => event.isCD);
+        const dueEvents = eventList.filter((event) => !event.isCD);
+        const dueEventsByGuild = Map.groupBy(dueEvents, (event) => event.guildId);
+        await Promise.all([
+            ...countdowns.map((event) => this.handleEvent(event)),
+            ...[...dueEventsByGuild].map(([guildId, guildEvents]) => this.manageGuildEvents(guildId, guildEvents)),
+        ]);
+    }
+
+    // Guilds whose events from an earlier check are still being announced. The check runs every
+    // minute with nothing waiting on the last run, and until an announce reschedules its event the
+    // next check returns it as due again, so starting the guild twice would announce it twice.
+    // A skipped guild is picked up by the first check after its run finishes, which the send
+    // timeout bounds.
+    private readonly guildsInProgress = new Set<string>();
+
+    private async manageGuildEvents(guildId: string, guildEvents: GuildConfigEventWithGuild[]): Promise<void> {
+        if (this.guildsInProgress.has(guildId)) return;
+        this.guildsInProgress.add(guildId);
+        try {
+            for (const event of guildEvents) {
+                await this.handleEvent(event);
+            }
+        } finally {
+            this.guildsInProgress.delete(guildId);
+        }
+    }
+
+    private async handleEvent(event: GuildConfigEventWithGuild): Promise<void> {
+        try {
             if (event.isCD) {
                 // It's a countdown alert, so do that
-                this.countdownAnnounce(event);
+                await this.countdownAnnounce(event);
             } else {
                 // It's a full event, so announce that
-                this.eventAnnounce(event);
+                await this.eventAnnounce(event);
             }
+        } catch (err) {
+            logger.error(
+                `[eventFuncs/manageEvents] Failed to ${event.isCD ? "count down" : "announce"} event "${event.name}" in guild ${event.guildId} (channel ${event.channel}): ${err instanceof Error ? err.stack : String(err)}`,
+            );
         }
     }
 
@@ -52,43 +100,37 @@ class EventFuncs {
                 chan = guildConf.announceChan;
             }
             if (!this.client.shard) return;
-            try {
-                await this.client.shard.broadcastEval(
-                    async (client, { guildId, announceMessage, chan, guildConf }) => {
-                        const targetGuild = client.guilds.cache.get(guildId);
-                        if (!targetGuild) return;
+            const send = this.client.shard.broadcastEval(
+                async (client, { guildId, announceMessage, chan, guildConf }) => {
+                    const targetGuild = client.guilds.cache.get(guildId);
+                    if (!targetGuild) return;
 
-                        const announceChan = chan || guildConf?.announceChan || "";
-                        let channel = targetGuild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
-                        if (!channel) {
-                            channel = targetGuild.channels.cache.find((c) => c.name === announceChan);
-                        }
+                    const announceChan = chan || guildConf?.announceChan || "";
+                    let channel = targetGuild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
+                    if (!channel) {
+                        channel = targetGuild.channels.cache.find((c) => c.name === announceChan);
+                    }
 
-                        if (!channel?.isTextBased() || !("send" in channel)) return;
+                    if (!channel?.isTextBased() || !("send" in channel)) return;
 
-                        const botMember = targetGuild.members.me;
-                        if (!botMember) return;
+                    const botMember = targetGuild.members.me;
+                    if (!botMember) return;
 
-                        // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                        if (!channel.permissionsFor(botMember)?.has(3072n)) return;
+                    // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                    if (!channel.permissionsFor(botMember)?.has(3072n)) return;
 
-                        await (channel as import("discord.js").TextChannel).send(announceMessage);
+                    await (channel as import("discord.js").TextChannel).send(announceMessage);
+                },
+                {
+                    context: {
+                        guildId,
+                        announceMessage: messageToAnnounce,
+                        chan,
+                        guildConf,
                     },
-                    {
-                        context: {
-                            guildId,
-                            announceMessage: messageToAnnounce,
-                            chan,
-                            guildConf,
-                        },
-                    },
-                );
-            } catch (e) {
-                logger.error(
-                    `Broke trying to announce event with name/channel: ${event.name} (${event.channel}) \n${e instanceof Error ? e.stack : String(e)}`,
-                );
-                throw e;
-            }
+                },
+            );
+            await withTimeout(send, this.sendTimeoutMs, `Announcing event "${event.name}"`);
         }
     }
 

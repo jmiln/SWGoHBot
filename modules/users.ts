@@ -61,11 +61,11 @@ class UserReg {
      * otherwise roll back whatever another task wrote since their copy was loaded - updateUser
      * `$set`s every top-level field of the object it is given.
      */
-    async updateUserFields(userId: string, fields: Record<string, unknown>) {
+    async updateUserFields(userId: string, fields: Record<string, unknown>, onlyIfStillMatches: Record<string, unknown> = {}) {
         // No upsert: these are partial writes, so a user deleted since the caller loaded them must
         // stay deleted rather than be rebuilt from the id plus whichever paths this call happened
         // to carry. Nothing validates user documents on read, so such a record would go unnoticed.
-        await this.cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userId }, fields, true, false);
+        await this.cache.put(env.MONGODB_SWGOHBOT_DB, "users", { ...onlyIfStillMatches, id: userId }, fields, true, false);
     }
 
     async removeAllyCode(userId: string, allyCode: number) {
