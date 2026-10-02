@@ -22,7 +22,7 @@ const skillIdList = new Set<string>();
 async function init(workerData: {
     oldMembers: SWAPIPlayer[];
     updatedBare: SWAPIPlayer[];
-    specialAbilities: SWAPIUnitAbility[];
+    specialAbilities: Map<string, SWAPIUnitAbility>;
     chunkIx: number;
 }): Promise<void> {
     if (!workerData?.updatedBare) return;
@@ -81,7 +81,7 @@ async function init(workerData: {
 
                 if (newSkill?.tier && (!oldSkill || oldSkill.tier < newSkill.tier)) {
                     // Grab zeta/ omicron data for the ability if available
-                    const thisAbility = workerData.specialAbilities.find((abi) => abi.skillId === newSkill.id);
+                    const thisAbility = workerData.specialAbilities.get(newSkill.id);
                     if (thisAbility?.omicronTier) {
                         newSkill.isOmicron = true;
                         newSkill.omicronTier = thisAbility.omicronTier + 1;

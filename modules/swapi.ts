@@ -89,6 +89,7 @@ interface ModMapEntry {
 let modMap = await readJSON<Record<string, ModMapEntry>>(`${import.meta.dirname}/../data/modMap.json`);
 let unitMap = await readJSON<Record<string, UnitMapEntry>>(`${import.meta.dirname}/../data/unitMap.json`);
 let skillMap = await readJSON<Record<string, SkillMapEntry>>(`${import.meta.dirname}/../data/skillMap.json`);
+let specialAbilitiesBySkillId: Map<string, SWAPIUnitAbility> | null = null;
 
 const swapiDataDir = `${import.meta.dirname}/../data`;
 
@@ -111,6 +112,7 @@ export async function refreshMapFiles(dir: string = swapiDataDir): Promise<Refre
     modMap = modMapData;
     unitMap = unitMapData;
     skillMap = skillMapData;
+    specialAbilitiesBySkillId = null;
 
     return [
         { label: "modMap", total: Object.keys(modMap).length, noun: "keys" },
@@ -305,8 +307,6 @@ export class SwapiUserError extends Error {
 }
 
 class SWAPI {
-    private specialAbilityList: SWAPIUnitAbility[] | null = null;
-
     // Set the max cooldowns (In minutes)
     private readonly playerMinCooldown = 1; // 1 min
     private readonly playerMaxCooldown = 3 * 60; // 3 hours
@@ -314,8 +314,8 @@ class SWAPI {
     private readonly guildMaxCooldown = 6 * 60; // 6 hours
 
     // Grab the abilities that have Zeta / Omicron levels for future reference
-    private async getSpecialAbilities(): Promise<SWAPIUnitAbility[]> {
-        if (!this.specialAbilityList) {
+    private async getSpecialAbilities(): Promise<Map<string, SWAPIUnitAbility>> {
+        if (!specialAbilitiesBySkillId) {
             const abilityList = await cache.get(
                 env.MONGODB_SWAPI_DB,
                 "abilities",
@@ -339,9 +339,9 @@ class SWAPI {
                     omicronMode: 1,
                 },
             );
-            this.specialAbilityList = abilityList as SWAPIUnitAbility[];
+            specialAbilitiesBySkillId = new Map((abilityList as SWAPIUnitAbility[]).map((ability) => [ability.skillId, ability]));
         }
-        return this.specialAbilityList;
+        return specialAbilitiesBySkillId;
     }
 
     async playerByName(name: string, limit = 0) {
@@ -523,7 +523,7 @@ class SWAPI {
         if (!allyCodes) return [];
         const acArr: number[] = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
 
-        const specialAbilities: SWAPIUnitAbility[] = await this.getSpecialAbilities();
+        const specialAbilities = await this.getSpecialAbilities();
 
         let playerStats: SWAPIPlayer[] = [];
         try {
@@ -634,7 +634,7 @@ class SWAPI {
                                 char.mods = char.mods.map(pruneModFields);
                             }
                             for (const ability of char.skills) {
-                                const thisAbility = specialAbilities.find((abi) => abi.skillId === ability.id);
+                                const thisAbility = specialAbilities.get(ability.id);
                                 if (thisAbility) {
                                     if (thisAbility.omicronTier) {
                                         ability.isOmicron = true;

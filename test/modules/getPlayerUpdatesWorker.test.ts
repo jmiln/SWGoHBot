@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import { Worker } from "node:worker_threads";
-import type { SWAPIPlayer, SWAPIUnit } from "../../types/swapi_types.ts";
+import type { SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerGuildLog } from "../../types/swapi_types.ts";
 
 const WORKER_PATH = `${import.meta.dirname}/../../modules/workers/getPlayerUpdates.ts`;
 
@@ -9,22 +9,27 @@ interface WorkerWrite {
     updateOne: { filter: { allyCode: number }; update: { $set: Partial<SWAPIPlayer> }; upsert?: boolean };
 }
 
-function unit(defId: string, level: number): SWAPIUnit {
-    return { defId, level, rarity: 7, gear: 12, skills: [], relic: { currentTier: 1 } } as unknown as SWAPIUnit;
+function unit(defId: string, level: number, skills: { id: string; tier: number }[] = []): SWAPIUnit {
+    return { defId, level, rarity: 7, gear: 12, skills, relic: { currentTier: 1 } } as unknown as SWAPIUnit;
 }
 
 function player(allyCode: number, roster: SWAPIUnit[]): SWAPIPlayer {
     return { allyCode, name: `Player ${allyCode}`, roster } as unknown as SWAPIPlayer;
 }
 
-function runWorker(oldMembers: SWAPIPlayer[], updatedBare: SWAPIPlayer[]): Promise<{ cacheUpdatesOut: WorkerWrite[] }> {
+function runWorker(
+    oldMembers: SWAPIPlayer[],
+    updatedBare: SWAPIPlayer[],
+    specialAbilities = new Map<string, SWAPIUnitAbility>(),
+): Promise<{ cacheUpdatesOut: WorkerWrite[]; guildLogOut: SWAPIWorkerGuildLog }> {
     return new Promise((resolve, reject) => {
-        const worker = new Worker(WORKER_PATH, { workerData: { oldMembers, updatedBare, specialAbilities: [], chunkIx: 1 } });
+        const worker = new Worker(WORKER_PATH, { workerData: { oldMembers, updatedBare, specialAbilities, chunkIx: 1 } });
         worker.once("message", (msg) => {
             resolve(msg);
             worker.terminate();
         });
         worker.once("error", reject);
+        worker.once("exit", (code) => reject(new Error(`Worker exited with code ${code} before posting a result`)));
     });
 }
 
@@ -52,5 +57,20 @@ describe("getPlayerUpdates worker", () => {
         assert.ok(!writeFor(UNCHANGED)?.upsert, "A timestamp alone must never create a document");
         assert.strictEqual(writeFor(LEVELED)?.update.$set.roster?.[0].level, 85, "Expected the new baseline saved");
         assert.strictEqual(writeFor(NEW)?.upsert, true, "Expected a first-seen player inserted");
+    });
+
+    it("logs a skill reaching its zeta tier, looked up from the special ability list", async () => {
+        const ZETAD = 444444444;
+        const SKILL_ID = "uniqueskill_VADER01";
+        const STORED_ZERO_BASED_ZETA_TIER = 7;
+        const specialAbilities = new Map([[SKILL_ID, { skillId: SKILL_ID, zetaTier: STORED_ZERO_BASED_ZETA_TIER } as SWAPIUnitAbility]]);
+
+        const { guildLogOut } = await runWorker(
+            [player(ZETAD, [unit("VADER", 85, [{ id: SKILL_ID, tier: STORED_ZERO_BASED_ZETA_TIER }])])],
+            [player(ZETAD, [unit("VADER", 85, [{ id: SKILL_ID, tier: STORED_ZERO_BASED_ZETA_TIER + 1 }])])],
+            specialAbilities,
+        );
+
+        assert.deepStrictEqual(guildLogOut[`Player ${ZETAD}`]?.abilities, [`Zeta'd {VADER}'s **{${SKILL_ID}}**`]);
     });
 });
