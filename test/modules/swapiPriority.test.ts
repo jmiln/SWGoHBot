@@ -17,15 +17,23 @@ describe("comlink call priorities", () => {
         assert.doesNotMatch(arenaTick, /PRIORITY\.(BULK|BACKGROUND)/, "arenaTick must not use a background tier");
     });
 
-    it("runs the other patreon background jobs at the background priority", async () => {
+    it("runs guildsUpdate at the background priority", async () => {
         const source = await readSource("../../modules/patreonFuncs.ts");
+        const guildsUpdate = source.slice(source.indexOf("async guildsUpdate("), source.indexOf("async guildTickets("));
 
-        for (const job of ["async guildsUpdate(", "async guildTickets("]) {
-            const start = source.indexOf(job);
-            assert.ok(start > 0, `${job} should exist`);
-            const body = source.slice(start, start + 6000);
-            assert.match(body, /PRIORITY\.BACKGROUND/, `${job} must request the background tier`);
-        }
+        assert.match(guildsUpdate, /PRIORITY\.BACKGROUND/, "guildsUpdate must request the background tier");
+    });
+
+    // A "msg" watcher's send window is a few minutes wide, and one small guild fetch must not
+    // queue behind guildsUpdate's per-member player fetches in the background tier
+    it("runs guildTickets at the supporter priority", async () => {
+        const source = await readSource("../../modules/patreonFuncs.ts");
+        const start = source.indexOf("async guildTickets(");
+        assert.ok(start > 0, "guildTickets should exist");
+        const guildTickets = source.slice(start, source.indexOf("\n    }\n", start));
+
+        assert.match(guildTickets, /PRIORITY\.SUPPORTER_COMMAND/, "guildTickets must request the supporter tier");
+        assert.doesNotMatch(guildTickets, /PRIORITY\.(BULK|BACKGROUND)/, "guildTickets must not use a background tier");
     });
 
     // dataUpdater cannot use withStub: it threads one stub through a dozen functions, one of

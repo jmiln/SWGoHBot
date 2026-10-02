@@ -2734,7 +2734,7 @@ describe("PatreonFuncs Module", () => {
         it("judges each watcher's window against the time it is reached, not when the loop started", async (t) => {
             const start = Date.now();
             t.mock.timers.enable({ apis: ["Date"], now: start });
-            // The first watcher's fetch queues at BACKGROUND priority long enough for the second's
+            // The first watcher's fetch queues in swapiServe long enough for the second's
             // reset, 12 minutes out when the loop starts, to come inside its 1-5 minute window
             await saveWatcher({ updateType: "update" });
             const secondReset = String(Math.floor((start + 12 * constants.minMS) / 1000));

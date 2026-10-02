@@ -1197,7 +1197,7 @@ class PatreonFuncs {
             // Get any updates for the guild
             let rawGuild: RawGuild | null = null;
             try {
-                rawGuild = await swgohAPI.getRawGuild(gt.allyCode, undefined, { forceUpdate: true, priority: PRIORITY.BACKGROUND });
+                rawGuild = await swgohAPI.getRawGuild(gt.allyCode, undefined, { forceUpdate: true, priority: PRIORITY.SUPPORTER_COMMAND });
             } catch (err) {
                 const errStr = err instanceof Error ? err.message : String(err);
                 if (errStr.includes("not in a guild")) continue;
@@ -1287,8 +1287,8 @@ class PatreonFuncs {
                 gt.channel,
                 outEmbed,
             )) as Message;
-            // A whole-doc updateUser would `$set` the snapshot loaded before the BACKGROUND-priority
-            // guild fetch, rolling back the markers and ranks arenaTick has written since.
+            // A whole-doc updateUser would `$set` the snapshot loaded before the queued guild fetch,
+            // rolling back the markers and ranks arenaTick has written since.
             if (sentMsg) {
                 const sentFields: Record<string, string> = {};
                 if (gt.msgId !== sentMsg.id) sentFields["guildTickets.msgId"] = sentMsg.id;
