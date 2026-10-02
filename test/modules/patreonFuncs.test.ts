@@ -71,12 +71,10 @@ describe("PatreonFuncs Module", () => {
             user: { id: "bot123", username: "TestBot" },
             guilds: { cache: new Map() },
             users: {
-                fetch: async () => ({
-                    send: async (msg: { embeds?: { description?: string }[] }) => {
-                        sentDMs.push(msg);
-                        return msg;
-                    },
-                }),
+                send: async (_userId: string, msg: { embeds?: { description?: string }[] }) => {
+                    sentDMs.push(msg);
+                    return msg;
+                },
             },
         } as unknown as Client<true>;
 
@@ -517,14 +515,50 @@ describe("PatreonFuncs Module", () => {
             assert.strictEqual(sentDMs.length, 2, "the 30-minute user must not be suppressed by the other user's marker");
         });
 
-        it("still tracks rank when the DM user fetch fails, instead of aborting", async () => {
-            // A transient users.fetch rejection must be contained so rank/climb tracking (which runs
+        it("makes no Discord call for a watcher with no DM due this tick", async () => {
+            let discordCalls = 0;
+            const countingClient = {
+                user: { id: "bot123" },
+                users: {
+                    fetch: async () => {
+                        discordCalls++;
+                        return { send: async () => discordCalls++ };
+                    },
+                    send: async () => discordCalls++,
+                },
+            } as unknown as Client<true>;
+            const funcs = new PatreonFuncs();
+            funcs.init(countingClient);
+
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: true },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            // Two hours to payout, nothing to warn, no result window, and no rank drop from 5
+            await (funcs as any).handleArenaAlerts(
+                "char",
+                mkPlayer(),
+                acc,
+                user,
+                { discordID: "quiet_tick_user" },
+                2 * constants.hrMS,
+                { rank: 5, climb: 5 },
+                now,
+            );
+
+            assert.strictEqual(discordCalls, 0, "nothing was due, so nothing should reach Discord");
+            assert.strictEqual(acc.lastCharRank, 5, "rank tracking still runs");
+        });
+
+        it("still tracks rank when the DM send fails, instead of aborting", async () => {
+            // A transient send rejection must be contained so rank/climb tracking (which runs
             // after the DM block) still happens - otherwise a blip stops persisting ranks that tick.
             const failClient = {
                 user: { id: "bot123" },
                 users: {
-                    fetch: async () => {
-                        throw new Error("Unknown User");
+                    send: async () => {
+                        throw new Error("Internal Server Error");
                     },
                 },
             } as unknown as Client<true>;
@@ -547,9 +581,9 @@ describe("PatreonFuncs Module", () => {
                     { rank: 0, climb: 0 },
                     now,
                 ),
-                "a users.fetch failure must not reject out of handleArenaAlerts",
+                "a DM send failure must not reject out of handleArenaAlerts",
             );
-            assert.strictEqual(acc.lastCharRank, 5, "rank tracking must still run when the DM fetch fails");
+            assert.strictEqual(acc.lastCharRank, 5, "rank tracking must still run when the DM send fails");
         });
 
         it("does not mark the warn cycle when the DM send fails, so it retries next tick", async () => {
@@ -560,13 +594,11 @@ describe("PatreonFuncs Module", () => {
             const flakyClient = {
                 user: { id: "bot123" },
                 users: {
-                    fetch: async () => ({
-                        send: async (msg: { embeds?: { description?: string }[] }) => {
-                            if (!sendOk) throw new Error("Cannot send messages to this user");
-                            captured.push(msg);
-                            return msg;
-                        },
-                    }),
+                    send: async (_userId: string, msg: { embeds?: { description?: string }[] }) => {
+                        if (!sendOk) throw new Error("Cannot send messages to this user");
+                        captured.push(msg);
+                        return msg;
+                    },
                 },
             } as unknown as Client<true>;
             const funcs = new PatreonFuncs();
@@ -613,12 +645,10 @@ describe("PatreonFuncs Module", () => {
             const blockedClient = {
                 user: { id: "bot123" },
                 users: {
-                    fetch: async () => ({
-                        send: async () => {
-                            attempts++;
-                            throw Object.assign(new Error("Cannot send messages to this user"), { code: 50007 });
-                        },
-                    }),
+                    send: async () => {
+                        attempts++;
+                        throw Object.assign(new Error("Cannot send messages to this user"), { code: 50007 });
+                    },
                 },
             } as unknown as Client<true>;
             const funcs = new PatreonFuncs();
@@ -696,9 +726,9 @@ describe("PatreonFuncs Module", () => {
             return {
                 user: { id: "bot123" },
                 users: {
-                    fetch: async () => {
+                    send: async (_userId: string, msg: never) => {
                         if (failFor.count-- > 0) throw new Error("Internal Server Error");
-                        return { send: async (msg: never) => captured.push(msg) };
+                        captured.push(msg);
                     },
                 },
             } as unknown as Client<true>;
@@ -717,7 +747,7 @@ describe("PatreonFuncs Module", () => {
             // The shared rank has advanced to 15 by now; only the announce anchor remembers 10.
             await tick(funcs, user, 15, 15, acc);
 
-            assert.strictEqual(captured.length, 1, "the drop must be re-sent once the fetch recovers");
+            assert.strictEqual(captured.length, 1, "the drop must be re-sent once Discord recovers");
             assert.match(
                 captured[0]?.embeds?.[0]?.description ?? "",
                 /from 10 to \*\*15\*\*/,
@@ -732,12 +762,10 @@ describe("PatreonFuncs Module", () => {
             const client = {
                 user: { id: "bot123" },
                 users: {
-                    fetch: async () => ({
-                        send: async (msg: never) => {
-                            if (!sendOk) throw new Error("Internal Server Error");
-                            captured.push(msg);
-                        },
-                    }),
+                    send: async (_userId: string, msg: never) => {
+                        if (!sendOk) throw new Error("Internal Server Error");
+                        captured.push(msg);
+                    },
                 },
             } as unknown as Client<true>;
             const funcs = new PatreonFuncs();

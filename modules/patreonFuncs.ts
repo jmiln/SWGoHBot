@@ -1629,97 +1629,79 @@ class PatreonFuncs {
                 userChanged = true;
             }
 
-            try {
-                // Fetch inside the try so a transient users.fetch failure is contained here and the
-                // rank/climb tracking below still runs, instead of rejecting out of the whole function.
-                const pUser = await this.client.users.fetch(patron.discordID);
-                if (pUser) {
-                    // Payout cycle for this account this tick; null when the offset is missing, in
-                    // which case the payout-timed alerts below are skipped. The once-per-cycle
-                    // markers live on the user's own arenaAlert, keyed by ally code.
-                    const cycle = timeLeft === null ? null : payoutCycleInfo(now, timeLeft);
+            // Never fetched first: with the user cache at maxSize 0 that is a REST call per watcher per
+            // tick. users.send reuses the DM channel cached by the first DM, so idle ticks cost nothing.
+            const pUser = { send: (payload: { embeds: APIEmbed[] }) => this.client.users.send(patron.discordID, payload) };
+            // Payout cycle for this account this tick; null when the offset is missing, in which case the payout-timed
+            // alerts below are skipped. The once-per-cycle markers live on the user's own arenaAlert, keyed by ally code.
+            const cycle = timeLeft === null ? null : payoutCycleInfo(now, timeLeft);
 
-                    // Payout warning: fire once per cycle on the first tick inside the window
-                    // (payoutWarning minutes before payout, but not past it). Keying on the payout
-                    // instant instead of an exact minute self-heals a dropped warning-minute tick.
-                    if (
-                        cycle &&
-                        isInWarnWindow(cycle.minTil, user.arenaAlert.payoutWarning) &&
-                        marks?.[config.warnMark] !== cycle.nextPayout
-                    ) {
-                        // Mark only once the DM is settled, so a transient failure is retried next
-                        // tick. UNDELIVERABLE closes the cycle too: this recipient can never get it.
-                        const outcome = await this.sendAlertDM(
-                            pUser,
-                            {
-                                author: { name: "Arena Payout Alert" },
-                                description: `${player.name}'s ${config.displayName} arena payout is in **${cycle.minTil}** minutes!${`\nYour current rank is ${arenaData.rank}`}`,
-                                color: constants.colors.green,
-                            },
-                            "payout warning",
-                        );
-                        if (outcome !== SEND_OUTCOME.FAILED) {
-                            markCycle(config.warnMark, cycle.nextPayout);
-                            userChanged = true;
-                        }
-                    }
-
-                    // Payout result: fire once per cycle shortly AFTER payout. The just-passed
-                    // payout instant is the cycle id, so a dropped minTil===0 tick self-heals on
-                    // the next tick within the result window.
-                    if (
-                        cycle &&
-                        user.arenaAlert.enablePayoutResult &&
-                        cycle.justAfterPayout &&
-                        marks?.[config.resultMark] !== cycle.lastPayout
-                    ) {
-                        // Defer the marker until the DM settles so a transient failure retries next
-                        // tick within the result window, matching the warn path above.
-                        const outcome = await this.sendAlertDM(
-                            pUser,
-                            {
-                                author: { name: `${config.capitalName} arena` },
-                                description: `${player.name}'s payout ended at **${arenaData.rank}**!`,
-                                color: constants.colors.green,
-                            },
-                            "payout result",
-                        );
-                        if (outcome !== SEND_OUTCOME.FAILED) {
-                            markCycle(config.resultMark, cycle.lastPayout);
-                            userChanged = true;
-                        }
-                    }
-
-                    const lastClimb = prev.climb;
-                    if (dropOwed) {
-                        // Anything but this tick's own change means earlier ticks went undelivered.
-                        const late = announced !== undefined && announced !== prev.rank;
-                        const outcome = await this.sendAlertDM(
-                            pUser,
-                            {
-                                author: { name: `${config.capitalName} Arena` },
-                                description: `**${player.name}'s** rank just dropped from ${dropAnchor} to **${arenaData.rank}**\nDown by **${
-                                    arenaData.rank - lastClimb
-                                }** since last climb${late ? "\n-# Delayed: we could not reach you when this happened." : ""}`,
-                                color: constants.colors.red,
-                                // No payout footer when the payout time is unknown
-                                ...(payoutTime !== null ? { footer: { text: payoutTime } } : {}),
-                            },
-                            "rank drop",
-                        );
-                        if (outcome !== SEND_OUTCOME.FAILED) {
-                            markCycle(config.announcedMark, arenaData.rank);
-                            userChanged = true;
-                        }
-                    } else if (arenaData.rank < dropAnchor && announced !== undefined) {
-                        // A climb needs the anchor to follow it down, or the next drop would be
-                        // measured from a rank the watcher has long since improved on.
-                        markCycle(config.announcedMark, arenaData.rank);
-                        userChanged = true;
-                    }
+            // Payout warning: fire once per cycle on the first tick inside the window (payoutWarning minutes before payout,
+            // but not past it). Keying on the payout instant instead of an exact minute self-heals a dropped warning-minute tick.
+            if (cycle && isInWarnWindow(cycle.minTil, user.arenaAlert.payoutWarning) && marks?.[config.warnMark] !== cycle.nextPayout) {
+                // Mark only once the DM is settled, so a transient failure is retried next
+                // tick. UNDELIVERABLE closes the cycle too: this recipient can never get it.
+                const outcome = await this.sendAlertDM(
+                    pUser,
+                    {
+                        author: { name: "Arena Payout Alert" },
+                        description: `${player.name}'s ${config.displayName} arena payout is in **${cycle.minTil}** minutes!${`\nYour current rank is ${arenaData.rank}`}`,
+                        color: constants.colors.green,
+                    },
+                    "payout warning",
+                );
+                if (outcome !== SEND_OUTCOME.FAILED) {
+                    markCycle(config.warnMark, cycle.nextPayout);
+                    userChanged = true;
                 }
-            } catch (e) {
-                logger.error(`[handleArenaAlerts] Error processing ${config.displayName} arena alerts: ${e}`);
+            }
+
+            // Payout result: fire once per cycle shortly AFTER payout. The just-passed payout instant is the cycle id,
+            // so a dropped minTil===0 tick self-heals on the next tick within the result window.
+            if (cycle && user.arenaAlert.enablePayoutResult && cycle.justAfterPayout && marks?.[config.resultMark] !== cycle.lastPayout) {
+                // Defer the marker until the DM settles so a transient failure retries next
+                // tick within the result window, matching the warn path above.
+                const outcome = await this.sendAlertDM(
+                    pUser,
+                    {
+                        author: { name: `${config.capitalName} arena` },
+                        description: `${player.name}'s payout ended at **${arenaData.rank}**!`,
+                        color: constants.colors.green,
+                    },
+                    "payout result",
+                );
+                if (outcome !== SEND_OUTCOME.FAILED) {
+                    markCycle(config.resultMark, cycle.lastPayout);
+                    userChanged = true;
+                }
+            }
+
+            const lastClimb = prev.climb;
+            if (dropOwed) {
+                // Anything but this tick's own change means earlier ticks went undelivered.
+                const late = announced !== undefined && announced !== prev.rank;
+                const outcome = await this.sendAlertDM(
+                    pUser,
+                    {
+                        author: { name: `${config.capitalName} Arena` },
+                        description: `**${player.name}'s** rank just dropped from ${dropAnchor} to **${arenaData.rank}**\nDown by **${
+                            arenaData.rank - lastClimb
+                        }** since last climb${late ? "\n-# Delayed: we could not reach you when this happened." : ""}`,
+                        color: constants.colors.red,
+                        // No payout footer when the payout time is unknown
+                        ...(payoutTime !== null ? { footer: { text: payoutTime } } : {}),
+                    },
+                    "rank drop",
+                );
+                if (outcome !== SEND_OUTCOME.FAILED) {
+                    markCycle(config.announcedMark, arenaData.rank);
+                    userChanged = true;
+                }
+            } else if (arenaData.rank < dropAnchor && announced !== undefined) {
+                // A climb needs the anchor to follow it down, or the next drop would be
+                // measured from a rank the watcher has long since improved on.
+                markCycle(config.announcedMark, arenaData.rank);
+                userChanged = true;
             }
         }
 
