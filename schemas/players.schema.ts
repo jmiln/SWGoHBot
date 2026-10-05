@@ -1,10 +1,5 @@
 import { z } from "zod";
 
-const ArenaSquadMemberSchema = z.object({
-    id: z.string(),
-    defId: z.string(),
-});
-
 const SWAPIUnitSkillSchema = z.object({
     id: z.string(),
     tier: z.number(),
@@ -113,60 +108,22 @@ export const SWAPIUnitSchema = z.object({
     unitTierList: z.array(z.object({ tier: z.number(), equipmentSetList: z.array(z.string()) })).optional(),
 });
 
-const DatacronAffixSchema = z.object({
-    targetRule: z.string().optional(),
-    abilityId: z.string().optional(),
-    statType: z.number().optional(),
-    statValue: z.number().optional(),
-    requiredUnitTier: z.number().optional(),
-    requiredRelicTier: z.number().optional(),
+/** Raw player documents (rawPlayers collection), the guild update's baseline */
+export const RawPlayerUnitSchema = z.object({
+    defId: z.string(),
+    level: z.number(),
+    rarity: z.number(),
+    gear: z.number(),
+    relic: z.union([z.object({ currentTier: z.number() }), z.null()]),
+    skills: z.array(z.object({ id: z.string(), tier: z.number() })),
+    purchasedAbilityId: z.array(z.string()),
 });
 
-const PlayerDatacronSchema = z.object({
-    id: z.string(),
-    setId: z.number(),
-    templateId: z.string(),
-    tag: z.array(z.string()),
-    locked: z.boolean(),
-    focused: z.boolean(),
-    affix: z.array(DatacronAffixSchema),
-    rerollIndex: z.number().optional(),
-    rerollCount: z.number().optional(),
-});
-
-/**
- * Simplified schema for raw player documents (rawPlayers collection)
- * Full SWAPIPlayer type is extensive; this covers the most important fields
- */
 export const RawPlayerSchema = z.object({
     allyCode: z.number(),
     name: z.string(),
-    level: z.number(),
-    guildName: z.string().optional(),
-    guildId: z.string().optional(),
-    roster: z.array(SWAPIUnitSchema),
+    roster: z.array(RawPlayerUnitSchema),
     updated: z.number(),
-    arena: z
-        .object({
-            char: z
-                .object({
-                    rank: z.number(),
-                    squad: z.array(ArenaSquadMemberSchema),
-                })
-                .optional(),
-            ship: z
-                .object({
-                    rank: z.number(),
-                    squad: z.array(ArenaSquadMemberSchema),
-                })
-                .optional(),
-        })
-        .optional(),
-    stats: z.array(z.object({ nameKey: z.string(), value: z.number() })).optional(),
-    // Optional: documents cached before the datacron pipeline landed have no datacron key.
-    datacron: z.array(PlayerDatacronSchema).optional(),
-    grandArena: z.null().optional(),
-    warnings: z.array(z.string()).optional(),
 });
 
 /**
@@ -184,4 +141,5 @@ export const PlayerStatsSchema = z.object({
 
 // Export inferred types
 export type RawPlayer = z.infer<typeof RawPlayerSchema>;
+export type RawPlayerUnit = z.infer<typeof RawPlayerUnitSchema>;
 export type PlayerStats = z.infer<typeof PlayerStatsSchema>;

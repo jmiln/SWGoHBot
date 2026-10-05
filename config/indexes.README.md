@@ -36,7 +36,6 @@ while the real `swapi` collections went unindexed; see `docs/BUG_REFERENCE.md`.)
 #### rawPlayers Collection
 - **allyCode** (unique) - Player ally code, primary lookup
 - **updated** - For cache freshness checks
-- **guildId** (sparse) - For guild member queries
 
 #### playerStats Collection
 - **allyCode** (unique) - Player ally code, primary lookup

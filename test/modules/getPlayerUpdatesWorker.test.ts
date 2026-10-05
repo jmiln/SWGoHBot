@@ -1,13 +1,18 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import { Worker } from "node:worker_threads";
+import type { RawPlayer } from "../../schemas/players.schema.ts";
 import type { SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerGuildLog } from "../../types/swapi_types.ts";
 
 const WORKER_PATH = `${import.meta.dirname}/../../modules/workers/getPlayerUpdates.ts`;
 
 interface WorkerWrite {
-    updateOne: { filter: { allyCode: number }; update: { $set: Partial<SWAPIPlayer> }; upsert?: boolean };
+    updateOne?: { filter: { allyCode: number }; update: { $set: Partial<RawPlayer> }; upsert?: boolean };
+    replaceOne?: { filter: { allyCode: number }; replacement: RawPlayer; upsert?: boolean };
 }
+
+const stampFor = (writes: WorkerWrite[], allyCode: number) => writes.find((w) => w.updateOne?.filter.allyCode === allyCode)?.updateOne;
+const baselineFor = (writes: WorkerWrite[], allyCode: number) => writes.find((w) => w.replaceOne?.filter.allyCode === allyCode)?.replaceOne;
 
 function unit(defId: string, level: number, skills: { id: string; tier: number }[] = []): SWAPIUnit {
     return { defId, level, rarity: 7, gear: 12, skills, relic: { currentTier: 1 } } as unknown as SWAPIUnit;
@@ -47,16 +52,32 @@ describe("getPlayerUpdates worker", () => {
             [player(UNCHANGED, [unit("VADER", 85)]), player(LEVELED, [unit("VADER", 85)]), player(NEW, [unit("REY", 85)])],
         );
 
-        const writeFor = (allyCode: number) => cacheUpdatesOut.find((w) => w.updateOne.filter.allyCode === allyCode)?.updateOne;
-        for (const allyCode of [UNCHANGED, LEVELED, NEW]) {
-            const stamped = writeFor(allyCode)?.update.$set.updated;
-            assert.ok(typeof stamped === "number" && stamped >= before, `Expected ${allyCode} stamped with a fetch time, got ${stamped}`);
+        const stamps = [stampFor(cacheUpdatesOut, UNCHANGED)?.update.$set.updated];
+        stamps.push(baselineFor(cacheUpdatesOut, LEVELED)?.replacement.updated, baselineFor(cacheUpdatesOut, NEW)?.replacement.updated);
+        for (const stamped of stamps) {
+            assert.ok(typeof stamped === "number" && stamped >= before, `Expected every player stamped with a fetch time, got ${stamped}`);
         }
 
-        assert.deepStrictEqual(Object.keys(writeFor(UNCHANGED)?.update.$set ?? {}), ["updated"], "The unchanged baseline is kept");
-        assert.ok(!writeFor(UNCHANGED)?.upsert, "A timestamp alone must never create a document");
-        assert.strictEqual(writeFor(LEVELED)?.update.$set.roster?.[0].level, 85, "Expected the new baseline saved");
-        assert.strictEqual(writeFor(NEW)?.upsert, true, "Expected a first-seen player inserted");
+        assert.deepStrictEqual(
+            Object.keys(stampFor(cacheUpdatesOut, UNCHANGED)?.update.$set ?? {}),
+            ["updated"],
+            "The unchanged baseline is kept",
+        );
+        assert.ok(!stampFor(cacheUpdatesOut, UNCHANGED)?.upsert, "A timestamp alone must never create a document");
+        assert.strictEqual(baselineFor(cacheUpdatesOut, LEVELED)?.replacement.roster[0]?.level, 85, "Expected the new baseline saved");
+        assert.strictEqual(baselineFor(cacheUpdatesOut, NEW)?.upsert, true, "Expected a first-seen player inserted");
+    });
+
+    it("replaces the whole stored document when it saves a baseline", async () => {
+        const LEVELED = 222222222;
+
+        const { cacheUpdatesOut } = await runWorker([player(LEVELED, [unit("VADER", 84)])], [player(LEVELED, [unit("VADER", 85)])]);
+
+        assert.deepStrictEqual(
+            Object.keys(baselineFor(cacheUpdatesOut, LEVELED)?.replacement ?? {}).sort(),
+            ["allyCode", "name", "roster", "updated"],
+            "A baseline must replace the document, so fields a full-shape document carried are dropped",
+        );
     });
 
     it("logs a skill reaching its zeta tier, looked up from the special ability list", async () => {
@@ -143,7 +164,7 @@ describe("getPlayerUpdates worker", () => {
         it("saves the fetched roster as the new baseline exactly as fetched", async () => {
             const { cacheUpdatesOut } = await runWorker([player(ALLY, oldRoster)], [player(ALLY, newRoster)], specialAbilities);
 
-            const saved = cacheUpdatesOut.find((w) => w.updateOne.filter.allyCode === ALLY)?.updateOne.update.$set.roster;
+            const saved = baselineFor(cacheUpdatesOut, ALLY)?.replacement.roster;
             assert.deepStrictEqual(saved, newRoster, "zeta/omicron lookups must not be written into the stored roster");
         });
     });

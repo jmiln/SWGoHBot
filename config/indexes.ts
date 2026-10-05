@@ -161,13 +161,6 @@ export const indexConfig: DatabaseIndexes = {
                     name: "idx_rawplayers_updated",
                 },
             },
-            {
-                key: { guildId: 1 },
-                options: {
-                    name: "idx_rawplayers_guildid",
-                    sparse: true,
-                },
-            },
         ],
 
         // Processed player statistics

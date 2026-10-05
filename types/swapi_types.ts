@@ -580,13 +580,22 @@ export interface SWAPIWorkerPlayerLog {
 
 export interface SWAPIWorkerOutput {
     guildLogOut: SWAPIWorkerGuildLog;
-    cacheUpdatesOut: {
-        updateOne: {
-            filter: { allyCode: number };
-            update: { $set: SWAPIPlayer };
-            upsert: boolean;
-        };
-    }[]; // Bunch of updateOne querys for the db cache
+    cacheUpdatesOut: (
+        | {
+              updateOne: {
+                  filter: { allyCode: number };
+                  update: { $set: Partial<SWAPIPlayer> };
+                  upsert?: boolean;
+              };
+          }
+        | {
+              replaceOne: {
+                  filter: { allyCode: number };
+                  replacement: object;
+                  upsert: boolean;
+              };
+          }
+    )[]; // Bunch of updateOne querys for the db cache
     skills: string[];
     defIds: string[];
 }

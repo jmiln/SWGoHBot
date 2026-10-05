@@ -7,6 +7,7 @@ import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
 import { convertMS, readJSON } from "../modules/functions.ts";
 import { eachLimit } from "../modules/utils/concurrency.ts";
+import type { RawPlayer } from "../schemas/players.schema.ts";
 import type { PlayerDatacron } from "../types/datacron_types.ts";
 import type {
     ComlinkAbility,
@@ -61,7 +62,7 @@ interface ComlinkGuildResponse {
     [key: string]: unknown;
 }
 
-const THREAD_COUNT = os.cpus().length;
+const THREAD_COUNT = Math.min(os.cpus().length, 4);
 
 // if (!config.backingServices.swapiClient || !config.credentials.swapi) {
 //     throw new Error("Missing SWAPI client config or credentials!");
@@ -294,12 +295,48 @@ export function pruneModFields(mod: SWAPIMod): SWAPIMod {
     };
 }
 
-interface WorkerChunk {
-    updatedBare: SWAPIPlayer[];
-    oldMembers: SWAPIPlayer[];
+type TrackedPlayer = Omit<RawPlayer, "updated">;
+
+const TRACKED_PLAYER_PROJECTION = {
+    _id: 0,
+    allyCode: 1,
+    name: 1,
+    "roster.defId": 1,
+    "roster.level": 1,
+    "roster.rarity": 1,
+    "roster.gear": 1,
+    "roster.relic": 1,
+    "roster.skills.id": 1,
+    "roster.skills.tier": 1,
+    "roster.purchasedAbilityId": 1,
+};
+
+export async function loadStoredTrackedPlayers(allyCodes: number[]): Promise<TrackedPlayer[]> {
+    return await cache.get<TrackedPlayer>(env.MONGODB_SWAPI_DB, "rawPlayers", { allyCode: { $in: allyCodes } }, TRACKED_PLAYER_PROJECTION);
 }
 
-export function chunkForWorkers(updated: SWAPIPlayer[], stored: SWAPIPlayer[], chunkCount: number): WorkerChunk[] {
+export function toTrackedPlayer(player: SWAPIPlayer): TrackedPlayer {
+    return {
+        allyCode: player.allyCode,
+        name: player.name,
+        roster: player.roster.map((unit) => ({
+            defId: unit.defId,
+            level: unit.level,
+            rarity: unit.rarity,
+            gear: unit.gear,
+            relic: unit.relic ? { currentTier: unit.relic.currentTier } : null,
+            skills: unit.skills.map((skill) => ({ id: skill.id, tier: skill.tier })),
+            purchasedAbilityId: unit.purchasedAbilityId,
+        })),
+    };
+}
+
+interface WorkerChunk {
+    updatedBare: TrackedPlayer[];
+    oldMembers: TrackedPlayer[];
+}
+
+export function chunkForWorkers(updated: TrackedPlayer[], stored: TrackedPlayer[], chunkCount: number): WorkerChunk[] {
     const storedByAllyCode = new Map(stored.map((player) => [player.allyCode, player]));
     const chunkSize = Math.ceil(updated.length / chunkCount);
     const chunks: WorkerChunk[] = [];
@@ -307,7 +344,7 @@ export function chunkForWorkers(updated: SWAPIPlayer[], stored: SWAPIPlayer[], c
         const updatedBare = updated.slice(ix, ix + chunkSize);
         const oldMembers = updatedBare
             .map((player) => storedByAllyCode.get(player.allyCode))
-            .filter((player): player is SWAPIPlayer => player !== undefined);
+            .filter((player): player is TrackedPlayer => player !== undefined);
         chunks.push({ updatedBare, oldMembers });
     }
     return chunks;
@@ -408,7 +445,7 @@ class SWAPI {
         const specialAbilities = await this.getSpecialAbilities();
         const acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
 
-        const updatedBare: SWAPIPlayer[] = [];
+        const updatedBare: TrackedPlayer[] = [];
         await eachLimit(acArr, MAX_BATCH_IN_FLIGHT, async (ac) => {
             const tempBare = await tryCall<ComlinkPlayer>(
                 priority,
@@ -418,12 +455,10 @@ class SWAPI {
             );
             if (tempBare) {
                 const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
-                updatedBare.push(formattedComlinkPlayer);
+                updatedBare.push(toTrackedPlayer(formattedComlinkPlayer));
             }
         });
-        const oldMembers = await cache.get<SWAPIPlayer>(env.MONGODB_SWAPI_DB, "rawPlayers", {
-            allyCode: { $in: acArr },
-        });
+        const oldMembers = await loadStoredTrackedPlayers(acArr);
         const processMemberChunk = async ({ updatedBare, oldMembers }: WorkerChunk, chunkIx: number) => {
             const worker = new Worker(`${import.meta.dirname}/workers/getPlayerUpdates.ts`, {
                 workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },

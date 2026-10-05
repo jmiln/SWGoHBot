@@ -1,18 +1,22 @@
 import { parentPort, workerData } from "node:worker_threads";
 
-import type { SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerGuildLog, SWAPIWorkerPlayerLog } from "../../types/swapi_types.ts";
+import type { RawPlayer, RawPlayerUnit } from "../../schemas/players.schema.ts";
+import type { SWAPIUnitAbility, SWAPIWorkerGuildLog, SWAPIWorkerPlayerLog } from "../../types/swapi_types.ts";
 
+type TrackedPlayer = Omit<RawPlayer, "updated">;
 const guildLogOut: SWAPIWorkerGuildLog = {};
-type RawPlayerWrite = { updateOne: { filter: { allyCode: number }; update: { $set: Partial<SWAPIPlayer> }; upsert?: boolean } };
+type RawPlayerWrite =
+    | { updateOne: { filter: { allyCode: number }; update: { $set: Partial<RawPlayer> } } }
+    | { replaceOne: { filter: { allyCode: number }; replacement: RawPlayer; upsert: true } };
 const cacheUpdatesOut: RawPlayerWrite[] = [];
 
 // `updated` means "last fetched", not "last changed": databaseCleanup ages rawPlayers out on it, and
 // a tracked player whose roster sits still must keep the baseline their next change is diffed against
 const fetchedAt = Date.now();
-const saveBaseline = (player: SWAPIPlayer): RawPlayerWrite => ({
-    updateOne: { filter: { allyCode: player.allyCode }, update: { $set: { ...player, updated: fetchedAt } }, upsert: true },
+const saveBaseline = (player: TrackedPlayer): RawPlayerWrite => ({
+    replaceOne: { filter: { allyCode: player.allyCode }, replacement: { ...player, updated: fetchedAt }, upsert: true },
 });
-const stampFetched = (player: SWAPIPlayer): RawPlayerWrite => ({
+const stampFetched = (player: TrackedPlayer): RawPlayerWrite => ({
     updateOne: { filter: { allyCode: player.allyCode }, update: { $set: { updated: fetchedAt } } },
 });
 const defIdList = new Set<string>();
@@ -20,8 +24,8 @@ const skillIdList = new Set<string>();
 
 // WorkerData: { oldMembers, updatedBare, specialAbilities, chunkIx }
 async function init(workerData: {
-    oldMembers: SWAPIPlayer[];
-    updatedBare: SWAPIPlayer[];
+    oldMembers: TrackedPlayer[];
+    updatedBare: TrackedPlayer[];
     specialAbilities: Map<string, SWAPIUnitAbility>;
     chunkIx: number;
 }): Promise<void> {
@@ -86,8 +90,8 @@ async function init(workerData: {
 }
 
 function logUnitChanges(
-    oldUnit: SWAPIUnit,
-    newUnit: SWAPIUnit,
+    oldUnit: RawPlayerUnit,
+    newUnit: RawPlayerUnit,
     playerLog: SWAPIWorkerPlayerLog,
     log: (entries: string[], entry: string) => void,
     specialAbilities: Map<string, SWAPIUnitAbility>,

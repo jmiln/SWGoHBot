@@ -40,7 +40,6 @@ node scripts/verifyIndexes.ts              # Create missing
 ```
 ✓ allyCode  (unique)  - Primary player lookup
 ✓ updated             - Cache freshness
-✓ guildId   (sparse)  - Guild member queries
 ```
 
 ### swapi.playerStats
