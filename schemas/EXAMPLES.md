@@ -26,16 +26,16 @@ async function createUser(userId: string, userData: unknown) {
 ## Example 2: Validating API Responses
 
 ```typescript
-import { RawPlayerSchema } from "./schemas/index.ts";
+import { PlayerStatsSchema } from "./schemas/index.ts";
 import swgohAPI from "./modules/swapi.ts";
 
 async function fetchAndValidatePlayer(allyCode: number) {
     // Fetch from game API
-    const playerData = await swgohAPI.player(allyCode);
+    const [playerData] = await swgohAPI.unitStats(allyCode);
 
     // Validate the response
     try {
-        const validPlayer = RawPlayerSchema.parse(playerData);
+        const validPlayer = PlayerStatsSchema.parse(playerData);
         return validPlayer;
     } catch (error) {
         logger.error(`Invalid player data from API: ${error}`);

@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
-import { formatPlayerAffix, getDatacronAbilities, getDatacronSet, resolveTargetName } from "../modules/datacrons.ts";
+import { formatPlayerAffix, getAllDatacronSets, getDatacronAbilities, getDatacronSet, resolveTargetName } from "../modules/datacrons.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -25,8 +25,13 @@ const FIELDS_PER_EMBED = 20;
 
 /** A datacron is dead once its set expires, so that is worth flagging above focused/locked. */
 function isExpired(datacron: PlayerDatacron): boolean {
-    const expiry = getDatacronSet(datacron.setId)?.expirationTimeMs;
-    return !!expiry && expiry < Date.now();
+    const set = getDatacronSet(datacron.setId);
+    if (!set) return hasRotatedOutOfGameData(datacron.setId);
+    return !!set.expirationTimeMs && set.expirationTimeMs < Date.now();
+}
+
+function hasRotatedOutOfGameData(setId: number): boolean {
+    return getAllDatacronSets().some((known) => known.setId > setId);
 }
 
 function flagSuffix(datacron: PlayerDatacron, language: Language): string {

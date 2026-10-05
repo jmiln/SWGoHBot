@@ -1,10 +1,42 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { after, before, describe, it } from "node:test";
+import { refreshDatacronData } from "../../modules/datacrons.ts";
 import MyDatacrons, { buildPlayerDatacronMessages } from "../../slash/mydatacrons.ts";
 import type { DatacronAbilityRef, PlayerDatacron } from "../../types/datacron_types.ts";
 import { createRealLanguage } from "../mocks/mockInteraction.ts";
 
 const language = createRealLanguage();
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+const LIVE_SET_ID = 50;
+const EXPIRED_SET_ID = 48;
+const RETIRED_SET_ID = EXPIRED_SET_ID - 1;
+const UNSEEN_SET_ID = LIVE_SET_ID + 1;
+
+let fixtureDir: string;
+
+before(async () => {
+    fixtureDir = await mkdtemp(path.join(tmpdir(), "mydatacrons-"));
+    const set = (setId: number, expiresInDays: number) => ({
+        setId,
+        nameKey: `DATACRON_SET_${setId}_NAME`,
+        expirationTimeMs: Date.now() + expiresInDays * DAY_MS,
+        allowReroll: true,
+        tiers: [],
+    });
+    const sets = [set(LIVE_SET_ID, 30), set(49, -10), set(EXPIRED_SET_ID, -40)];
+    await writeFile(path.join(fixtureDir, "datacrons.json"), JSON.stringify({ sets, abilities: {} }));
+    await writeFile(path.join(fixtureDir, "unitMap.json"), "{}");
+    await refreshDatacronData(fixtureDir);
+});
+
+after(async () => {
+    await refreshDatacronData();
+    await rm(fixtureDir, { recursive: true, force: true });
+});
 
 function charsIn(embeds: { title?: string; description?: string; fields?: { name: string; value: string }[] }[]): number {
     return embeds.reduce(
@@ -17,11 +49,10 @@ function charsIn(embeds: { title?: string; description?: string; fields?: { name
     );
 }
 
-// setId 32 exists in the derived data/datacrons.json, so getDatacronSet(32).nameKey resolves.
 const datacron: PlayerDatacron = {
     id: "a",
-    setId: 32,
-    templateId: "datacron_set_32_base",
+    setId: LIVE_SET_ID,
+    templateId: `datacron_set_${LIVE_SET_ID}_base`,
     tag: [],
     locked: false,
     focused: true,
@@ -34,7 +65,7 @@ const abilities: Record<string, DatacronAbilityRef> = {
     datacron_role_healer_003: { nameKey: "DATACRON_ROLE_MECHANIC_NAME", descKey: "DATACRON_ROLE_HEALER_003_DESC" },
 };
 const textMap = new Map<string, string>([
-    ["DATACRON_SET_32_NAME", "Necessary Means"],
+    [`DATACRON_SET_${LIVE_SET_ID}_NAME`, "Necessary Means"],
     ["DATACRON_ROLE_HEALER_003_DESC", "Whenever {0} allies use a Special ability, they recover Protection."],
 ]);
 
@@ -74,8 +105,7 @@ describe("buildPlayerDatacronMessages", () => {
     });
 
     it("puts live datacrons first and marks expired ones, so dead sets don't bury the current one", () => {
-        // set 24 expired back in Jan 2026; set 32 is active. Feed them worst-order on purpose.
-        const expiredOne: PlayerDatacron = { ...datacron, id: "old", setId: 24, focused: false };
+        const expiredOne: PlayerDatacron = { ...datacron, id: "old", setId: EXPIRED_SET_ID, focused: false };
         const [embeds] = buildPlayerDatacronMessages(
             { name: "Bob", datacron: [expiredOne, datacron] },
             textMap,
@@ -84,17 +114,36 @@ describe("buildPlayerDatacronMessages", () => {
             "eng_us",
         );
         const fields = embeds[0].fields ?? [];
-        assert.ok(
-            fields[0].name.includes("32") || fields[0].name.includes("Necessary Means"),
-            `live set should sort first: ${fields[0].name}`,
-        );
-        const expiredField = fields.find((f) => f.name.includes("24"));
+        assert.ok(fields[0].name.includes("Necessary Means"), `live set should sort first: ${fields[0].name}`);
+        const expiredField = fields.find((f) => f.name.includes(String(EXPIRED_SET_ID)));
         assert.ok(expiredField?.name.includes("expired"), `expired datacron must be flagged: ${expiredField?.name}`);
     });
 
+    it("treats a datacron whose set has rotated out of the game data as expired", () => {
+        const retired: PlayerDatacron = { ...datacron, id: "retired", setId: RETIRED_SET_ID, focused: false };
+        const [embeds] = buildPlayerDatacronMessages(
+            { name: "Bob", datacron: [retired, datacron] },
+            textMap,
+            abilities,
+            language,
+            "eng_us",
+        );
+        const fields = embeds[0].fields ?? [];
+        assert.ok(fields[0].name.includes("Necessary Means"), `the live set should sort ahead of a retired one: ${fields[0].name}`);
+        const retiredField = fields.find((f) => f.name.includes(String(RETIRED_SET_ID)));
+        assert.ok(retiredField?.name.includes("expired"), `a retired set must be flagged expired: ${retiredField?.name}`);
+    });
+
+    it("treats a set newer than the game data as live, since the data has not caught up yet", () => {
+        const brandNew: PlayerDatacron = { ...datacron, id: "new", setId: UNSEEN_SET_ID, focused: false };
+        const [embeds] = buildPlayerDatacronMessages({ name: "Bob", datacron: [brandNew] }, textMap, abilities, language, "eng_us");
+        const field = (embeds[0].fields ?? [])[0];
+        assert.ok(!field?.name.includes("expired"), `a set the data has not seen yet must not be flagged expired: ${field?.name}`);
+    });
+
     it("shows an 'expires' line as a live relative timestamp in the field body, not the field name", () => {
-        // set 32 is active, so its set carries a future expirationTimeMs. The line goes in the value
-        // (which renders <t:...:R> as "in 3 days"), never the name (embed names don't render timestamps).
+        // The line goes in the value (which renders <t:...:R> as "in 3 days"), never the name (embed
+        // names don't render timestamps).
         const [embeds] = buildPlayerDatacronMessages({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
         const field = (embeds[0].fields ?? [])[0];
         assert.ok(/<t:\d+:R>/.test(field.value), `expiry should be a relative timestamp in the value: ${field.value}`);
