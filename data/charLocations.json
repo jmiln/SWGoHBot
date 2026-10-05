@@ -633,6 +633,10 @@
         "defId": "CARSONTEVA",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CARSONTEVA_NAME",
                 "name": "Classified Information Special Marquee Event"
@@ -1003,6 +1007,10 @@
         "name": "Colonel Ward",
         "defId": "BISHOP",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BISHOP_NAME",
@@ -1545,6 +1553,11 @@
         "locations": []
     },
     {
+        "name": "Embo & Keibu",
+        "defId": "EMBOANDKEIBU",
+        "locations": []
+    },
+    {
         "name": "Emperor Palpatine",
         "defId": "EMPERORPALPATINE",
         "locations": [
@@ -2062,6 +2075,10 @@
         "name": "Grogu & Anzellans",
         "defId": "GOPHERANTS",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_GOPHER_NAME",
@@ -4526,7 +4543,13 @@
     {
         "name": "The Stranger",
         "defId": "STRANGER",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Third Sister",

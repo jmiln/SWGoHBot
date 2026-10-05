@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-09-02T11:39:43.144Z",
+        "generatedAt": "2026-10-05T11:03:47.493Z",
         "totalCommands": 49,
         "categories": 5
     },
@@ -688,7 +688,8 @@
                                 "name": "alias",
                                 "type": 3,
                                 "description": "The alias for the selected unit",
-                                "required": true
+                                "required": true,
+                                "maxLength": 32
                             }
                         ]
                     },
@@ -994,7 +995,7 @@
                 "usage": [
                     "**/setconf** add [admin_role] [event_countdown]",
                     "**/setconf** remove [admin_role] [event_countdown]",
-                    "**/setconf** set [enable_welcome] [welcome_message] [enable_part] [part_message] [timezone] [announce_chan] [use_event_pages] [language] [swgoh_language] [shardtime_vertical]",
+                    "**/setconf** set [timezone] [announce_chan] [use_event_pages] [language] [swgoh_language] [shardtime_vertical]",
                     "**/setconf** twlist manage_list [add_unit] [remove_unit]",
                     "**/setconf** twlist blacklist [add_unit] [remove_unit]",
                     "**/setconf** twlist view"
@@ -1039,26 +1040,6 @@
                         "type": 1,
                         "description": "Set the value of one of the options",
                         "options": [
-                            {
-                                "name": "enable_welcome",
-                                "type": 5,
-                                "description": "Toggle the welcome message"
-                            },
-                            {
-                                "name": "welcome_message",
-                                "type": 3,
-                                "description": "Set the welcome message text"
-                            },
-                            {
-                                "name": "enable_part",
-                                "type": 5,
-                                "description": "Toggle the parting/ leaving message"
-                            },
-                            {
-                                "name": "part_message",
-                                "type": 3,
-                                "description": "Set the part message text"
-                            },
                             {
                                 "name": "timezone",
                                 "type": 3,

@@ -4239,6 +4239,22 @@
         "tha_th": "ฮาน โซโลวัยหนุ่ม",
         "tur_tr": "Genç Han Solo"
     },
+    "EMBOANDKEIBU": {
+        "chs_cn": "恩博与凯布",
+        "cht_cn": "安保與凱布",
+        "eng_us": "Embo & Keibu",
+        "fre_fr": "Embo et Keibu",
+        "ger_de": "Embo & Keibu",
+        "ind_id": "Embo & Keibu",
+        "ita_it": "Embo e Keibu",
+        "jpn_jp": "エンボ&ケイブ",
+        "kor_kr": "엠보&카이부",
+        "por_br": "Embo e Keibu",
+        "rus_ru": "Эмбо и Кейбу",
+        "spa_xm": "Embo y Keibu",
+        "tha_th": "เอ็มโบกับเคบุ",
+        "tur_tr": "Embo & Keibu"
+    },
     "JEDIKNIGHTCONSULAR": {
         "chs_cn": "绝地领事",
         "cht_cn": "絕地武士領事",
@@ -4737,7 +4753,7 @@
     },
     "CAPTAINREX": {
         "chs_cn": "雷克斯上尉",
-        "cht_cn": "雷克斯 隊長",
+        "cht_cn": "雷克斯隊長",
         "eng_us": "Captain Rex",
         "fre_fr": "Capitaine Rex",
         "ger_de": "Captain Rex",
@@ -4848,7 +4864,7 @@
         "tur_tr": "Savage Opress"
     },
     "ENFYSNEST": {
-        "chs_cn": "恩菲斯·內斯特",
+        "chs_cn": "恩菲斯·内斯特",
         "cht_cn": "恩菲斯·奈斯特",
         "eng_us": "Enfys Nest",
         "fre_fr": "Enfys Nest",
@@ -6273,7 +6289,7 @@
     },
     "KELLERANBEQ": {
         "chs_cn": "凯勒兰·贝克",
-        "cht_cn": "凱勒蘭貝克",
+        "cht_cn": "凱勒蘭·貝克",
         "eng_us": "Kelleran Beq",
         "fre_fr": "Kelleran Beq",
         "ger_de": "Kelleran Beq",

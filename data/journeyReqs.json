@@ -108,6 +108,11 @@
                 "tier": 7
             },
             {
+                "defId": "EMBOANDKEIBU",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "FENNECSHAND",
                 "type": "STAR",
                 "tier": 7
@@ -2795,24 +2800,24 @@
                 "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "BOBAFETTSCION",
+                "type": "RELIC",
+                "tier": 9
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "JEDIKNIGHTLUKE",
+                "type": "RELIC",
+                "tier": 8
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "GOPHERANTS",
+                "type": "RELIC",
+                "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "THEMANDALORIANBESKARARMOR",
+                "type": "RELIC",
+                "tier": 10
             },
             {
                 "defId": "INVENTORY_CHARACTERS",

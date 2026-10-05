@@ -1497,9 +1497,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Defense x2",
-                "Defense x2",
-                "Defense x2"
+                "Health x2",
+                "Offense x4"
             ]
         }
     },
@@ -1938,9 +1937,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Defense",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Defense",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3175,6 +3174,25 @@
         "avatarName": "charui_embo"
     },
     {
+        "name": "Embo & Keibu",
+        "uniqueName": "EMBOANDKEIBU",
+        "aliases": [
+            "Embo & Keibu"
+        ],
+        "avatarName": "charui_emboandkeibu",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_emboandkeibu.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Hutt Cartel",
+            "Leader",
+            "Mercenary",
+            "Scoundrel"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Emperor Palpatine",
         "uniqueName": "EMPERORPALPATINE",
         "aliases": [
@@ -4108,7 +4126,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -4368,7 +4386,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense",
             "sets": [
                 "Health x2",
@@ -5150,11 +5168,11 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Tenacity",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5823,7 +5841,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Defense x2"
+                "Health x2"
             ]
         },
         "avatarName": "charui_kylo_unmasked"
@@ -5903,7 +5921,18 @@
             "Attacker",
             "Jedi"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ]
+        }
     },
     {
         "name": "Leia Organa",
@@ -6607,7 +6636,7 @@
             "cross": "Offense",
             "sets": [
                 "Offense x4",
-                "Potency x2"
+                "Crit. Chance x2"
             ]
         }
     },
@@ -7786,7 +7815,7 @@
             "cross": "Health",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Offense x4"
             ]
         }
     },
