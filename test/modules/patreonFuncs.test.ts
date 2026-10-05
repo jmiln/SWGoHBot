@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
-import type { Client } from "discord.js";
+import type { ChatInputCommandInteraction, Client } from "discord.js";
 import type { Document, MongoClient } from "mongodb";
 import Language from "../../base/Language.ts";
 import { env } from "../../config/config.ts";
@@ -12,6 +12,7 @@ import {
     buildRankSnapshot,
     classifySendError,
     collectAllyCodes,
+    fetchPlayerWithCooldown,
     hydrateWatchAccounts,
     isInWarnWindow,
     PatreonFuncs,
@@ -260,6 +261,27 @@ describe("PatreonFuncs Module", () => {
             // Higher tier should have better (lower or equal) cooldowns
             assert.ok(tier10Cooldown.player <= tier1Cooldown.player);
             assert.ok(tier10Cooldown.guild <= tier1Cooldown.guild);
+        });
+    });
+
+    describe("fetchPlayerWithCooldown()", () => {
+        it("reads the patron and the guild's supporters once each", async (t) => {
+            const userId = "fetch_cooldown_patron";
+            const guildId = "fetch_cooldown_guild";
+            await putPatron({ discordID: userId }, { discordID: userId, amount_cents: 500, userId });
+            const expectedCooldown = await patreonFuncs.getPlayerCooldown(userId, guildId);
+
+            const getOne = cache.getOne.bind(cache);
+            const reads = t.mock.method(cache, "getOne", (...args: Parameters<typeof cache.getOne>) => getOne(...args));
+            const player = t.mock.method(swgohAPI, "player", async () => ({ allyCode: 123123123 }));
+            const interaction = { user: { id: userId }, guild: { id: guildId } } as unknown as ChatInputCommandInteraction;
+
+            await fetchPlayerWithCooldown(interaction, 123123123);
+
+            const readsOf = (collection: string) => reads.mock.calls.filter((call) => call.arguments[1] === collection).length;
+            assert.strictEqual(readsOf("patrons"), 1, "Expected one patron lookup");
+            assert.strictEqual(readsOf("guildConfigs"), 1, "Expected one guild supporter lookup");
+            assert.deepStrictEqual(player.mock.calls[0].arguments, [123123123, expectedCooldown, PRIORITY.SUPPORTER_COMMAND]);
         });
     });
 
@@ -1660,6 +1682,79 @@ describe("PatreonFuncs Module", () => {
             assert.deepStrictEqual(saved?.arenaWatch?.allyCodes?.[0]?.alerted, { charWarn: 42 }, "arenaTick's own marker should be saved");
             assert.strictEqual(saved?.guildTickets?.msgId, "new-msg", "guildTickets' message id must survive");
             assert.strictEqual(saved?.guildTickets?.lastSentRefresh, "1790713776", "guildTickets' sent marker must survive");
+        });
+
+        const putWatchingUser = () =>
+            cache.put(testDbName, "users", { id: AT_USER_ID }, {
+                id: AT_USER_ID,
+                accounts: [],
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+                arenaWatch: {
+                    report: "both",
+                    allyCodes: [
+                        { allyCode: AT_ALLY_CODE, mention: null, poOffset: 0, mark: "old" },
+                        { allyCode: AT_ALLY_CODE + 1, mention: null, poOffset: 0 },
+                    ],
+                    payout: { char: { enabled: true, channel: "chan1", msgID: "payout-old" } },
+                },
+            } as unknown as UserConfig);
+
+        it("keeps /arenawatch, /arenaalert and shardTimes edits saved during the tick", async (t) => {
+            await putPatron({ discordID: AT_USER_ID }, { discordID: AT_USER_ID, amount_cents: 100 });
+            await putWatchingUser();
+            t.mock.method(swgohAPI, "getPlayersArena", async () => []);
+            t.mock.method(patreonFuncs as any, "processShardPatron", async (_patron: ActivePatron, user: UserConfig) => {
+                await client
+                    .db(testDbName)
+                    .collection("users")
+                    .updateOne(
+                        { id: AT_USER_ID },
+                        {
+                            $set: {
+                                "arenaWatch.allyCodes.0.mark": "new",
+                                "arenaWatch.report": "climb",
+                                "arenaWatch.payout.char.msgID": "payout-new",
+                                "arenaAlert.payoutWarning": 15,
+                            },
+                        },
+                    );
+                user.arenaWatch.allyCodes[0].alerted = { charWarn: 42 };
+                user.arenaAlert.alerted = { [String(AT_ALLY_CODE)]: { charWarn: 43 } };
+                return true;
+            });
+
+            await patreonFuncs.arenaTick();
+
+            const saved = (await client.db(testDbName).collection("users").findOne({ id: AT_USER_ID })) as unknown as UserConfig | null;
+            assert.deepStrictEqual(saved?.arenaWatch.allyCodes[0].alerted, { charWarn: 42 }, "arenaTick's watch marker is saved");
+            assert.deepStrictEqual(saved?.arenaAlert.alerted?.[String(AT_ALLY_CODE)], { charWarn: 43 }, "arenaTick's DM marker is saved");
+            assert.strictEqual(saved?.arenaWatch.allyCodes[0].mark, "new", "an /arenawatch account edit survives");
+            assert.strictEqual(saved?.arenaWatch.report, "climb", "an /arenawatch setting survives");
+            assert.strictEqual(saved?.arenaAlert.payoutWarning, 15, "an /arenaalert setting survives");
+            assert.strictEqual(saved?.arenaWatch.payout.char.msgID, "payout-new", "shardTimes' message id survives");
+        });
+
+        it("does not bring back a watched account removed during the tick", async (t) => {
+            await putPatron({ discordID: AT_USER_ID }, { discordID: AT_USER_ID, amount_cents: 100 });
+            await putWatchingUser();
+            t.mock.method(swgohAPI, "getPlayersArena", async () => []);
+            t.mock.method(patreonFuncs as any, "processShardPatron", async (_patron: ActivePatron, user: UserConfig) => {
+                await client
+                    .db(testDbName)
+                    .collection("users")
+                    .updateOne({ id: AT_USER_ID }, { $pull: { "arenaWatch.allyCodes": { allyCode: AT_ALLY_CODE } } } as Document);
+                user.arenaWatch.allyCodes[0].alerted = { charWarn: 42 };
+                return true;
+            });
+
+            await patreonFuncs.arenaTick();
+
+            const saved = (await client.db(testDbName).collection("users").findOne({ id: AT_USER_ID })) as unknown as UserConfig | null;
+            assert.deepStrictEqual(
+                saved?.arenaWatch.allyCodes.map((a) => [a.allyCode, a.alerted]),
+                [[AT_ALLY_CODE + 1, undefined]],
+                "the removed account stays removed and its marker lands nowhere",
+            );
         });
     });
 

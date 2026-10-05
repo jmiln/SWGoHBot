@@ -7,6 +7,9 @@ import type {
     Filter,
     MatchKeysAndValues,
     MongoClient,
+    UpdateFilter,
+    UpdateOptions,
+    UpdateResult,
 } from "mongodb";
 import type { BotCache } from "../types/cache_types.ts";
 
@@ -62,6 +65,16 @@ class Cache implements BotCache {
         await col.updateOne(matchCondition, { $set: updateData as MatchKeysAndValues<T> }, { upsert });
 
         return saveObject;
+    }
+
+    async update<T extends Document>(
+        database: string,
+        collection: string,
+        matchCondition: Filter<T>,
+        update: UpdateFilter<T>,
+        options?: UpdateOptions,
+    ): Promise<UpdateResult<T>> {
+        return await this.getCol<T>(database, collection).updateOne(matchCondition, update, options);
     }
 
     async putMany<T extends Document>(

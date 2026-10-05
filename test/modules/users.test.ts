@@ -107,6 +107,120 @@ describe("UserReg Module", () => {
         });
     });
 
+    describe("updateUser() on a loaded copy", () => {
+        const makeWatchingUser = (id: string) =>
+            ({
+                ...makeUserConfig(id, 111111111),
+                arenaAlert: {
+                    enableRankDMs: "all",
+                    arena: "both",
+                    payoutWarning: 30,
+                    enablePayoutResult: false,
+                    alerted: { "111111111": { charWarn: 1 } },
+                },
+                arenaWatch: {
+                    enabled: true,
+                    report: "both",
+                    allyCodes: [
+                        { allyCode: 111111111, mention: null, poOffset: 0, mark: "A" },
+                        { allyCode: 222222222, mention: null, poOffset: 0, mark: "B" },
+                    ],
+                    payout: { char: { enabled: true, channel: "chan", msgID: "payout-old" } },
+                },
+            }) as unknown as UserConfig;
+        const savedUser = async (id: string) => {
+            const saved = await userReg.getUser(id);
+            assert.ok(saved, `Expected ${id} to exist`);
+            return saved;
+        };
+
+        it("keeps fields another writer changed after the copy was loaded", async () => {
+            await userReg.updateUser("user-diff-1", makeWatchingUser("user-diff-1"));
+            const copy = await savedUser("user-diff-1");
+
+            await userReg.updateUserFields("user-diff-1", {
+                "arenaWatch.payout.char.msgID": "payout-new",
+                "arenaAlert.alerted.222222222.fleetWarn": 7,
+                "arenaWatch.allyCodes.1.poOffset": 120,
+            });
+            copy.lang.language = "de_DE";
+            copy.arenaWatch.allyCodes[0].mark = "C";
+            await userReg.updateUser("user-diff-1", copy);
+
+            const saved = await savedUser("user-diff-1");
+            assert.strictEqual(saved.lang.language, "de_DE", "the copy's own edit is saved");
+            assert.strictEqual(saved.arenaWatch.allyCodes[0].mark, "C", "the copy's edit inside a watched account is saved");
+            assert.strictEqual(saved.arenaWatch.payout.char.msgID, "payout-new", "another writer's msgID survives");
+            assert.deepStrictEqual(saved.arenaAlert.alerted?.["222222222"], { fleetWarn: 7 }, "another writer's marker survives");
+            assert.strictEqual(saved.arenaWatch.allyCodes[1].poOffset, 120, "another writer's edit to a sibling account survives");
+        });
+
+        it("keeps tracking a copy across repeated saves", async () => {
+            await userReg.updateUser("user-diff-2", makeWatchingUser("user-diff-2"));
+            const copy = await savedUser("user-diff-2");
+
+            copy.lang.language = "de_DE";
+            await userReg.updateUser("user-diff-2", copy);
+            await userReg.updateUserFields("user-diff-2", { "arenaWatch.payout.char.msgID": "payout-new" });
+            copy.primaryAllyCode = 222222222;
+            await userReg.updateUser("user-diff-2", copy);
+
+            const saved = await savedUser("user-diff-2");
+            assert.strictEqual(saved.primaryAllyCode, 222222222);
+            assert.strictEqual(saved.arenaWatch.payout.char.msgID, "payout-new", "the second save must not resend the first save's state");
+        });
+
+        it("writes an account edit to that account even after the list shifted underneath", async () => {
+            await userReg.updateUser("user-diff-3", makeWatchingUser("user-diff-3"));
+            const copy = await savedUser("user-diff-3");
+
+            const other = await savedUser("user-diff-3");
+            other.arenaWatch.allyCodes = other.arenaWatch.allyCodes.filter((a) => a.allyCode !== 111111111);
+            await userReg.updateUser("user-diff-3", other);
+
+            const kept = copy.arenaWatch.allyCodes[1];
+            kept.alerted = { charWarn: 5 };
+            await userReg.updateUser("user-diff-3", copy);
+
+            const saved = await savedUser("user-diff-3");
+            assert.deepStrictEqual(
+                saved.arenaWatch.allyCodes.map((a) => [a.allyCode, a.alerted]),
+                [[222222222, { charWarn: 5 }]],
+                "the removed account must stay removed, and the edit must land on 222222222",
+            );
+        });
+
+        it("removes fields the copy deleted, and saves added or removed accounts", async () => {
+            await userReg.updateUser("user-diff-4", makeWatchingUser("user-diff-4"));
+            const copy = await savedUser("user-diff-4");
+
+            delete copy.arenaAlert.alerted?.["111111111"];
+            copy.arenaWatch.allyCodes.push({ allyCode: 333333333, mention: null, poOffset: 0 });
+            await userReg.updateUser("user-diff-4", copy);
+
+            const saved = await savedUser("user-diff-4");
+            assert.deepStrictEqual(saved.arenaAlert.alerted, {}, "the deleted marker is removed");
+            assert.deepStrictEqual(
+                saved.arenaWatch.allyCodes.map((a) => a.allyCode),
+                [111111111, 222222222, 333333333],
+            );
+        });
+
+        it("tracks copies loaded in bulk", async () => {
+            await userReg.updateUser("user-diff-5", makeWatchingUser("user-diff-5"));
+            const copy = (await userReg.getUsersByIds(["user-diff-5"])).get("user-diff-5");
+            assert.ok(copy);
+
+            await userReg.updateUserFields("user-diff-5", { "arenaWatch.payout.char.msgID": "payout-new" });
+            copy.arenaAlert.payoutWarning = 15;
+            await userReg.updateUser("user-diff-5", copy);
+
+            const saved = await savedUser("user-diff-5");
+            assert.strictEqual(saved.arenaAlert.payoutWarning, 15);
+            assert.strictEqual(saved.arenaWatch.payout.char.msgID, "payout-new");
+        });
+    });
+
     describe("updateUserFields()", () => {
         it("writes only the named paths, leaving the rest of the document alone", async () => {
             const config = makeUserConfig("user-fields-1", 555444333);

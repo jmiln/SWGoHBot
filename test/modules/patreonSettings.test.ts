@@ -1,10 +1,11 @@
 import assert from "node:assert";
-import { after, before, beforeEach, describe, it } from "node:test";
+import { after, before, beforeEach, describe, it, type TestContext } from "node:test";
 import type { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import {
     addServerSupporter,
+    clearSupporterInfo,
     ensureBonusServerSet,
     ensureGuildSupporter,
     removeServerSupporter,
@@ -216,6 +217,50 @@ describe("guildConfig/patreonSettings", () => {
 
             assert.strictEqual(res.user.success, false, "Expected duplicate link to be rejected");
             assert.match(res.user.error ?? "", /already set/i, "Expected 'already set' error");
+        });
+    });
+
+    describe("bonusServer saves keep what other writers saved meanwhile", () => {
+        // Stands in for arenaTick saving a payout marker after the user was read
+        const markerWrittenAfterUserRead = (t: TestContext) => {
+            const getOne = cache.getOne.bind(cache);
+            t.mock.method(cache, "getOne", async (...args: Parameters<typeof cache.getOne>) => {
+                const result = await getOne(...args);
+                if (args[1] === "users") {
+                    await client
+                        .db(testDbName)
+                        .collection("users")
+                        .updateOne({ id: USER_ONE }, { $set: { "arenaAlert.alerted.111222333.charWarn": 99 } });
+                }
+                return result;
+            });
+        };
+        const savedUser = () => client.db(testDbName).collection("users").findOne({ id: USER_ONE });
+
+        it("addServerSupporter()", async (t) => {
+            await client.db(testDbName).collection("users").insertOne({ id: USER_ONE, bonusServer: null, arenaAlert: {} });
+            await client
+                .db(testDbName)
+                .collection("guildConfigs")
+                .insertOne({ guildId: GUILD_ONE, patreonSettings: { supporters: [] } });
+            markerWrittenAfterUserRead(t);
+
+            await addServerSupporter({ guildId: GUILD_ONE, userInfo: { userId: USER_ONE, tier: 5 } });
+
+            const saved = await savedUser();
+            assert.strictEqual(saved?.bonusServer, GUILD_ONE);
+            assert.deepStrictEqual(saved?.arenaAlert?.alerted, { "111222333": { charWarn: 99 } }, "the marker must survive");
+        });
+
+        it("clearSupporterInfo()", async (t) => {
+            await client.db(testDbName).collection("users").insertOne({ id: USER_ONE, bonusServer: GUILD_ONE, arenaAlert: {} });
+            markerWrittenAfterUserRead(t);
+
+            await clearSupporterInfo({ userId: USER_ONE });
+
+            const saved = await savedUser();
+            assert.strictEqual(saved?.bonusServer, null);
+            assert.deepStrictEqual(saved?.arenaAlert?.alerted, { "111222333": { charWarn: 99 } }, "the marker must survive");
         });
     });
 

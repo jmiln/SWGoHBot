@@ -108,8 +108,7 @@ export async function addServerSupporter({
         resOut.user = { success: false, error: `Cannot find userConf for <@${userInfo.userId}>` };
     } else {
         // Set this server's ID in the user's config
-        userConf.bonusServer = guildId;
-        const newUser = await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userInfo.userId }, userConf);
+        const newUser = await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userInfo.userId }, { bonusServer: guildId }, true, false);
 
         if (!newUser) resOut.user = { success: false, error: `Cannot update userConf for <@${userInfo.userId}>` };
         else resOut.user = { success: true, error: null };
@@ -172,9 +171,8 @@ export async function clearSupporterInfo({ userId }: { userId: string }): Promis
 
     // Otherwise, remove the set bonusServer from the user
     const thisBonusServer = userConf.bonusServer;
-    userConf.bonusServer = null;
     try {
-        await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userId }, userConf);
+        await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userId }, { bonusServer: null }, true, false);
     } catch (err) {
         logger.error(`[guildConfig/patreonSettings/clearSupporterInfo] Error updating user: ${String(err)}`);
         resOut.user = { success: false, error: String(err) };

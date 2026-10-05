@@ -4,6 +4,7 @@ import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
+import userReg from "../modules/users.ts";
 import type { CommandContext, UserConfig } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
@@ -132,7 +133,13 @@ export default class ArenaAlert extends Command {
             return super.success(interaction, language.get("COMMAND_ARENAALERT_NOTHING_UPDATED"));
         }
         try {
-            await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userID }, updatedUser);
+            const { enableRankDMs, arena, enablePayoutResult, payoutWarning } = updatedUser.arenaAlert;
+            await userReg.updateUserFields(userID, {
+                "arenaAlert.enableRankDMs": enableRankDMs,
+                "arenaAlert.arena": arena,
+                "arenaAlert.enablePayoutResult": enablePayoutResult,
+                "arenaAlert.payoutWarning": payoutWarning,
+            });
         } catch (e) {
             logger.error(`[arenaalert] Failed to save settings for user ${userID}: ${e}`);
             return super.error(interaction, language.get("COMMAND_ARENAALERT_SAVE_FAILED"));

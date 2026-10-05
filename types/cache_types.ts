@@ -1,4 +1,13 @@
-import type { AnyBulkWriteOperation, BulkWriteResult, DeleteResult, Document, Filter } from "mongodb";
+import type {
+    AnyBulkWriteOperation,
+    BulkWriteResult,
+    DeleteResult,
+    Document,
+    Filter,
+    UpdateFilter,
+    UpdateOptions,
+    UpdateResult,
+} from "mongodb";
 
 export interface BotCache {
     checkIndexes: (database: string, collection: string) => Promise<Document[]>;
@@ -25,6 +34,13 @@ export interface BotCache {
         // Pass false when writing a partial document - see the note on Cache.put
         upsert?: boolean,
     ) => Promise<T>;
+    update: <T extends Document>(
+        database: string,
+        collection: string,
+        matchCondition: Filter<T>,
+        update: UpdateFilter<T>,
+        options?: UpdateOptions,
+    ) => Promise<UpdateResult<T>>;
     putMany: <T extends Document>(
         database: string,
         collection: string,

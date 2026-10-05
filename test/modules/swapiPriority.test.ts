@@ -66,6 +66,6 @@ describe("comlink call priorities", () => {
         const source = await readSource("../../modules/patreonFuncs.ts");
         const helper = source.slice(source.indexOf("export async function fetchPlayerWithCooldown"));
 
-        assert.match(helper, /commandPriority\(/, "the shared command path must resolve a caller tier");
+        assert.match(helper, /getCommandAccess\(/, "the shared command path must resolve a caller tier");
     });
 });

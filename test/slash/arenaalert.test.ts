@@ -1,7 +1,15 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { after, before, describe, it } from "node:test";
+import type { User } from "discord.js";
+import type { MongoClient } from "mongodb";
+import { env } from "../../config/config.ts";
+import cache from "../../modules/cache.ts";
+import patreonFuncs from "../../modules/patreonFuncs.ts";
+import userReg from "../../modules/users.ts";
 import ArenaAlert from "../../slash/arenaalert.ts";
 import type { UserConfig } from "../../types/types.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 
 describe("ArenaAlert", () => {
     // Helper to create a base user config for testing
@@ -282,6 +290,49 @@ describe("ArenaAlert", () => {
             assert.ok(payoutWarningOpt);
             assert.strictEqual(payoutWarningOpt.minValue, 0);
             assert.strictEqual(payoutWarningOpt.maxValue, 1439);
+        });
+    });
+
+    describe("Saving", () => {
+        const SAVE_USER_ID = "arenaalert-save-user";
+        let client: MongoClient;
+        const users = () => client.db(env.MONGODB_SWGOHBOT_DB).collection("users");
+
+        before(async () => {
+            client = await getMongoClient();
+            cache.init(client);
+            userReg.init(cache);
+        });
+
+        after(async () => {
+            await users().deleteMany({ id: SAVE_USER_ID });
+            await closeMongoClient();
+        });
+
+        it("keeps the payout markers arenaTick saves while the command runs", async (t) => {
+            await users().insertOne({
+                id: SAVE_USER_ID,
+                accounts: [111222333],
+                arenaAlert: { enableRankDMs: "all", arena: "char", enablePayoutResult: false, payoutWarning: 0 },
+            });
+            t.mock.method(patreonFuncs, "getPatronUser", async () => ({ discordID: SAVE_USER_ID, amount_cents: 500 }));
+            const getOne = cache.getOne.bind(cache);
+            t.mock.method(cache, "getOne", async (...args: Parameters<typeof cache.getOne>) => {
+                const result = await getOne(...args);
+                if (args[1] === "users")
+                    await users().updateOne({ id: SAVE_USER_ID }, { $set: { "arenaAlert.alerted.111222333.charWarn": 99 } });
+                return result;
+            });
+            const interaction = createMockInteraction({
+                user: { id: SAVE_USER_ID } as User,
+                optionsData: { payout_warning: 15 },
+            });
+
+            await new ArenaAlert().run(createCommandContext({ interaction }));
+
+            const saved = (await users().findOne({ id: SAVE_USER_ID })) as unknown as UserConfig | null;
+            assert.strictEqual(saved?.arenaAlert.payoutWarning, 15, "the command's change is saved");
+            assert.deepStrictEqual(saved?.arenaAlert.alerted, { "111222333": { charWarn: 99 } }, "arenaTick's marker survives");
         });
     });
 });

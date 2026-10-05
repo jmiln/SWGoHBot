@@ -131,6 +131,8 @@ export type RankSnapshot = Map<number, ArenaRankTracking>;
 // watcher (a skipped/failed send), which adds the "net change" footer.
 type ArenaRankChange = { allyCode: number; name: string; oldRank: number; newRank: number; mark?: string; missed?: boolean };
 
+type SupportStatus = { patron: PatronUser | null; supporterTier: number };
+
 export function buildRankSnapshot(arenaPlayerMap: Map<number, ArenaPlayer>): RankSnapshot {
     const snapshot: RankSnapshot = new Map();
     for (const [allyCode, doc] of arenaPlayerMap) {
@@ -474,18 +476,31 @@ class PatreonFuncs {
      * Both signals are checked, matching getPlayerCooldown: the caller may be a patron
      * themselves, or may be in a server someone else selected as their bonus server.
      */
-    async commandPriority(userId: string, guildId?: string): Promise<Priority> {
-        if (await this.getPatronUser(userId)) return PRIORITY.SUPPORTER_COMMAND;
-        const supporterTier = await getGuildSupporterTier({ guildId });
-        return supporterTier > 0 ? PRIORITY.SUPPORTER_COMMAND : PRIORITY.PUBLIC_COMMAND;
+    private commandPriority({ patron, supporterTier }: SupportStatus): Priority {
+        return patron || supporterTier > 0 ? PRIORITY.SUPPORTER_COMMAND : PRIORITY.PUBLIC_COMMAND;
+    }
+
+    private async getSupportStatus(userId: string, guildId?: string): Promise<SupportStatus> {
+        return {
+            patron: await this.getPatronUser(userId),
+            // This will give the highest/ combined tier that anyone has set for the server, or 0 if none
+            supporterTier: await getGuildSupporterTier({ guildId }),
+        };
+    }
+
+    /**
+     * The cooldown and queue tier for a user-initiated player fetch, from a single lookup of each.
+     */
+    async getCommandAccess(userId: string, guildId?: string): Promise<{ cooldown: { player: number; guild: number }; priority: Priority }> {
+        const support = await this.getSupportStatus(userId, guildId);
+        return { cooldown: this.cooldownFor(support), priority: this.commandPriority(support) };
     }
 
     async getPlayerCooldown(userId: string, guildId?: string): Promise<{ player: number; guild: number }> {
-        const patron = await this.getPatronUser(userId);
+        return this.cooldownFor(await this.getSupportStatus(userId, guildId));
+    }
 
-        // This will give the highest/ combined tier that anyone has set for the server, or 0 if none
-        const supporterTier = await getGuildSupporterTier({ guildId });
-
+    private cooldownFor({ patron, supporterTier }: SupportStatus): { player: number; guild: number } {
         // Grab the best times available based on the supporterTier
         const supporterTimes: { playerTime: number; guildTime: number } = !tiers?.[supporterTier]?.sharePlayer
             ? tiers[0]
@@ -519,10 +534,6 @@ class PatreonFuncs {
         // True when a DM warn/result marker was written to user.arenaAlert.alerted, so arenaTick
         // knows to persist the user doc
         let userChanged = false;
-        if (user.arenaAlert) {
-            if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
-            if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
-        }
 
         for (const allyCode of user.accounts ?? []) {
             if (
@@ -667,16 +678,11 @@ class PatreonFuncs {
                     return false;
                 })) || userChanged;
             if (userChanged) {
-                // Only the two fields the consumers write: guildTickets() runs on its own interval
-                // and saves into this same user mid-tick, which a whole-doc write would roll back
-                const ownedFields: Record<string, unknown> = {};
-                if (user.arenaWatch) ownedFields.arenaWatch = user.arenaWatch;
-                if (user.arenaAlert) ownedFields.arenaAlert = user.arenaAlert;
                 await userReg
-                    .updateUserFields(patron.discordID, ownedFields)
+                    .updateUser(patron.discordID, user)
                     .catch((err) =>
                         logger.error(
-                            `[arenaTick] updateUserFields error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
+                            `[arenaTick] updateUser error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                         ),
                     );
             }
@@ -775,13 +781,11 @@ class PatreonFuncs {
 
         // Fill in missing arena sub-configs with disabled defaults so the rest of the function
         // can safely access their properties without crashing on old/partial DB records.
-        aw.arena ??= { char: { channel: "", enabled: false }, fleet: { channel: "", enabled: false } };
-        aw.arena.char ??= { channel: "", enabled: false };
-        aw.arena.fleet ??= { channel: "", enabled: false };
-        // After the normalization above both sub-configs exist; capture them in consts so the
-        // definite type survives into the broadcastEval closures (which otherwise re-widen to optional).
-        const arenaChar = aw.arena.char;
-        const arenaFleet = aw.arena.fleet;
+        // Local rather than assigned onto aw: a saved default would overwrite a /arenawatch edit made mid-tick.
+        // Captured in consts so the definite type survives into the broadcastEval closures
+        // (which otherwise re-widen to optional).
+        const arenaChar = aw.arena?.char ?? { channel: "", enabled: false };
+        const arenaFleet = aw.arena?.fleet ?? { channel: "", enabled: false };
         // Same two configs keyed by arena, so the per-arena loops below can look one up without
         // re-widening to optional the way indexing aw.arena does
         const arenaCfg: Record<ArenaKind, typeof arenaChar> = { char: arenaChar, fleet: arenaFleet };
@@ -1729,10 +1733,9 @@ export async function fetchPlayerWithCooldown(
     interaction: ChatInputCommandInteraction,
     allyCode: number | string,
 ): Promise<SWAPIPlayer | null> {
-    const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
     // Every command that fetches a player goes through here, so tiering it here is what gets
     // supporters served ahead of everyone else without touching all 47 command files.
-    const priority = await patreonFuncs.commandPriority(interaction.user.id, interaction?.guild?.id);
+    const { cooldown, priority } = await patreonFuncs.getCommandAccess(interaction.user.id, interaction?.guild?.id);
     try {
         return await swgohAPI.player(allyCode, cooldown, priority);
     } catch (e) {
