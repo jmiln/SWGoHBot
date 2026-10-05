@@ -294,6 +294,25 @@ export function pruneModFields(mod: SWAPIMod): SWAPIMod {
     };
 }
 
+interface WorkerChunk {
+    updatedBare: SWAPIPlayer[];
+    oldMembers: SWAPIPlayer[];
+}
+
+export function chunkForWorkers(updated: SWAPIPlayer[], stored: SWAPIPlayer[], chunkCount: number): WorkerChunk[] {
+    const storedByAllyCode = new Map(stored.map((player) => [player.allyCode, player]));
+    const chunkSize = Math.ceil(updated.length / chunkCount);
+    const chunks: WorkerChunk[] = [];
+    for (let ix = 0; ix < updated.length; ix += chunkSize) {
+        const updatedBare = updated.slice(ix, ix + chunkSize);
+        const oldMembers = updatedBare
+            .map((player) => storedByAllyCode.get(player.allyCode))
+            .filter((player): player is SWAPIPlayer => player !== undefined);
+        chunks.push({ updatedBare, oldMembers });
+    }
+    return chunks;
+}
+
 // Ceiling for a single getPlayerUpdates worker. Chunk processing is CPU-bound and finishes in
 // seconds; this only exists to kill a stalled worker before it pins its heap for the process lifetime.
 const WORKER_TIMEOUT_MS = 60_000;
@@ -402,10 +421,10 @@ class SWAPI {
                 updatedBare.push(formattedComlinkPlayer);
             }
         });
-        const oldMembers = await cache.get(env.MONGODB_SWAPI_DB, "rawPlayers", {
+        const oldMembers = await cache.get<SWAPIPlayer>(env.MONGODB_SWAPI_DB, "rawPlayers", {
             allyCode: { $in: acArr },
         });
-        const processMemberChunk = async (updatedBare: SWAPIPlayer[], chunkIx: number) => {
+        const processMemberChunk = async ({ updatedBare, oldMembers }: WorkerChunk, chunkIx: number) => {
             const worker = new Worker(`${import.meta.dirname}/workers/getPlayerUpdates.ts`, {
                 workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },
             });
@@ -447,12 +466,7 @@ class SWAPI {
             }
         };
 
-        const memberChunks: SWAPIPlayer[][] = [];
-        const chunkSize = Math.ceil(updatedBare.length / THREAD_COUNT);
-        for (let ix = 0, len = updatedBare.length; ix < len; ix += chunkSize) {
-            const chunk = updatedBare.slice(ix, ix + chunkSize);
-            memberChunks.push(chunk);
-        }
+        const memberChunks = chunkForWorkers(updatedBare, oldMembers, THREAD_COUNT);
         const guildLog: SWAPIWorkerGuildLog = {};
         // Using Promise.all here is acceptable because workers offload CPU-intensive stat
         // calculations to separate threads, preventing main thread blocking. The coordination

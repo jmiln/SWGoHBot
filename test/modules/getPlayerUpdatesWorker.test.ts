@@ -73,4 +73,78 @@ describe("getPlayerUpdates worker", () => {
 
         assert.deepStrictEqual(guildLogOut[`Player ${ZETAD}`]?.abilities, [`Zeta'd {VADER}'s **{${SKILL_ID}}**`]);
     });
+
+    describe("roster comparison", () => {
+        const ALLY = 555555555;
+        const mod = (id: string, level: number) => ({ id, level, tier: 5, slot: 1, set: 1, pips: 6, primaryStat: {}, secondaryStat: [] });
+        const fullUnit = (defId: string, fields: Partial<Record<string, unknown>> = {}) =>
+            ({
+                defId,
+                level: 85,
+                rarity: 7,
+                gear: 12,
+                skills: [],
+                relic: { currentTier: 1 },
+                purchasedAbilityId: [],
+                equipped: [],
+                mods: [mod(`${defId}-mod`, 15)],
+                ...fields,
+            }) as unknown as SWAPIUnit;
+        const specialAbilities = new Map<string, SWAPIUnitAbility>([
+            ["uniqueskill_ZETA", { skillId: "uniqueskill_ZETA", zetaTier: 7 } as SWAPIUnitAbility],
+            ["leaderskill_OMI", { skillId: "leaderskill_OMI", omicronTier: 8, omicronMode: 7 } as SWAPIUnitAbility],
+        ]);
+        const oldRoster = [
+            fullUnit("VADER", { level: 84, rarity: 6, gear: 11, relic: { currentTier: 3 }, skills: [{ id: "basicskill_VADER", tier: 3 }] }),
+            fullUnit("ZETAUNIT", { skills: [{ id: "uniqueskill_ZETA", tier: 7 }] }),
+            fullUnit("OMIUNIT", { skills: [{ id: "leaderskill_OMI", tier: 8 }] }),
+            fullUnit("MODONLY"),
+        ];
+        const newRoster = [
+            fullUnit("VADER", {
+                relic: { currentTier: 5 },
+                skills: [{ id: "basicskill_VADER", tier: 4 }],
+                purchasedAbilityId: ["ultimateability_VADER"],
+            }),
+            fullUnit("ZETAUNIT", { skills: [{ id: "uniqueskill_ZETA", tier: 8 }] }),
+            fullUnit("OMIUNIT", { skills: [{ id: "leaderskill_OMI", tier: 9 }] }),
+            fullUnit("REY"),
+            fullUnit("MODONLY", { mods: [mod("MODONLY-mod", 12)] }),
+        ];
+
+        it("logs every kind of change, and nothing for a unit whose only change is its mods", async () => {
+            const { guildLogOut } = await runWorker([player(ALLY, oldRoster)], [player(ALLY, newRoster)], specialAbilities);
+
+            assert.deepStrictEqual(guildLogOut[`Player ${ALLY}`], {
+                abilities: [
+                    "Upgraded {VADER}'s **{basicskill_VADER}** to level 4",
+                    "Zeta'd {ZETAUNIT}'s **{uniqueskill_ZETA}**",
+                    "Omicron'd {OMIUNIT}'s **{leaderskill_OMI}**",
+                ],
+                geared: ["Geared up {VADER} to G12!"],
+                leveled: ["Leveled up {VADER} to 85!"],
+                reliced: ["Upgraded {VADER} to relic 3!"],
+                starred: ["Starred up {VADER} to 7 star!"],
+                unlocked: ["Unlocked {REY}!", " - Upgraded to level 85", " - Upgraded to gear 12"],
+                ultimate: ["Unlocked {VADER}'s **ultimate**"],
+            });
+        });
+
+        it("asks for the names of exactly the units and skills its log mentions", async () => {
+            const result = (await runWorker([player(ALLY, oldRoster)], [player(ALLY, newRoster)], specialAbilities)) as unknown as {
+                defIds: string[];
+                skills: string[];
+            };
+
+            assert.deepStrictEqual(result.defIds.sort(), ["OMIUNIT", "REY", "VADER", "ZETAUNIT"], "an unlocked unit needs its name too");
+            assert.deepStrictEqual(result.skills.sort(), ["basicskill_VADER", "leaderskill_OMI", "uniqueskill_ZETA"]);
+        });
+
+        it("saves the fetched roster as the new baseline exactly as fetched", async () => {
+            const { cacheUpdatesOut } = await runWorker([player(ALLY, oldRoster)], [player(ALLY, newRoster)], specialAbilities);
+
+            const saved = cacheUpdatesOut.find((w) => w.updateOne.filter.allyCode === ALLY)?.updateOne.update.$set.roster;
+            assert.deepStrictEqual(saved, newRoster, "zeta/omicron lookups must not be written into the stored roster");
+        });
+    });
 });
