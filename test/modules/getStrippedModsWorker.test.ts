@@ -90,11 +90,16 @@ describe("fetchPlayerData", () => {
         const comlink = await startFakeComlink(() => ({ status: 200, body: "{}", delayMs: 5000 }));
         after(async () => await comlink.close());
 
-        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP, 50), /timed out after 50ms/);
+        // The timeout also covers fetch's first-use setup and the connect, which under a parallel
+        // suite run can exceed 50ms and abort before the request ever reaches the server.
+        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP, 1000), /timed out after 1000ms/);
         assert.strictEqual(comlink.requestCount(), 1, "and does so without re-sending");
 
         // The server sees the socket close, which is what swapiServe reads as a cancellation.
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        const deadline = Date.now() + 1000;
+        while (comlink.abandonedCount() === 0 && Date.now() < deadline) {
+            await new Promise((resolve) => setTimeout(resolve, 10));
+        }
         assert.strictEqual(comlink.abandonedCount(), 1, "the upstream request must actually be withdrawn");
     });
 
