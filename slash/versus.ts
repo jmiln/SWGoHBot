@@ -226,7 +226,9 @@ export default class Versus extends Command {
         );
 
         const footerStr = updatedFooterStr(
-            Math.min(user1.updated ?? Number.POSITIVE_INFINITY, user2.updated ?? Number.POSITIVE_INFINITY),
+            new Date(
+                Math.min(user1.updatedAt?.getTime() ?? Number.POSITIVE_INFINITY, user2.updatedAt?.getTime() ?? Number.POSITIVE_INFINITY),
+            ),
             language,
         );
         return interaction.editReply({

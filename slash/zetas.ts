@@ -191,7 +191,7 @@ export default class Zetas extends Command {
                 });
             }
 
-            const footerStr = updatedFooterStr(player.updated, language);
+            const footerStr = updatedFooterStr(player.updatedAt, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -326,7 +326,7 @@ export default class Zetas extends Command {
                     });
                 }
                 const fieldArrChunks = chunkArray(fields, MAX_FIELDS);
-                const footerStr = updatedFooterStr(guild.updated, language);
+                const footerStr = updatedFooterStr(guild.updatedAt, language);
                 fields.push({
                     name: constants.zws,
                     value: footerStr,
@@ -357,7 +357,7 @@ export default class Zetas extends Command {
                 }
                 return;
             }
-            const footerStr = updatedFooterStr(guild.updated, language);
+            const footerStr = updatedFooterStr(guild.updatedAt, language);
             if (!Object.keys(zetas[character.uniqueName] ?? {}).length) {
                 return interaction.editReply({
                     embeds: [

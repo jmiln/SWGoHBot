@@ -39,9 +39,9 @@ function runWorker(
 }
 
 describe("getPlayerUpdates worker", () => {
-    // rawPlayers is aged out on `updated`, so it has to mean "last fetched": a tracked player whose
-    // roster sits still must not look stale, or cleanup deletes the baseline /guildupdate diffs against
-    it("stamps updated on every fetched player, and rewrites the baseline only when there is news", async () => {
+    // rawPlayers expires by TTL on `updatedAt`, so it has to mean "last fetched": a tracked player whose
+    // roster sits still must not look stale, or TTL deletes the baseline /guildupdate diffs against
+    it("stamps updatedAt on every fetched player, and rewrites the baseline only when there is news", async () => {
         const UNCHANGED = 111111111;
         const LEVELED = 222222222;
         const NEW = 333333333;
@@ -52,15 +52,18 @@ describe("getPlayerUpdates worker", () => {
             [player(UNCHANGED, [unit("VADER", 85)]), player(LEVELED, [unit("VADER", 85)]), player(NEW, [unit("REY", 85)])],
         );
 
-        const stamps = [stampFor(cacheUpdatesOut, UNCHANGED)?.update.$set.updated];
-        stamps.push(baselineFor(cacheUpdatesOut, LEVELED)?.replacement.updated, baselineFor(cacheUpdatesOut, NEW)?.replacement.updated);
+        const stamps = [stampFor(cacheUpdatesOut, UNCHANGED)?.update.$set.updatedAt];
+        stamps.push(baselineFor(cacheUpdatesOut, LEVELED)?.replacement.updatedAt, baselineFor(cacheUpdatesOut, NEW)?.replacement.updatedAt);
         for (const stamped of stamps) {
-            assert.ok(typeof stamped === "number" && stamped >= before, `Expected every player stamped with a fetch time, got ${stamped}`);
+            assert.ok(
+                stamped instanceof Date && stamped.getTime() >= before,
+                `Expected every player stamped with a fetch Date, got ${stamped}`,
+            );
         }
 
         assert.deepStrictEqual(
             Object.keys(stampFor(cacheUpdatesOut, UNCHANGED)?.update.$set ?? {}),
-            ["updated"],
+            ["updatedAt"],
             "The unchanged baseline is kept",
         );
         assert.ok(!stampFor(cacheUpdatesOut, UNCHANGED)?.upsert, "A timestamp alone must never create a document");
@@ -75,7 +78,7 @@ describe("getPlayerUpdates worker", () => {
 
         assert.deepStrictEqual(
             Object.keys(baselineFor(cacheUpdatesOut, LEVELED)?.replacement ?? {}).sort(),
-            ["allyCode", "name", "roster", "updated"],
+            ["allyCode", "name", "roster", "updatedAt"],
             "A baseline must replace the document, so fields a full-shape document carried are dropped",
         );
     });

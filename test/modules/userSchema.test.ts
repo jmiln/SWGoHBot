@@ -8,7 +8,7 @@ const BASE_USER = {
     accounts: [],
     primaryAllyCode: null,
     arenaAlert: { arena: "none", payoutWarning: 0 },
-    updated: Date.now(),
+    updatedAt: new Date(),
     arenaWatch: {
         allyCodes: [],
         channel: null,

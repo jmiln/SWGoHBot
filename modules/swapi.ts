@@ -295,7 +295,7 @@ export function pruneModFields(mod: SWAPIMod): SWAPIMod {
     };
 }
 
-type TrackedPlayer = Omit<RawPlayer, "updated">;
+type TrackedPlayer = Omit<RawPlayer, "updatedAt">;
 
 const TRACKED_PLAYER_PROJECTION = {
     _id: 0,
@@ -592,7 +592,7 @@ class SWAPI {
                                 _id: 0,
                                 name: 1,
                                 allyCode: 1,
-                                updated: 1,
+                                updatedAt: 1,
                                 roster: {
                                     $filter: {
                                         input: "$roster",
@@ -609,7 +609,7 @@ class SWAPI {
             }
 
             // If options.force is true, set the list of unexpired players to be empty so that all players will be run through the updater
-            const updatedList = players.filter((p) => !this.isExpired(p.updated, cooldown, players.length > 5));
+            const updatedList = players.filter((p) => !this.isExpired(p.updatedAt, cooldown, players.length > 5));
             const updatedAC = new Set(updatedList.map((p) => p.allyCode));
             const needUpdating = acArr.filter((a) => !updatedAC.has(a));
 
@@ -698,7 +698,6 @@ class SWAPI {
                             }
                         }
 
-                        if (!bareP.updated) bareP.updated = Date.now();
                         if (!bareP.updatedAt) bareP.updatedAt = new Date();
                         bulkWrites.push({
                             updateOne: {
@@ -995,7 +994,7 @@ class SWAPI {
             unit.omicrons = unit.skills.filter((s) => s.isOmicron && s.omicronTier != null && s.tier >= s.omicronTier);
             unit.player = player.name;
             unit.allyCode = player.allyCode;
-            unit.updated = player.updated;
+            unit.updatedAt = player.updatedAt;
             outStats.push(unit);
         }
         return outStats;
@@ -1028,7 +1027,7 @@ class SWAPI {
             },
             {
                 _id: 0,
-                updated: 0,
+                updatedAt: 0,
             },
         )) as ComlinkAbility[];
         return cacheRes;
@@ -1087,7 +1086,12 @@ class SWAPI {
 
     // Function for updating all the stored character data from the game
     async character(defId: string): Promise<RawCharacter> {
-        const outChar = (await cache.getOne(env.MONGODB_SWAPI_DB, "characters", { baseId: defId }, { _id: 0, updated: 0 })) as RawCharacter;
+        const outChar = (await cache.getOne(
+            env.MONGODB_SWAPI_DB,
+            "characters",
+            { baseId: defId },
+            { _id: 0, updatedAt: 0 },
+        )) as RawCharacter;
         return outChar;
     }
 
@@ -1109,7 +1113,7 @@ class SWAPI {
             },
             {
                 _id: 0,
-                updated: 0,
+                updatedAt: 0,
             },
         );
     }
@@ -1139,7 +1143,7 @@ class SWAPI {
             { baseId: defId, language: thisLang.toLowerCase() as never },
             {
                 _id: 0,
-                updated: 0,
+                updatedAt: 0,
             },
         )) as SWAPIUnit;
         return uOut;
@@ -1191,7 +1195,7 @@ class SWAPI {
             },
             {
                 _id: 0,
-                updated: 0,
+                updatedAt: 0,
             },
         );
     }
@@ -1223,7 +1227,7 @@ class SWAPI {
             !rawGuild.roster ||
             !rawGuild.roster.length ||
             !rawGuild.profile ||
-            this.isExpired(rawGuild.updated, cooldown, true)
+            this.isExpired(rawGuild.updatedAt, cooldown, true)
         ) {
             rawGuild = (await withStub(priority, (stub) => stub.getGuild(player.guildId, true))) as RawGuild;
 
@@ -1304,7 +1308,7 @@ class SWAPI {
         const guild: SWAPIGuild | null = await cache.getOne(env.MONGODB_SWAPI_DB, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
-        if (!guild || this.isExpired(guild.updated, cooldown, true)) {
+        if (!guild || this.isExpired(guild.updatedAt, cooldown, true)) {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild: SWAPIGuild;
             try {
@@ -1441,7 +1445,7 @@ class SWAPI {
                         gp,
                         gpChar,
                         gpShip,
-                        updated: Date.now(),
+                        updatedAt: new Date(),
                     } as unknown as SWAPIGuildMember);
                 } catch (err) {
                     // The fetch tallies its own failures above, so anything reaching here came from
@@ -1473,7 +1477,7 @@ class SWAPI {
             gp: Number(guildGalacticPower),
             raid: raids,
             roster: members,
-            updated: Date.now(),
+            updatedAt: new Date(),
             recentTerritoryWarResult,
             nextChallengesRefresh,
             guildEventTracker,
@@ -1486,7 +1490,7 @@ class SWAPI {
         return zetas?.zetas;
     }
 
-    private isExpired(lastUpdated: number | undefined, cooldown: PlayerCooldown | undefined, guild = false): boolean {
+    private isExpired(lastUpdated: Date | undefined, cooldown: PlayerCooldown | undefined, guild = false): boolean {
         if (!lastUpdated) return true;
         let thisCooldown = this.guildMaxCooldown;
 
@@ -1502,7 +1506,7 @@ class SWAPI {
             if (thisCooldown < this.playerMinCooldown) thisCooldown = this.playerMinCooldown;
         }
 
-        const diff = convertMS(Date.now() - new Date(lastUpdated).getTime());
+        const diff = convertMS(Date.now() - lastUpdated.getTime());
         return diff.totalMin >= thisCooldown;
     }
 }

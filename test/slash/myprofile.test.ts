@@ -50,7 +50,7 @@ describe("MyProfile", () => {
             name: "TestPlayer",
             guildName: "Test Guild",
             level: 85,
-            updated: Date.now(),
+            updatedAt: new Date(),
             arena: {
                 char: { rank: 42, squad: [] },
                 ship: { rank: 17, squad: [] },

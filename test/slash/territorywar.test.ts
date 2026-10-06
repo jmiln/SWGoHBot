@@ -115,4 +115,37 @@ describe("TerritoryWar", () => {
         assert.ok(gpField.value.includes("200M"), "Expected guild1 total GP rendered as 200M");
         assert.ok(gpField.value.includes("180M"), "Expected guild2 total GP rendered as 180M");
     });
+
+    // swapi.guild() falls back to the cached guild when a fresh fetch comes back empty, and a guild
+    // cached before `updated` became `updatedAt` has no updatedAt at all
+    it("still renders the comparison when a guild came from the cache without an updatedAt", async () => {
+        const unit = createMockUnit({ defId: "VADER", combatType: 1, rarity: 7, gear: 13, relic: { currentTier: 9 }, skills: [] });
+        const player1 = createMockPlayer({ allyCode: 111111111, name: "Player One", guildId: "guild-a", roster: [unit] });
+        const player2 = createMockPlayer({ allyCode: 222222222, name: "Player Two", guildId: "guild-b", roster: [unit] });
+        const legacyGuild = createMockGuild({
+            id: "guild-a",
+            name: "Guild Alpha",
+            roster: [createMockGuildMember({ allyCode: 111111111 })],
+        });
+        delete (legacyGuild as { updatedAt?: Date }).updatedAt;
+        const guild2 = createMockGuild({ id: "guild-b", name: "Guild Beta", roster: [createMockGuildMember({ allyCode: 222222222 })] });
+
+        swgohAPI.player = async (allycode) => (String(allycode) === "111111111" ? player1 : player2);
+        swgohAPI.guild = async (allycode) => (String(allycode) === "111111111" ? legacyGuild : guild2);
+        swgohAPI.unitStats = async (allycodes) => {
+            const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
+            return acArr.map((ac) => createMockPlayer({ allyCode: Number(ac), roster: [unit] }));
+        };
+
+        const interaction = createMockInteraction({ optionsData: { allycode_1: "111111111", allycode_2: "222222222" } });
+        await new TerritoryWar().run(createCommandContext({ interaction }));
+
+        const reply = getLastReply(interaction);
+        const embedData = reply.embeds?.[0]?.data || reply.embeds?.[0];
+        assert.strictEqual(
+            embedData?.author?.name,
+            "Territory War, Guild Alpha (1) vs Guild Beta (1)",
+            `Expected the comparison despite the missing timestamp, got ${JSON.stringify(reply).slice(0, 300)}`,
+        );
+    });
 });

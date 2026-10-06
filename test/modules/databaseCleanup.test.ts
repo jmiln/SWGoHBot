@@ -2,14 +2,19 @@ import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import type { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
+import indexConfig from "../../config/indexes.ts";
 import cache from "../../modules/cache.ts";
 import databaseCleanup from "../../modules/databaseCleanup.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
+// indexConfig is keyed by the db name at import time, before the hook below swaps it for the test db
+const SWAPI_DB = env.MONGODB_SWAPI_DB;
+const SEVEN_DAYS_S = 7 * 24 * 60 * 60;
+const TTL_COLLECTIONS = ["playerStats", "guilds", "rawPlayers", "rawGuilds"];
+
 describe("DatabaseCleanup Module", () => {
     let mongoClient: MongoClient;
     const testDbName = "test_database_cleanup";
-    const RAW_KEYS = ["old", "recent"];
     let originalSwapiDb: string;
 
     before(async () => {
@@ -29,148 +34,59 @@ describe("DatabaseCleanup Module", () => {
         // Clean up test data
         await mongoClient.db(testDbName).collection("playerStats").deleteMany({});
         await mongoClient.db(testDbName).collection("guilds").deleteMany({});
-        await mongoClient
-            .db(testDbName)
-            .collection("rawPlayers")
-            .deleteMany({ allyCode: { $in: RAW_KEYS } });
-        await mongoClient
-            .db(testDbName)
-            .collection("rawGuilds")
-            .deleteMany({ id: { $in: RAW_KEYS } });
 
         // Close MongoDB client
         await closeMongoClient();
     });
 
-    describe("cleanOldPlayerStats", () => {
-        it("should delete player stats older than threshold", async () => {
-            const now = Date.now();
-            const oldTime = now - 10 * 24 * 60 * 60 * 1000; // 10 days ago
-            const recentTime = now - 3 * 24 * 60 * 60 * 1000; // 3 days ago
-
-            // Insert test data (autoUpdate: false to preserve our custom timestamps)
-            await cache.put(
-                testDbName,
-                "playerStats",
-                { allyCode: 111111111 },
-                {
-                    allyCode: 111111111,
-                    name: "Old Player",
-                    updated: oldTime,
-                    roster: [],
-                },
-                false,
-            );
-
-            await cache.put(
-                testDbName,
-                "playerStats",
-                { allyCode: 222222222 },
-                {
-                    allyCode: 222222222,
-                    name: "Recent Player",
-                    updated: recentTime,
-                    roster: [],
-                },
-                false,
-            );
-
-            // Run cleanup with 7 day threshold
-            const result = await databaseCleanup.cleanOldPlayerStats(7);
-
-            // Should delete the 10-day-old record but keep the 3-day-old one
-            assert.match(result, /Deleted 1 player/);
-
-            const remaining = await cache.get(testDbName, "playerStats", {});
-            assert.equal(remaining.length, 1);
-            assert.equal(remaining[0].allyCode, 222222222);
-        });
-    });
-
-    describe("cleanOldGuilds", () => {
-        it("should delete guild data older than threshold", async () => {
-            const now = Date.now();
-            const oldTime = now - 10 * 24 * 60 * 60 * 1000;
-            const recentTime = now - 3 * 24 * 60 * 60 * 1000;
-
-            // Insert test data (autoUpdate: false to preserve our custom timestamps)
-            await cache.put(
-                testDbName,
-                "guilds",
-                { id: "old-guild" },
-                {
-                    id: "old-guild",
-                    name: "Old Guild",
-                    updated: oldTime,
-                    members: 50,
-                    gp: 100000000,
-                },
-                false,
-            );
-
-            await cache.put(
-                testDbName,
-                "guilds",
-                { id: "recent-guild" },
-                {
-                    id: "recent-guild",
-                    name: "Recent Guild",
-                    updated: recentTime,
-                    members: 50,
-                    gp: 100000000,
-                },
-                false,
-            );
-
-            const result = await databaseCleanup.cleanOldGuilds(7);
-
-            assert.match(result, /Deleted 1 guild/);
-
-            const remaining = await cache.get(testDbName, "guilds", {});
-            assert.equal(remaining.length, 1);
-            assert.equal(remaining[0].id, "recent-guild");
-        });
-    });
-
-    // The raw collections age out exactly like their parsed counterparts: by `updated`, after 7 days.
-    // Cleanup is scoped to RAW_KEYS so these tests never delete documents they did not create.
-    for (const { collection, key, clean, summary } of [
-        { collection: "rawPlayers", key: "allyCode", clean: () => databaseCleanup.cleanOldRawPlayers(7), summary: /Deleted 1 raw player/ },
-        { collection: "rawGuilds", key: "id", clean: () => databaseCleanup.cleanOldRawGuilds(7), summary: /Deleted 1 raw guild/ },
-    ]) {
-        describe(`cleanOld${collection[0].toUpperCase()}${collection.slice(1)}`, () => {
-            it(`should delete ${collection} older than threshold`, async () => {
-                const now = Date.now();
-                await mongoClient
-                    .db(testDbName)
-                    .collection(collection)
-                    .deleteMany({ [key]: { $in: RAW_KEYS } });
-                await mongoClient
-                    .db(testDbName)
-                    .collection(collection)
-                    .insertMany([
-                        { [key]: "old", updated: now - 10 * 24 * 60 * 60 * 1000 },
-                        { [key]: "recent", updated: now - 3 * 24 * 60 * 60 * 1000 },
-                    ]);
-
-                const result = await clean();
-
-                assert.match(result, summary);
-                const remaining = await cache.get(testDbName, collection, { [key]: { $in: RAW_KEYS } });
-                assert.deepEqual(
-                    remaining.map((doc) => doc[key]),
-                    ["recent"],
+    describe("TTL expiry", () => {
+        for (const collection of TTL_COLLECTIONS) {
+            it(`expires ${collection} 7 days after updatedAt, with no index left on the legacy field`, () => {
+                const indexes = indexConfig[SWAPI_DB][collection];
+                const ttl = indexes.filter((idx) => idx.options?.expireAfterSeconds !== undefined);
+                assert.deepStrictEqual(
+                    ttl.map((idx) => ({ key: idx.key, expireAfterSeconds: idx.options?.expireAfterSeconds })),
+                    [{ key: { updatedAt: 1 }, expireAfterSeconds: SEVEN_DAYS_S }],
                 );
+                // MongoDB refuses a second index on a key that differs only by options
+                assert.strictEqual(indexes.filter((idx) => JSON.stringify(idx.key) === JSON.stringify({ updatedAt: 1 })).length, 1);
+                assert.ok(!indexes.some((idx) => "updated" in idx.key), "The { updated: 1 } index must be gone");
             });
+        }
+    });
+
+    describe("runManualCleanup", () => {
+        it("removes empty rosters but leaves age-based expiry to the TTL indexes", async () => {
+            const playerStats = mongoClient.db(testDbName).collection("playerStats");
+            await playerStats.deleteMany({});
+            const tenDaysAgo = Date.now() - 10 * 24 * 60 * 60 * 1000;
+            await playerStats.insertMany([
+                // A pre-change production doc: both fields, old enough that the age-based cleanup deleted it
+                {
+                    allyCode: 777777777,
+                    name: "Old Player",
+                    updated: tenDaysAgo,
+                    updatedAt: new Date(tenDaysAgo),
+                    roster: [{ defId: "LUKE", rarity: 7 }],
+                },
+                { allyCode: 888888888, name: "Empty Roster", updatedAt: new Date(), roster: [] },
+            ]);
+
+            await databaseCleanup.runManualCleanup();
+
+            const remaining = await playerStats.find({}, { projection: { _id: 0, allyCode: 1 } }).toArray();
+            assert.deepStrictEqual(
+                remaining.map((doc) => doc.allyCode),
+                [777777777],
+                "Only the empty roster should go; age is the TTL index's job",
+            );
         });
-    }
+    });
 
     describe("cleanEmptyRosters", () => {
         it("should delete player records with empty rosters", async () => {
             // Clean up any leftover data from previous tests
             await mongoClient.db(testDbName).collection("playerStats").deleteMany({});
-
-            const now = Date.now();
 
             // Insert test data (no autoUpdate needed, roster check doesn't depend on timestamp)
             await cache.put(
@@ -180,7 +96,6 @@ describe("DatabaseCleanup Module", () => {
                 {
                     allyCode: 333333333,
                     name: "Empty Roster Player",
-                    updated: now,
                     roster: [],
                 },
             );
@@ -192,7 +107,6 @@ describe("DatabaseCleanup Module", () => {
                 {
                     allyCode: 444444444,
                     name: "Valid Player",
-                    updated: now,
                     roster: [{ defId: "Rey", rarity: 7 }],
                 },
             );
@@ -204,65 +118,6 @@ describe("DatabaseCleanup Module", () => {
             const remaining = await cache.get(testDbName, "playerStats", {});
             assert.equal(remaining.length, 1);
             assert.equal(remaining[0].allyCode, 444444444);
-        });
-    });
-
-    describe("getCleanupStats", () => {
-        it("should return accurate statistics", async () => {
-            const now = Date.now();
-            const oldTime = now - 10 * 24 * 60 * 60 * 1000;
-
-            // Clean up previous test data
-            await mongoClient.db(testDbName).collection("playerStats").deleteMany({});
-            await mongoClient.db(testDbName).collection("guilds").deleteMany({});
-
-            // Insert test data (autoUpdate: false to preserve our custom timestamps)
-            await cache.put(
-                testDbName,
-                "playerStats",
-                { allyCode: 555555555 },
-                {
-                    allyCode: 555555555,
-                    name: "Old Player",
-                    updated: oldTime,
-                    roster: [{ defId: "LUKE", rarity: 7 }],
-                },
-                false,
-            );
-
-            await cache.put(
-                testDbName,
-                "playerStats",
-                { allyCode: 666666666 },
-                {
-                    allyCode: 666666666,
-                    name: "Empty Roster",
-                    updated: now,
-                    roster: [],
-                },
-                false,
-            );
-
-            await cache.put(
-                testDbName,
-                "guilds",
-                { id: "old-guild-2" },
-                {
-                    id: "old-guild-2",
-                    name: "Old Guild 2",
-                    updated: oldTime,
-                    members: 50,
-                    gp: 100000000,
-                },
-                false,
-            );
-
-            const stats = await databaseCleanup.getCleanupStats(7);
-
-            assert.equal(stats.oldPlayerStats, 1, "Should find 1 old player");
-            assert.equal(stats.emptyRosters, 1, "Should find 1 empty roster");
-            assert.equal(stats.oldGuilds, 1, "Should find 1 old guild");
-            assert.equal(stats.totalToClean, 3, "Total should be 3");
         });
     });
 

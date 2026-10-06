@@ -63,7 +63,7 @@ describe("MyCharacter", () => {
             createMockPlayer({
                 allyCode: 123456789,
                 name: "TestPlayer",
-                updated: Date.now(),
+                updatedAt: new Date(),
                 roster: [], // Empty roster → character is locked
             });
 
@@ -105,7 +105,7 @@ describe("MyCharacter", () => {
             createMockPlayer({
                 allyCode: 123456789,
                 name: "TestPlayer",
-                updated: Date.now(),
+                updatedAt: new Date(),
                 roster: [vaderUnit],
             });
         swgohAPI.langChar = async (char) => char;

@@ -366,7 +366,7 @@ export default class GuildSearch extends Command {
                 }
             }
 
-            const footerStr = updatedFooterStr(guild.updated, language);
+            const footerStr = updatedFooterStr(guild.updatedAt, language);
             const embed = {
                 author: {
                     name: guild.name,
@@ -413,7 +413,7 @@ export default class GuildSearch extends Command {
             } else {
                 desc = language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
             }
-            const footerStr = updatedFooterStr(guild.updated, language);
+            const footerStr = updatedFooterStr(guild.updatedAt, language);
             return super.error(interaction, desc, {
                 title: language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
                 footer: footerStr,
@@ -572,7 +572,7 @@ export default class GuildSearch extends Command {
             }
         }
 
-        const maxUpdated = Math.max(...guildChar.map((ch) => ch.updated ?? 0));
+        const maxUpdated = new Date(Math.max(...guildChar.map((ch) => ch.updatedAt?.getTime() ?? Number.NEGATIVE_INFINITY)));
         const footerStr = updatedFooterStr(maxUpdated, language);
         let description: string | undefined;
         if (doZeta || doOmicron) {

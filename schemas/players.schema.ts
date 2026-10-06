@@ -104,7 +104,7 @@ export const SWAPIUnitSchema = z.object({
     omicrons: z.array(SWAPIUnitSkillSchema).optional(),
     player: z.string().optional(),
     allyCode: z.number().optional(),
-    updated: z.number().optional(),
+    updatedAt: z.date().optional(),
     unitTierList: z.array(z.object({ tier: z.number(), equipmentSetList: z.array(z.string()) })).optional(),
 });
 
@@ -123,7 +123,7 @@ export const RawPlayerSchema = z.object({
     allyCode: z.number(),
     name: z.string(),
     roster: z.array(RawPlayerUnitSchema),
-    updated: z.number(),
+    updatedAt: z.date(),
 });
 
 /**
@@ -131,7 +131,7 @@ export const RawPlayerSchema = z.object({
  */
 export const PlayerStatsSchema = z.object({
     allyCode: z.number(),
-    updated: z.number(),
+    updatedAt: z.date(),
     name: z.string().optional(),
     level: z.number().optional(),
     guildName: z.string().optional(),

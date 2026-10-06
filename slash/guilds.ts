@@ -429,7 +429,7 @@ export default class Guilds extends Command {
                         fields: [
                             {
                                 name: constants.zws,
-                                value: updatedFooterStr(guild.updated, language),
+                                value: updatedFooterStr(guild.updatedAt, language),
                             },
                         ],
                     },
@@ -784,7 +784,7 @@ export default class Guilds extends Command {
                 out.push("\n**__Members with full tickets:__**");
                 out.push(...fullOut);
             }
-            const footerStr = updatedFooterStr(rawGuild.updated, language);
+            const footerStr = updatedFooterStr(rawGuild.updatedAt, language);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
             const allMaxedString = out.length === 0 && !showAll ? "All members have reached their ticket quota!\n\n" : "";
             const maxedString = maxed > 0 ? `**${maxed}** members with ${maxTickets} tickets\n\n` : "";
@@ -885,7 +885,7 @@ export default class Guilds extends Command {
                 });
             }
 
-            const footerStr = updatedFooterStr(guild.updated, language);
+            const footerStr = updatedFooterStr(guild.updatedAt, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -994,7 +994,7 @@ export default class Guilds extends Command {
                     value: guild.warnings.join("\n"),
                 });
             }
-            const footerStr = updatedFooterStr(guild.updated, language);
+            const footerStr = updatedFooterStr(guild.updatedAt, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -1126,7 +1126,7 @@ export default class Guilds extends Command {
                     value: guild.warnings.join("\n"),
                 });
             }
-            const footerStr = updatedFooterStr(guild.updated, language);
+            const footerStr = updatedFooterStr(guild.updatedAt, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -1361,7 +1361,10 @@ export default class Guilds extends Command {
                 }),
             );
 
-            const footerStr = updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated ?? Number.POSITIVE_INFINITY)), language);
+            const footerStr = updatedFooterStr(
+                new Date(Math.min(...guildMembers.map((m) => m.updatedAt?.getTime() ?? Number.POSITIVE_INFINITY))),
+                language,
+            );
             fields.push({
                 name: constants.zws,
                 value: footerStr,

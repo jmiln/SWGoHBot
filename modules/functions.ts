@@ -368,8 +368,8 @@ export function getStartOfDay(zone: string): Date {
  * Simple one to make the "Last updated ____ " footer strings and display them with Discord's timestamp format
  * Accepts Language or CommandContext
  */
-export function updatedFooterStr(updated: number | undefined, languageOrContext: Language | CommandContext | null = null): string {
-    if (!updated) {
+export function updatedFooterStr(updatedAt: Date | undefined, languageOrContext: Language | CommandContext | null = null): string {
+    if (!updatedAt || Number.isNaN(updatedAt.getTime())) {
         logger.error("[functions/updatedFooterStr] Missing updated timestamp");
         return "";
     }
@@ -390,7 +390,7 @@ export function updatedFooterStr(updated: number | undefined, languageOrContext:
         throw new Error("[functions/updatedFooterStr] Invalid language parameter");
     }
 
-    return lang.get("BASE_SWGOH_LAST_UPDATED", time(Math.floor(updated / 1000)));
+    return lang.get("BASE_SWGOH_LAST_UPDATED", time(updatedAt));
 }
 
 // Get the current user count (total memberships summed across guilds). Uses guild.memberCount

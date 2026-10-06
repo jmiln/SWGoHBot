@@ -267,7 +267,7 @@ export default class Charactergear extends Command {
             const totalLen = fields.reduce((acc, cur) => {
                 return acc + cur.value.length;
             }, 0);
-            const footerStr = updatedFooterStr(player.updated, language);
+            const footerStr = updatedFooterStr(player.updatedAt, language);
             if (totalLen < 5500) {
                 return interaction.editReply({
                     embeds: [

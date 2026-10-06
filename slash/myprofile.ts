@@ -226,7 +226,7 @@ export default class MyProfile extends Command {
             });
         }
 
-        const footerStr = updatedFooterStr(player.updated, language);
+        const footerStr = updatedFooterStr(player.updatedAt, language);
         return interaction.editReply({
             content: null,
             embeds: [

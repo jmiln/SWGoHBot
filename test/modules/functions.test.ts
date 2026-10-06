@@ -32,11 +32,13 @@ import {
     shortenNum,
     summarizeCharLevels,
     trimFloat,
+    updatedFooterStr,
     userCount,
 } from "../../modules/functions.ts";
 import type { SWAPIPlayer } from "../../types/swapi_types.ts";
 import type { ArenaPlayer, BotUnit } from "../../types/types.ts";
 import { createMockLanguage } from "../mocks/index.ts";
+import { createRealLanguage } from "../mocks/mockInteraction.ts";
 
 const ZWS = "\u200b";
 
@@ -771,5 +773,23 @@ describe("getSideColor", () => {
 
     it("returns null for an unknown side", () => {
         assert.strictEqual(getSideColor("chaotic"), null);
+    });
+});
+
+describe("updatedFooterStr", () => {
+    const language = createRealLanguage();
+
+    it("renders a stored Date as a Discord timestamp", () => {
+        const updatedAt = new Date("2026-10-05T12:00:00.000Z");
+        assert.strictEqual(updatedFooterStr(updatedAt, language), `Last updated <t:${Math.floor(updatedAt.getTime() / 1000)}>`);
+    });
+
+    it("returns an empty footer for a document without updatedAt", () => {
+        assert.strictEqual(updatedFooterStr(undefined, language), "");
+    });
+
+    // Math.max() over an empty roster (or one where no member has a timestamp) is -Infinity
+    it("returns an empty footer rather than <t:NaN> when no timestamp could be computed", () => {
+        assert.strictEqual(updatedFooterStr(new Date(Math.max()), language), "");
     });
 });

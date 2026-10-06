@@ -134,6 +134,19 @@ describe("UserReg Module", () => {
             return saved;
         };
 
+        it("stamps only updatedAt when saving a change", async () => {
+            await userReg.updateUser("user-stamp-1", makeUserConfig("user-stamp-1", 111111111));
+            const loaded = await savedUser("user-stamp-1");
+            loaded.accounts.push(222222222);
+
+            await userReg.updateUser("user-stamp-1", loaded);
+
+            const stored = await (await getMongoClient()).db(testDbName).collection("users").findOne({ id: "user-stamp-1" });
+            assert.deepStrictEqual(stored?.accounts, [111111111, 222222222], "Expected the change saved");
+            assert.ok(stored?.updatedAt instanceof Date, `Expected updatedAt to be a Date, got ${stored?.updatedAt}`);
+            assert.ok(!("updated" in (stored ?? {})), `Expected no legacy updated field, found ${stored?.updated}`);
+        });
+
         it("keeps fields another writer changed after the copy was loaded", async () => {
             await userReg.updateUser("user-diff-1", makeWatchingUser("user-diff-1"));
             const copy = await savedUser("user-diff-1");

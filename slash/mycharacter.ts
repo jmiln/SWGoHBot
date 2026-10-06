@@ -100,12 +100,12 @@ export default class MyCharacter extends Command {
             });
         }
 
-        if (!player?.roster || !player?.updated) {
+        if (!player?.roster || !player?.updatedAt) {
             return super.error(interaction, language.get("COMMAND_MYCHARACTER_ALLY_NOT_FOUND"));
         }
 
         const pName = player.name;
-        const footerStr = updatedFooterStr(player.updated, language);
+        const footerStr = updatedFooterStr(player.updatedAt, language);
 
         const thisUnit = player.roster.find((c) => c.defId === unit.uniqueName);
 

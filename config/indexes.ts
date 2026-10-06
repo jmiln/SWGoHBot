@@ -156,9 +156,11 @@ export const indexConfig: DatabaseIndexes = {
                 },
             },
             {
-                key: { updated: 1 },
+                // TTL index - expire 7 days after the last fetch
+                key: { updatedAt: 1 },
                 options: {
-                    name: "idx_rawplayers_updated",
+                    name: "idx_rawplayers_ttl",
+                    expireAfterSeconds: 604800, // 7 days
                 },
             },
         ],
@@ -173,9 +175,11 @@ export const indexConfig: DatabaseIndexes = {
                 },
             },
             {
-                key: { updated: 1 },
+                // TTL index - expire 7 days after the last fetch
+                key: { updatedAt: 1 },
                 options: {
-                    name: "idx_playerstats_updated",
+                    name: "idx_playerstats_ttl",
+                    expireAfterSeconds: 604800, // 7 days
                 },
             },
         ],
@@ -190,9 +194,11 @@ export const indexConfig: DatabaseIndexes = {
                 },
             },
             {
-                key: { updated: 1 },
+                // TTL index - expire 7 days after the last fetch
+                key: { updatedAt: 1 },
                 options: {
-                    name: "idx_rawguilds_updated",
+                    name: "idx_rawguilds_ttl",
+                    expireAfterSeconds: 604800, // 7 days
                 },
             },
         ],
@@ -213,9 +219,11 @@ export const indexConfig: DatabaseIndexes = {
                 },
             },
             {
-                key: { updated: 1 },
+                // TTL index - expire 7 days after the last fetch
+                key: { updatedAt: 1 },
                 options: {
-                    name: "idx_guilds_updated",
+                    name: "idx_guilds_ttl",
+                    expireAfterSeconds: 604800, // 7 days
                 },
             },
         ],

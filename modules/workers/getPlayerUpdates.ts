@@ -3,21 +3,21 @@ import { parentPort, workerData } from "node:worker_threads";
 import type { RawPlayer, RawPlayerUnit } from "../../schemas/players.schema.ts";
 import type { SWAPIUnitAbility, SWAPIWorkerGuildLog, SWAPIWorkerPlayerLog } from "../../types/swapi_types.ts";
 
-type TrackedPlayer = Omit<RawPlayer, "updated">;
+type TrackedPlayer = Omit<RawPlayer, "updatedAt">;
 const guildLogOut: SWAPIWorkerGuildLog = {};
 type RawPlayerWrite =
     | { updateOne: { filter: { allyCode: number }; update: { $set: Partial<RawPlayer> } } }
     | { replaceOne: { filter: { allyCode: number }; replacement: RawPlayer; upsert: true } };
 const cacheUpdatesOut: RawPlayerWrite[] = [];
 
-// `updated` means "last fetched", not "last changed": databaseCleanup ages rawPlayers out on it, and
+// `updatedAt` means "last fetched", not "last changed": rawPlayers expires by TTL on it, and
 // a tracked player whose roster sits still must keep the baseline their next change is diffed against
-const fetchedAt = Date.now();
+const fetchedAt = new Date();
 const saveBaseline = (player: TrackedPlayer): RawPlayerWrite => ({
-    replaceOne: { filter: { allyCode: player.allyCode }, replacement: { ...player, updated: fetchedAt }, upsert: true },
+    replaceOne: { filter: { allyCode: player.allyCode }, replacement: { ...player, updatedAt: fetchedAt }, upsert: true },
 });
 const stampFetched = (player: TrackedPlayer): RawPlayerWrite => ({
-    updateOne: { filter: { allyCode: player.allyCode }, update: { $set: { updated: fetchedAt } } },
+    updateOne: { filter: { allyCode: player.allyCode }, update: { $set: { updatedAt: fetchedAt } } },
 });
 const defIdList = new Set<string>();
 const skillIdList = new Set<string>();

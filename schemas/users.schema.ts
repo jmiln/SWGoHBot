@@ -58,7 +58,7 @@ export const UserConfigSchema = z.object({
         // each with its own payout instant). Kept per-user so a shared account doesn't collide.
         alerted: z.record(z.string(), AlertedCyclesSchema).optional(),
     }),
-    updated: z.number(),
+    updatedAt: z.date(),
     lang: z
         .object({
             language: z.string().optional(),

@@ -98,7 +98,7 @@ describe("loadStoredTrackedPlayers()", () => {
     });
 
     it("reads a full-shape stored document back as only the tracked fields", async () => {
-        await rawPlayers().insertOne({ ...structuredClone(formatted), updated: Date.now() });
+        await rawPlayers().insertOne({ ...structuredClone(formatted), updatedAt: new Date() });
 
         assert.deepStrictEqual(await loadStoredTrackedPlayers([formatted.allyCode]), [tracked]);
     });

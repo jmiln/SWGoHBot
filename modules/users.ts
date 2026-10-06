@@ -5,7 +5,7 @@ import type { BotCache } from "../types/cache_types.ts";
 import type { UserConfig } from "../types/types.ts";
 
 // Rewritten on every save, and _id cannot be set at all
-const UNTRACKED_FIELDS = ["_id", "updated", "updatedAt"];
+const UNTRACKED_FIELDS = ["_id", "updatedAt"];
 
 // List entries carrying this key are saved by it rather than by position, so an edit lands on the
 // same account even if another writer removed or reordered entries since the copy was loaded
@@ -137,7 +137,7 @@ class UserReg {
                 env.MONGODB_SWGOHBOT_DB,
                 "users",
                 { id: userId },
-                { $set: { ...changes.set, updated: Date.now(), updatedAt: new Date() }, ...(hasUnset ? { $unset: changes.unset } : {}) },
+                { $set: { ...changes.set, updatedAt: new Date() }, ...(hasUnset ? { $unset: changes.unset } : {}) },
                 { arrayFilters: [...changes.arrayFilters.values()] },
             );
         }

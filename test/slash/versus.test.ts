@@ -79,11 +79,11 @@ describe("Versus", () => {
             },
         });
 
-        const player1 = createMockPlayer({ allyCode: 111111111, name: "Player One", updated: Date.now(), roster: [vaderUnit] });
+        const player1 = createMockPlayer({ allyCode: 111111111, name: "Player One", updatedAt: new Date(), roster: [vaderUnit] });
         const player2 = createMockPlayer({
             allyCode: 222222222,
             name: "Player Two",
-            updated: Date.now(),
+            updatedAt: new Date(),
             roster: [{ ...vaderUnit, stats: { final: { Speed: 200 } as any, mods: {} as any, gp: 26000 } }],
         });
 

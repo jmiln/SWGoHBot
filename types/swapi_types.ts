@@ -59,7 +59,6 @@ export interface SWAPIPlayer {
     dID?: string; // Discord ID, similar to above
 
     // DB Updated timestamps
-    updated?: number;
     updatedAt?: Date;
 }
 
@@ -189,7 +188,7 @@ export interface SWAPIUnit {
     omicrons?: SWAPIUnitSkill[]; // List of skills with omicrons
     player?: string; // Player name
     allyCode?: number;
-    updated?: number;
+    updatedAt?: Date;
     unitTierList?: {
         tier: number;
         equipmentSetList: string[];
@@ -300,7 +299,6 @@ export interface RawGuild {
     roster: RawGuildMember[];
     member: RawComlinkGuildMember[]; // From the unwrapped guild response; turned into roster during processing
     guild?: { member: RawComlinkGuildMember[]; profile: RawGuild["profile"] }; // Raw API response wraps the payload here
-    updated: number;
     updatedAt: Date;
 }
 export interface RawGuildMember {
@@ -379,7 +377,7 @@ export interface ComlinkUnit {
     omicrons?: SWAPIUnitSkill[]; // List of scills with omicrons
     player?: string; // Player name
     allyCode?: number;
-    updated?: number;
+    updatedAt?: Date;
 }
 export interface ComlinkAbility {
     id: string;
@@ -679,7 +677,6 @@ export interface SWAPIGuild {
     territoryBattleStatus: null;
     territoryWarStatus: null;
     trophy: number;
-    updated: number;
     updatedAt: Date;
 
     // Used in some commands
@@ -748,7 +745,7 @@ export interface SWAPIGuildMember {
     gp?: number;
     gpChar?: number;
     gpShip?: number;
-    updated?: number;
+    updatedAt?: Date;
 
     // Used in some commands
     inGuild?: boolean; // Used to highlight the member if they're in the Discord server

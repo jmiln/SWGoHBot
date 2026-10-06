@@ -60,7 +60,7 @@ describe("MyArena", () => {
         const mockPlayer = createMockPlayer({
             allyCode: 123456789,
             name: "TestPlayer",
-            updated: Date.now(),
+            updatedAt: new Date(),
             arena: {
                 char: { rank: 42, squad: [{ id: "uuid-vader-001", defId: "DARTHVADER" }] },
                 ship: { rank: 17, squad: [{ id: "uuid-chimaera-001", defId: "CAPITALCHIMAERA" }] },
@@ -101,7 +101,7 @@ describe("MyArena", () => {
         const mockPlayer = createMockPlayer({
             allyCode: 123456789,
             name: "TestPlayer",
-            updated: Date.now(),
+            updatedAt: new Date(),
             arena: {
                 char: { rank: 42, squad: [{ id: "uuid-vader-001", defId: "DARTHVADER" }] },
                 ship: { rank: 17, squad: [] },
@@ -132,7 +132,7 @@ describe("MyArena", () => {
         const mockPlayer = createMockPlayer({
             allyCode: 123456789,
             name: "TestPlayer",
-            updated: Date.now(),
+            updatedAt: new Date(),
             arena: {
                 char: { rank: 42, squad: [{ id: "uuid-vader-001", defId: "DARTHVADER" }] },
                 ship: { rank: 17, squad: [{ id: "uuid-chimaera-001", defId: "CAPITALCHIMAERA" }] },
@@ -167,7 +167,7 @@ describe("MyArena", () => {
         const mockPlayer = createMockPlayer({
             allyCode: 123456789,
             name: "TestPlayer",
-            updated: Date.now(),
+            updatedAt: new Date(),
             arena: {
                 char: { rank: 42, squad: [{ id: "uuid-vader-001", defId: "DARTHVADER" }] },
                 ship: { rank: 17, squad: [] },
@@ -203,7 +203,7 @@ describe("MyArena", () => {
         const mockPlayer = createMockPlayer({
             allyCode: 123456789,
             name: "TestPlayer",
-            updated: Date.now(),
+            updatedAt: new Date(),
             arena: {
                 char: { rank: 42, squad: [{ id: "uuid-vader-001", defId: "DARTHVADER" }] },
                 ship: { rank: 17, squad: [] },

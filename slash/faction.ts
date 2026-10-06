@@ -176,7 +176,7 @@ export default class Faction extends Command {
                 desc = msgArr[0];
             }
 
-            const footerStr = updatedFooterStr(player.updated, language);
+            const footerStr = updatedFooterStr(player.updatedAt, language);
             return interaction.editReply({
                 content: null,
                 embeds: [

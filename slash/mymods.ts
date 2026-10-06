@@ -139,7 +139,7 @@ export default class MyMods extends Command {
                 title: language.get("BASE_SOMETHING_BROKE"),
             });
         }
-        const footerStr = updatedFooterStr(player.updated, language) || "";
+        const footerStr = updatedFooterStr(player.updatedAt, language) || "";
 
         if (subCommand === "character") {
             const searchChar = interaction.options.getString("character");

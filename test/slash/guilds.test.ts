@@ -512,7 +512,7 @@ describe("Guilds Command Functionality", () => {
                         lastActivityTime: new Date().toISOString(),
                     } as RawGuildMember,
                 ],
-                updated: Date.now(),
+                updatedAt: new Date(),
             } as RawGuild;
         }
 

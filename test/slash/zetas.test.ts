@@ -53,7 +53,7 @@ describe("Zetas", () => {
             createMockPlayer({
                 allyCode: 123456789,
                 name: "TestPlayer",
-                updated: Date.now(),
+                updatedAt: new Date(),
                 roster: [createMockUnit({ defId: "DARTHVADER", combatType: 1, skills: [] })],
             });
 
@@ -93,7 +93,7 @@ describe("Zetas", () => {
             createMockPlayer({
                 allyCode: 123456789,
                 name: "TestPlayer",
-                updated: Date.now(),
+                updatedAt: new Date(),
                 roster: [unitWithZeta],
             });
         swgohAPI.unitNames = async () => ({ DARTHVADER: "Darth Vader" });

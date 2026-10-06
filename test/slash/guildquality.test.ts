@@ -21,11 +21,11 @@ const createMockGuild = (overrides: Partial<SWAPIGuild> = {}): SWAPIGuild => {
         members: 50,
         gp: 250000000,
         roster: [
-            { allyCode: 111111111, name: "Player1", guildMemberLevel: 3, updated: now } as any,
-            { allyCode: 222222222, name: "Player2", guildMemberLevel: 3, updated: now } as any,
-            { allyCode: 333333333, name: "Applicant", guildMemberLevel: 1, updated: now } as any, // Should be filtered out
+            { allyCode: 111111111, name: "Player1", guildMemberLevel: 3, updatedAt: new Date(now) } as any,
+            { allyCode: 222222222, name: "Player2", guildMemberLevel: 3, updatedAt: new Date(now) } as any,
+            { allyCode: 333333333, name: "Applicant", guildMemberLevel: 1, updatedAt: new Date(now) } as any, // Should be filtered out
         ],
-        updated: now,
+        updatedAt: new Date(now),
         warnings: [],
         ...overrides,
     } as any;
@@ -85,7 +85,7 @@ const createMockPlayer = (allyCode: number, overrides: Partial<SWAPIPlayer> = {}
             } as any,
         ],
         arena: { char: { rank: 50, squad: [] }, ship: { rank: 100, squad: [] } } as any,
-        updated: Date.now(),
+        updatedAt: new Date(),
         ...overrides,
     }) as any;
 

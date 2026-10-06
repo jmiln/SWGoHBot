@@ -235,7 +235,7 @@ export interface UserConfig {
             }
         >;
     };
-    updated: number;
+    updatedAt: Date;
     lang?: {
         language?: BotLanguage;
         swgohLanguage?: SWAPILang;

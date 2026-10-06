@@ -113,7 +113,7 @@ export default class MyArena extends Command {
             });
         }
 
-        const footerStr = `${language.get("COMMAND_MYARENA_HISTORY_NOTE")}\n${updatedFooterStr(player.updated, language)}`;
+        const footerStr = `${language.get("COMMAND_MYARENA_HISTORY_NOTE")}\n${updatedFooterStr(player.updatedAt, language)}`;
         return interaction.editReply({
             content: null,
             embeds: [

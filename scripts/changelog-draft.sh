@@ -70,11 +70,24 @@ subjects() {
 print_group() {
     local range=$1 prefix=$2 heading=$3
     local lines
-    lines=$(subjects "$range" | grep -E "^${prefix}(\(.+\))?: " || true)
+    lines=$(subjects "$range" | grep -E "^${prefix}(\(.+\))?!?: " || true)
     if [ -n "$lines" ]; then
         echo "### ${heading}"
         echo
-        echo "$lines" | sed -E "s/^${prefix}(\(.+\))?: //" | sed 's/^/- /'
+        echo "$lines" | sed -E "s/^${prefix}(\(.+\))?!?: //" | sed 's/^/- /'
+        echo
+    fi
+}
+
+# Listed first and also under their own type, so an operator skimming for upgrade steps finds them.
+print_breaking() {
+    local range=$1
+    local lines
+    lines=$(subjects "$range" | grep -E "^(${KNOWN})(\(.+\))?!: " || true)
+    if [ -n "$lines" ]; then
+        echo "### Breaking changes"
+        echo
+        echo "$lines" | sed -E "s/^(${KNOWN})(\(.+\))?!: //" | sed 's/^/- /'
         echo
     fi
 }
@@ -83,6 +96,7 @@ KNOWN='feat|fix|perf|refactor|docs|ci|build|test|chore'
 
 render() {
     local range=$1
+    print_breaking "$range"
     print_group "$range" feat Added
     print_group "$range" fix Fixed
     print_group "$range" perf Performance
@@ -95,7 +109,7 @@ render() {
 
     # Surfaced rather than dropped, so a badly-prefixed commit stays visible.
     local other
-    other=$(subjects "$range" | grep -vE "^(${KNOWN})(\(.+\))?: " || true)
+    other=$(subjects "$range" | grep -vE "^(${KNOWN})(\(.+\))?!?: " || true)
     if [ -n "$other" ]; then
         echo "### Unclassified (no conventional prefix)"
         echo

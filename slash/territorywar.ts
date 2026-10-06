@@ -484,7 +484,12 @@ export default class TerritoryWar extends Command {
             )}`,
         });
 
-        const footerStr = updatedFooterStr(Math.min(guild1.updated, guild2.updated), language);
+        const footerStr = updatedFooterStr(
+            new Date(
+                Math.min(guild1.updatedAt?.getTime() ?? Number.POSITIVE_INFINITY, guild2.updatedAt?.getTime() ?? Number.POSITIVE_INFINITY),
+            ),
+            language,
+        );
         fields.push({
             name: constants.zws,
             value: footerStr,

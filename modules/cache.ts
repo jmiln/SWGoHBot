@@ -15,7 +15,6 @@ import type { BotCache } from "../types/cache_types.ts";
 
 // Define a common interface for things stored in cache
 interface Cacheable {
-    updated?: number;
     updatedAt?: Date;
     // MongoDB's ObjectId - type varies (string, ObjectId, etc.)
     _id?: unknown;
@@ -55,7 +54,6 @@ class Cache implements BotCache {
 
         if (autoUpdate) {
             // Metadata fields written via the Document index signature
-            (saveObject as Cacheable).updated = Date.now();
             (saveObject as Cacheable).updatedAt = new Date();
         }
 

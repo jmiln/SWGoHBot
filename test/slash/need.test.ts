@@ -72,7 +72,7 @@ describe("Need", () => {
             createMockPlayer({
                 allyCode: 123456789,
                 name: "TestPlayer",
-                updated: Date.now(),
+                updatedAt: new Date(),
                 roster: [createMockUnit({ defId: "DARTHVADER", combatType: 1, rarity: 6, nameKey: "Darth Vader" })],
             });
         swgohAPI.langChar = async (char) => char;

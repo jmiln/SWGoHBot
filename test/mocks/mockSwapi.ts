@@ -281,7 +281,7 @@ export class MockSWAPI {
             unit.omicrons = unit.skills.filter((s) => s.isOmicron && s.tier >= (s.omicronTier ?? Number.POSITIVE_INFINITY));
             unit.player = player.name;
             unit.allyCode = player.allyCode;
-            unit.updated = player.updated;
+            unit.updatedAt = player.updatedAt;
             outStats.push(unit);
         }
         return outStats;
@@ -434,7 +434,6 @@ export function createMockPlayer(overrides: Partial<SWAPIPlayer> = {}): SWAPIPla
             ship: { rank: 50, squad: [] },
         },
         lastActivity: Date.now(),
-        updated: Date.now(),
         updatedAt: new Date(),
         ...overrides,
     };
@@ -458,7 +457,6 @@ export function createMockGuild(overrides: Partial<SWAPIGuild> = {}): SWAPIGuild
         bannerLogo: "logo1",
         message: "Welcome!",
         roster: [],
-        updated: Date.now(),
         updatedAt: new Date(),
         chatChannelId: "channel123",
         guildType: "NORMAL",
@@ -510,7 +508,7 @@ export function createMockGuildMember(overrides: Partial<SWAPIGuildMember> = {})
             "3": { currentValue: "30000", lifetimeValue: "2000000" },
         },
         lastActivityTime: new Date().toISOString(),
-        updated: Date.now(),
+        updatedAt: new Date(),
         seasonStatus: [],
         guildXp: 1000,
         squadPower: 5000000,

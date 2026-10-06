@@ -1,5 +1,4 @@
 import { env } from "../config/config.ts";
-import constants from "../data/constants/constants.ts";
 import cache from "./cache.ts";
 import logger from "./Logger.ts";
 
@@ -78,36 +77,10 @@ class DatabaseCleanup {
 
         try {
             logger.log("Starting database cleanup...");
-
-            const results = await Promise.allSettled([
-                this.cleanOldPlayerStats(),
-                this.cleanOldGuilds(),
-                this.cleanOldRawPlayers(),
-                this.cleanOldRawGuilds(),
-                this.cleanEmptyRosters(),
-            ]);
-
-            // Log results
-            let successCount = 0;
-            let failCount = 0;
-
-            for (const [index, result] of results.entries()) {
-                const taskName = ["cleanOldPlayerStats", "cleanOldGuilds", "cleanOldRawPlayers", "cleanOldRawGuilds", "cleanEmptyRosters"][
-                    index
-                ];
-
-                if (result.status === "fulfilled") {
-                    successCount++;
-                    logger.log(`${taskName}: ${result.value}`);
-                } else {
-                    failCount++;
-                    const errorMsg = result.reason instanceof Error ? result.reason.message : String(result.reason);
-                    logger.error(`${taskName} failed: ${errorMsg}`);
-                }
-            }
+            logger.log(`cleanEmptyRosters: ${await this.cleanEmptyRosters()}`);
 
             const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-            logger.log(`Database cleanup complete in ${duration}s (${successCount} succeeded, ${failCount} failed)`);
+            logger.log(`Database cleanup complete in ${duration}s`);
         } catch (err) {
             const errorMsg = err instanceof Error ? err.message : String(err);
             logger.error(`Database cleanup encountered an error: ${errorMsg}`);
@@ -115,43 +88,6 @@ class DatabaseCleanup {
         } finally {
             this.isRunning = false;
         }
-    }
-
-    /**
-     * Remove player stats older than specified days
-     * @param daysOld - Age threshold in days (default: 7)
-     * @returns Deletion summary
-     */
-    async cleanOldPlayerStats(daysOld = 7): Promise<string> {
-        const deleted = await this.deleteOlderThan("playerStats", daysOld);
-        return `Deleted ${deleted} player records older than ${daysOld} days`;
-    }
-
-    /**
-     * Remove guild data older than specified days
-     * @param daysOld - Age threshold in days (default: 7)
-     * @returns Deletion summary
-     */
-    async cleanOldGuilds(daysOld = 7): Promise<string> {
-        const deleted = await this.deleteOlderThan("guilds", daysOld);
-        return `Deleted ${deleted} guild records older than ${daysOld} days`;
-    }
-
-    async cleanOldRawPlayers(daysOld = 7): Promise<string> {
-        const deleted = await this.deleteOlderThan("rawPlayers", daysOld);
-        return `Deleted ${deleted} raw player records older than ${daysOld} days`;
-    }
-
-    async cleanOldRawGuilds(daysOld = 7): Promise<string> {
-        const deleted = await this.deleteOlderThan("rawGuilds", daysOld);
-        return `Deleted ${deleted} raw guild records older than ${daysOld} days`;
-    }
-
-    // A document without `updated` never matches, so it is kept rather than treated as ancient
-    private async deleteOlderThan(collection: string, daysOld: number): Promise<number> {
-        const cutoffTime = Date.now() - daysOld * constants.dayMS;
-        const result = await cache.delete(env.MONGODB_SWAPI_DB, collection, { updated: { $lt: cutoffTime } });
-        return result.deletedCount;
     }
 
     /**
@@ -164,38 +100,6 @@ class DatabaseCleanup {
         });
 
         return `Deleted ${result.deletedCount} player records with empty rosters`;
-    }
-
-    /**
-     * Get cleanup statistics without deleting
-     * @returns Statistics about records that would be cleaned
-     */
-    async getCleanupStats(daysOld = 7): Promise<{
-        oldPlayerStats: number;
-        oldGuilds: number;
-        oldRawPlayers: number;
-        oldRawGuilds: number;
-        emptyRosters: number;
-        totalToClean: number;
-    }> {
-        const cutoffTime = Date.now() - daysOld * constants.dayMS;
-
-        const [oldPlayerStats, oldGuilds, oldRawPlayers, oldRawGuilds, emptyRosters] = await Promise.all([
-            cache.count(env.MONGODB_SWAPI_DB, "playerStats", { updated: { $lt: cutoffTime } }),
-            cache.count(env.MONGODB_SWAPI_DB, "guilds", { updated: { $lt: cutoffTime } }),
-            cache.count(env.MONGODB_SWAPI_DB, "rawPlayers", { updated: { $lt: cutoffTime } }),
-            cache.count(env.MONGODB_SWAPI_DB, "rawGuilds", { updated: { $lt: cutoffTime } }),
-            cache.count(env.MONGODB_SWAPI_DB, "playerStats", { roster: { $size: 0 } }),
-        ]);
-
-        return {
-            oldPlayerStats,
-            oldGuilds,
-            oldRawPlayers,
-            oldRawGuilds,
-            emptyRosters,
-            totalToClean: oldPlayerStats + oldGuilds + oldRawPlayers + oldRawGuilds + emptyRosters,
-        };
     }
 
     /**

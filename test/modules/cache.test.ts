@@ -50,8 +50,13 @@ describe("Cache Module", () => {
             assert.strictEqual(result.userId, "123");
             assert.strictEqual(result.name, "Test User");
             assert.strictEqual(result.score, 100);
-            assert.ok(result.updated);
-            assert.ok(result.updatedAt);
+            assert.strictEqual(result.updated, undefined, "put() must not write the legacy epoch-ms field");
+            assert.ok(result.updatedAt instanceof Date, `Expected updatedAt to be a Date, got ${result.updatedAt}`);
+
+            // TTL indexes only act on BSON dates, so the stored value must read back as a Date
+            const stored = await cache.getOne(testDbName, testCollection, { userId: "123" });
+            assert.ok(stored?.updatedAt instanceof Date, `Expected stored updatedAt to be a BSON date, got ${stored?.updatedAt}`);
+            assert.ok(!("updated" in (stored ?? {})), `Expected no stored legacy field, found ${stored?.updated}`);
         });
 
         it("updates existing document", async () => {

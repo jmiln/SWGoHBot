@@ -27,9 +27,9 @@ const FORCE_GAMEDATA = process.argv.includes("--force-gamedata") || false;
 // runtime. Everything else in the cycle is independent of them.
 const SKIP_MODS = process.argv.includes("--skip-mods") || false;
 
-// databaseCleanup deletes old player stats/guilds (parsed and raw)/rosters, so it's opt-in rather
-// than opt-out: a manual run must never quietly destroy data. The scheduled crontab line passes this
-// explicitly.
+// databaseCleanup deletes player stats with empty rosters, so it's opt-in rather than opt-out: a
+// manual run must never quietly destroy data. The scheduled crontab line passes this explicitly.
+// Age-based expiry is not here; TTL indexes on `updatedAt` handle it once `npm run indexes` has run.
 const RUN_CLEANUP = process.argv.includes("--cleanup") || false;
 
 // GAC counter ingestion. It shares nothing with the comlink phases, so it can be skipped on its own

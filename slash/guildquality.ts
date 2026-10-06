@@ -129,7 +129,7 @@ export default class GuildQuality extends Command {
         }
 
         // Grab the most recently updated player's timestamp
-        const maxUpdated = Math.max(...guild.roster.map((pl) => pl.updated ?? 0));
+        const maxUpdated = new Date(Math.max(...guild.roster.map((pl) => pl.updatedAt?.getTime() ?? Number.NEGATIVE_INFINITY)));
         const footerStr = updatedFooterStr(maxUpdated, language);
         fields.push({
             name: constants.zws,
