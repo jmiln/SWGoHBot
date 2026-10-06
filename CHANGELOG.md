@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
 4.0.0 and 3.0.0 predate that and stay as written.
 
+## [6.0.0] - 2026-10-05
+
+### Breaking changes
+
+- Store only updatedAt and expire cached game data with TTL indexes
+
+### Fixed
+
+- Save only changed fields so concurrent writers stop rolling each other back
+- Flag datacrons from sets rotated out of the game data as expired
+
+### Refactoring
+
+- Store only updatedAt and expire cached game data with TTL indexes
+
+### CI
+
+- Add job timeouts and weekly Dependabot updates for GitHub Actions
+
+### Chores
+
+- Change the timeout to stop breaking sometimes
+
 ## [5.1.1] - 2026-10-05
 
 ### Chores
