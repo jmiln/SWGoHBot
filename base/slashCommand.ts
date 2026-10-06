@@ -84,15 +84,14 @@ export default abstract class slashCommand {
 
         const { title = "TITLE HERE", color = constants.colors.green, ephemeral = false, footer = "", iconURL = "" } = options;
 
-        const description = msgIn?.length > 2000 ? `${msgIn.toString().substring(0, 2000)}...` : msgIn;
+        const message = msgIn?.length > 2000 ? `${msgIn.toString().substring(0, 2000)}...` : msgIn;
+        // Not setFooter: Discord shows markdown and <t:...> timestamps raw in a footer, only the description renders them
+        const description = footer?.length ? `${message}\n\n${footer}` : message;
 
         const embed = new EmbedBuilder().setDescription(description).setColor(color);
 
         if (title || iconURL) {
             embed.setAuthor({ name: title, iconURL: iconURL || undefined });
-        }
-        if (footer?.length) {
-            embed.setFooter({ text: footer });
         }
 
         const embedObj: InteractionReplyOptions = {

@@ -7,7 +7,14 @@ import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
 import GuildSearch from "../../slash/guildsearch.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
-import { createCommandContext, createMockGuild, createMockGuildMember, createMockInteraction, createMockUnit } from "../mocks/index.ts";
+import {
+    createCommandContext,
+    createMockGuild,
+    createMockGuildMember,
+    createMockInteraction,
+    createMockUnit,
+    createRealLanguage,
+} from "../mocks/index.ts";
 
 const originalGuild = swgohAPI.guild;
 const originalGuildUnitStats = swgohAPI.guildUnitStats;
@@ -419,6 +426,28 @@ describe("GuildSearch Command Functionality", () => {
             const content = fields.map((f: any) => f.value ?? "").join(" ");
             assert.ok(content.includes("SevenStar"), "Expected 7-star member in results");
             assert.ok(!content.includes("FourStar"), "Expected 4-star member to be filtered out");
+        });
+
+        // Discord shows <t:...> raw in an embed footer; only descriptions, field values and content render it
+        it("puts the no-matches error's last-updated timestamp where Discord renders it, not in the footer", async () => {
+            const updatedAt = new Date("2026-10-05T12:00:00.000Z");
+            swgohAPI.guild = async () =>
+                createMockGuild({ name: "Test Guild", roster: [createMockGuildMember({ allyCode: 123456789 })], updatedAt }) as any;
+            swgohAPI.guildUnitStats = async () => [{ ...createMockUnit({ rarity: 4, gp: 10000 }), player: "FourStar", zetas: [] }] as any;
+
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789", rarity: 7 },
+            });
+            await new GuildSearch().run(createCommandContext({ interaction, language: createRealLanguage() }));
+
+            const replies = (interaction as any)._getReplies();
+            const embedData = replies[replies.length - 1].embeds[0].data;
+            const stamp = `<t:${Math.floor(updatedAt.getTime() / 1000)}>`;
+            assert.ok(
+                embedData.description?.endsWith(`\n\nLast updated ${stamp}`),
+                `Expected the timestamp in the description after a blank line, got ${JSON.stringify(embedData.description)}`,
+            );
+            assert.strictEqual(embedData.footer, undefined, `Expected no footer, got ${JSON.stringify(embedData.footer)}`);
         });
 
         it("rarity filter: returns error when no members meet the minimum star level", async () => {

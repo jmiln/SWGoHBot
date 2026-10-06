@@ -76,6 +76,25 @@ describe("MyCharacter", () => {
         assertErrorReply(interaction, "BASE_SWGOH_LOCKED_CHAR");
     });
 
+    // Discord shows <t:...> raw in an embed footer; only descriptions, field values and content render it
+    it("puts the locked-character error's last-updated timestamp where Discord renders it, not in the footer", async () => {
+        const updatedAt = new Date("2026-10-05T12:00:00.000Z");
+        swgohAPI.player = async () => createMockPlayer({ allyCode: 123456789, name: "TestPlayer", updatedAt, roster: [] });
+
+        const interaction = createMockInteraction({
+            optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789" },
+        });
+        await new MyCharacter().run(createCommandContext({ interaction, language: createRealLanguage() }));
+
+        const embedData = getLastReply(interaction).embeds[0].data;
+        const stamp = `<t:${Math.floor(updatedAt.getTime() / 1000)}>`;
+        assert.ok(
+            embedData.description?.endsWith(`\n\nLast updated ${stamp}`),
+            `Expected the timestamp in the description after a blank line, got ${JSON.stringify(embedData.description)}`,
+        );
+        assert.strictEqual(embedData.footer, undefined, `Expected no footer, got ${JSON.stringify(embedData.footer)}`);
+    });
+
     it("should display character stats when player has the unit", async () => {
         const vaderUnit = createMockUnit({
             defId: "VADER",
