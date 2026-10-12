@@ -1,5 +1,6 @@
 import { chown, copyFile, mkdir, readdir, stat } from "node:fs/promises";
 import path from "node:path";
+import logger from "../modules/Logger.ts";
 
 // Baked into the image by the Dockerfile. /app/data is the bind mount that masks the image's own
 // copy, which is why the pristine set has to live at a sibling path.
@@ -91,9 +92,7 @@ async function main(): Promise<void> {
     const { seeded, kept } = await seedMissingFiles(SOURCE_ROOT, DEST_ROOT);
     if (seeded.length) await applyOwnership(DEST_ROOT, seeded, uid, gid);
 
-    // console rather than modules/Logger.ts on purpose: importing it reaches data/constants/units.ts,
-    // which reads characters.json at module scope - the file this script may be about to create.
-    console.log(`[seedData] seeded ${seeded.length} file(s), kept ${kept} already present`);
+    logger.info("Data seed complete", { seeded: seeded.length, kept });
 }
 
 // Guarded so importing this module from a test does not run the seed against the container paths.
