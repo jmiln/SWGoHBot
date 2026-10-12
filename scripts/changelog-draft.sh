@@ -64,7 +64,7 @@ fi
 
 # `npm version` commits the bump with the bare version as its subject. That is not a change.
 subjects() {
-    git log --no-merges --pretty='%s' "${1}" | grep -vE '^[0-9]+\.[0-9]+\.[0-9]+$' || true
+    git log --no-merges --pretty='%s' "${1}" | sed -E 's/^[[:space:]]+//' | grep -vE '^[0-9]+\.[0-9]+\.[0-9]+$' || true
 }
 
 print_group() {
@@ -113,7 +113,7 @@ render() {
     if [ -n "$other" ]; then
         echo "### Unclassified (no conventional prefix)"
         echo
-        echo "$other" | sed 's/^/- /'
+        echo "- ${other//$'\n'/$'\n'- }"
         echo
     fi
 }

@@ -80,6 +80,10 @@ Entries from 4.1.0 onward are generated from commit subjects by `npm run changel
 
 ## [5.0.0] - 2026-09-27
 
+### Breaking changes
+
+- Remove welcome and leave messages
+
 ### Fixed
 
 - Buncha little cleanups and small fixes
@@ -92,10 +96,6 @@ Entries from 4.1.0 onward are generated from commit subjects by `npm run changel
 ### Chores
 
 - Package updates
-
-### Unclassified (no conventional prefix)
-
--   feat!: Remove welcome and leave messages
 
 ## [4.8.0] - 2026-09-23
 
