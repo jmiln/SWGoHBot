@@ -672,6 +672,12 @@ describe("Event", () => {
             assert.strictEqual(added?.[0].channel, "channel2");
         });
 
+        it("parses a JSON repeat interval", async () => {
+            const { added } = await createJson(JSON.stringify([jsonEvent({ repeat: "1d2h3m" })]));
+
+            assert.deepStrictEqual(added?.[0].repeat, { repeatDay: 1, repeatHour: 2, repeatMin: 3 });
+        });
+
         it("adds nothing and lists each event's errors when any event is invalid", async () => {
             const json = JSON.stringify([
                 jsonEvent({ name: "dup" }),
@@ -835,6 +841,15 @@ describe("Event", () => {
             assert.strictEqual(sent[0]?.channel, "channel2");
         });
 
+        it("tells the user when there is no channel it can post in", async () => {
+            const { sent, reply } = await trigger(storedEvent({ name: "callout", channel: null }));
+
+            assert.deepStrictEqual(sent, []);
+            assert.ok(reply, "the interaction must be answered");
+            assert.ok(reply.content.includes("announceChan"), reply.content);
+            assert.ok(reply.flags, "the reply should be ephemeral");
+        });
+
         it("reports a failed send", async () => {
             const { reply } = await trigger(storedEvent({ name: "callout" }), { failSend: true });
 
@@ -923,6 +938,52 @@ describe("Event", () => {
                 saved.map((e) => e.name),
                 ["original"],
             );
+        });
+
+        it("edits an event without renaming it", async () => {
+            await setEvents({ guildId: EV_GUILD, evArrOut: [storedEvent({ name: "original", message: "old msg" })] });
+
+            const { title, saved } = await edit({ message: "new msg" });
+
+            assert.strictEqual(title, "Success");
+            assert.deepStrictEqual(
+                saved.map((e) => [e.name, e.message]),
+                [["original", "new msg"]],
+            );
+        });
+
+        it("still rejects renaming onto another event's name", async () => {
+            await setEvents({ guildId: EV_GUILD, evArrOut: [storedEvent({ name: "original" }), storedEvent({ name: "other" })] });
+
+            const { content, saved } = await edit({ name: "other" });
+
+            assert.ok(content.includes("You cannot make 2 events with the same name"), content);
+            assert.deepStrictEqual(saved.map((e) => e.name).sort(), ["original", "other"]);
+        });
+
+        it("keeps an untouched time in a guild outside Los Angeles", async () => {
+            await setGuildSettings({ guildId: EV_GUILD, settings: { ...defaultGuildSettings, timezone: "Europe/London" } });
+            await setEvents({ guildId: EV_GUILD, evArrOut: [storedEvent({ name: "original" })] });
+
+            const { saved } = await edit({ name: "renamed" });
+
+            assert.strictEqual(saved[0]?.eventDT, FUTURE_DT);
+        });
+
+        it("turns countdown off", async () => {
+            await setEvents({ guildId: EV_GUILD, evArrOut: [storedEvent({ name: "original", countdown: true })] });
+
+            const { saved } = await edit({ name: "renamed", countdown: false });
+
+            assert.strictEqual(saved[0]?.countdown, false);
+        });
+
+        it("leaves countdown alone when not given", async () => {
+            await setEvents({ guildId: EV_GUILD, evArrOut: [storedEvent({ name: "original", countdown: true })] });
+
+            const { saved } = await edit({ name: "renamed" });
+
+            assert.strictEqual(saved[0]?.countdown, true);
         });
 
         it("says when the event does not exist", async () => {

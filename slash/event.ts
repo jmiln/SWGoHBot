@@ -34,7 +34,7 @@ interface EventInput {
     channel?: string | null;
     channelID?: string | null;
     countdown?: boolean | null;
-    repeat?: GuildConfigEvent["repeat"];
+    repeat?: GuildConfigEvent["repeat"] | string;
     repeatStr?: string | null;
     repeatDay?: string | null;
     repeatDays?: number[];
@@ -61,57 +61,57 @@ export default class Event extends Command {
                 options: [
                     {
                         name: "name",
-                        description: "The name of the event.",
+                        description: "A unique name for the event",
                         type: ApplicationCommandOptionType.String,
                         required: true,
                     },
                     {
                         name: "day",
                         type: ApplicationCommandOptionType.String,
-                        description: "The date (DD/MM/YYYY) that you want it to go off",
+                        description: "The date it fires, as DD/MM/YYYY",
                         required: true,
                     },
                     {
                         name: "time",
                         type: ApplicationCommandOptionType.String,
-                        description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
+                        description: "The time it fires, as HH:MM in 24-hour time, in the server's timezone (/setconf set timezone)",
                         required: true,
                     },
                     {
                         name: "message",
                         type: ApplicationCommandOptionType.String,
-                        description: "The message that you want the event to spit back out",
+                        description: "What to post when the event fires (up to 1000 characters)",
                     },
                     {
                         name: "repeat",
                         type: ApplicationCommandOptionType.String,
-                        description: "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
+                        description: "Repeat at a fixed interval, as 00d00h00m (7d0h0m is weekly)",
                     },
                     {
                         name: "repeatday",
                         type: ApplicationCommandOptionType.String,
-                        description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
+                        description: "Days to wait between each repeat, e.g. 2,5,1. Stops after the last one. Ignored if repeat is set",
                     },
                     {
                         name: "channel",
                         type: ApplicationCommandOptionType.Channel,
-                        description: "Set which channel the event will announce on",
+                        description: "Where to post. Defaults to the server's announce channel (/setconf set announce_chan)",
                     },
                     {
                         name: "countdown",
                         type: ApplicationCommandOptionType.Boolean,
-                        description: "Set to use the countdown or not (Configured in setconf)",
+                        description: "Send countdown alerts before the event fires (times are set with /setconf add event_countdown)",
                     },
                 ],
             },
             {
                 name: "createjson",
-                description: "Create new event(s), inputted as a json code block",
+                description: "Create one or more events from JSON",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         name: "json",
-                        description: "The json formatted text.",
+                        description: "JSON object or array: name, day, time, plus optional message, repeat, repeatDay, channel, countdown",
                         type: ApplicationCommandOptionType.String,
                         required: true,
                     },
@@ -124,7 +124,7 @@ export default class Event extends Command {
                 options: [
                     {
                         name: "name",
-                        description: "The unique name of the event you want to delete",
+                        description: "The event to delete",
                         type: ApplicationCommandOptionType.String,
                         required: true,
                         autocomplete: true,
@@ -133,66 +133,66 @@ export default class Event extends Command {
             },
             {
                 name: "edit",
-                description: "Create new event(s), inputted as a json code block",
+                description: "Edit an existing event",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         name: "event_name",
-                        description: "The name of the event you want to edit",
+                        description: "The event to edit",
                         type: ApplicationCommandOptionType.String,
                         required: true,
                         autocomplete: true,
                     },
                     {
                         name: "name",
-                        description: "The new name of the event.",
+                        description: "Rename the event to this",
                         type: ApplicationCommandOptionType.String,
                     },
                     {
                         name: "day",
                         type: ApplicationCommandOptionType.String,
-                        description: "The date (DD/MM/YYYY) that you want it to go off",
+                        description: "New date, as DD/MM/YYYY",
                     },
                     {
                         name: "time",
                         type: ApplicationCommandOptionType.String,
-                        description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
+                        description: "New time, as HH:MM in 24-hour time",
                     },
                     {
                         name: "message",
                         type: ApplicationCommandOptionType.String,
-                        description: "The message that you want the event to spit back out",
+                        description: "New message to post when it fires (up to 1000 characters)",
                     },
                     {
                         name: "repeat",
                         type: ApplicationCommandOptionType.String,
-                        description: "Lets you set a duration with the format of 00d00h00m. (Not compatible with repeatday)",
+                        description: "New fixed interval, as 00d00h00m (7d0h0m is weekly)",
                     },
                     {
                         name: "repeatday",
                         type: ApplicationCommandOptionType.String,
-                        description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with repeat)",
+                        description: "New days to wait between each repeat, e.g. 2,5,1. Ignored if repeat is set",
                     },
                     {
                         name: "channel",
                         type: ApplicationCommandOptionType.Channel,
-                        description: "Set which channel the event will announce on",
+                        description: "New channel to post in",
                     },
                     {
                         name: "countdown",
                         type: ApplicationCommandOptionType.Boolean,
-                        description: "Set to use the countdown or not (Configured in setconf)",
+                        description: "True turns countdown alerts on, False turns them off. Leave it out to keep the current setting.",
                     },
                 ],
             },
             {
                 name: "trigger",
-                description: "Trigger the selected event",
+                description: "Post an event's message now, without changing its schedule",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         name: "name",
-                        description: "The unique name of the event you want to trigger",
+                        description: "The event to post now",
                         type: ApplicationCommandOptionType.String,
                         required: true,
                         autocomplete: true,
@@ -201,28 +201,28 @@ export default class Event extends Command {
             },
             {
                 name: "view",
-                description: "View your event(s)",
+                description: "View this server's events",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {
                         name: "name",
-                        description: "The unique name of the event you want to see.",
+                        description: "Show just this event",
                         type: ApplicationCommandOptionType.String,
                         autocomplete: true,
                     },
                     {
                         name: "minimal",
-                        description: "Show the event(s), but without the message.",
+                        description: "Hide each event's message",
                         type: ApplicationCommandOptionType.Boolean,
                     },
                     {
                         name: "page_num",
-                        description: `Set it to paginate the events, showing ${EVENTS_PER_PAGE} events at a time.`,
+                        description: `Which page of the list to show (${EVENTS_PER_PAGE} events per page)`,
                         type: ApplicationCommandOptionType.Integer,
                     },
                     {
                         name: "filter",
-                        description: "Show only events that match the filter",
+                        description: "Show only events whose name or message contains every word given (case-sensitive)",
                         type: ApplicationCommandOptionType.String,
                     },
                 ],
@@ -487,7 +487,12 @@ export default class Event extends Command {
             channel = findChannelByNameOrId(interaction.guild, guildConf.announceChan);
         }
         const botMember = interaction.guild.members.me;
-        if (!channel?.isSendable() || !botMember || !(await hasViewAndSend(channel, botMember))) return;
+        if (!channel?.isSendable() || !botMember || !(await hasViewAndSend(channel, botMember))) {
+            return interaction.reply({
+                content: `Could not trigger *${eventIn?.name || eventName}*: I can't post in its channel. Set a channel on the event, or configure \`announceChan\`, and make sure I can view and send messages there.`,
+                flags: MessageFlags.Ephemeral,
+            });
+        }
 
         try {
             await channel.send({ content: announceMessage });
@@ -519,8 +524,9 @@ export default class Event extends Command {
             return interaction.reply({ content: language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName ?? "") });
         }
 
-        const newEvent = editedEventInput(event, interaction);
-        const validEvent = validateEvents([newEvent], guildEvents, { language, guildConf, guild: interaction.guild })[0];
+        const newEvent = editedEventInput(event, interaction, guildConf.timezone);
+        const otherEvents = guildEvents.filter((ev) => ev.name !== event.name);
+        const validEvent = validateEvents([newEvent], otherEvents, { language, guildConf, guild: interaction.guild })[0];
         if (!validEvent.valid) {
             logger.debug("Issue validating an event:");
             logger.debug(validEvent);
@@ -604,7 +610,7 @@ function findChannelByNameOrId(guild: Guild, nameOrId: string): GuildBasedChanne
 }
 
 // Put any new bits into an event skeleton
-function editedEventInput(event: GuildConfigEvent, interaction: ChatInputCommandInteraction<"cached">): EventInput {
+function editedEventInput(event: GuildConfigEvent, interaction: ChatInputCommandInteraction<"cached">, timezone: string): EventInput {
     const newEventName = interaction.options.getString("name");
     const newEvDate = interaction.options.getString("day");
     const newEvTime = interaction.options.getString("time");
@@ -614,9 +620,7 @@ function editedEventInput(event: GuildConfigEvent, interaction: ChatInputCommand
     const newChannel = interaction.options.getChannel("channel");
     const newCountdown = interaction.options.getBoolean("countdown");
 
-    const [oldDate, oldTime] = new Date(event.eventDT)
-        .toLocaleString("en-GB", { timeZone: "America/Los_Angeles", ...DATE_TIME_PARTS })
-        .split(", ");
+    const [oldDate, oldTime] = new Date(event.eventDT).toLocaleString("en-GB", { timeZone: timezone, ...DATE_TIME_PARTS }).split(", ");
 
     const newEvent: EventInput = {
         name: newEventName ? newEventName : event.name,
@@ -624,7 +628,7 @@ function editedEventInput(event: GuildConfigEvent, interaction: ChatInputCommand
         time: newEvTime ? newEvTime : oldTime,
         message: newEvMsg ? newEvMsg : event.message,
         channel: newChannel?.id ? newChannel.id : event.channel,
-        countdown: newCountdown ? newCountdown : event.countdown,
+        countdown: newCountdown ?? event.countdown,
         eventDT: null,
         repeatDay: null,
     };
@@ -777,8 +781,9 @@ function validateEventChannel(thisEvent: EventInput, newEvent: GuildConfigEvent,
 // If the repeat is set, try to parse it
 function parseEventRepeat(thisEvent: EventInput, newEvent: GuildConfigEvent, err: string[], language: Language) {
     const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
-    if (thisEvent.repeatStr?.length) {
-        const repeatStr = thisEvent.repeatStr;
+    // createjson input names the interval string "repeat", the slash options name it repeatStr
+    const repeatStr = thisEvent.repeatStr ?? (typeof thisEvent.repeat === "string" ? thisEvent.repeat : null);
+    if (repeatStr?.length) {
         if (repeatStr.match(timeReg)) {
             const dayMatch = repeatStr.match(/(\d{1,2})d/);
             const hourMatch = repeatStr.match(/(\d{1,2})h/);
