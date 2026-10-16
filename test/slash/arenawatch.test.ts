@@ -44,7 +44,9 @@ describe("ArenaWatch", () => {
     }
 
     // Scope cleanup to this file's ally codes - concurrent test files share the collection
-    const AW_TEST_PLAYER_FILTER = { allyCode: { $in: [123456789, 987654321, 999888777, 555555555, 611111111, 622222222] } };
+    const AW_TEST_PLAYER_FILTER = {
+        allyCode: { $in: [123456789, 987654321, 999888777, 555555555, 611111111, 622222222, 633333333, 644444444] },
+    };
 
     before(async () => {
         const mongoClient = await getMongoClient();
@@ -481,6 +483,212 @@ describe("ArenaWatch", () => {
                 assert.ok(result.error);
                 assert.ok(result.error.includes("not available"));
             });
+
+            it("treats delete as remove and drops every listed code", async () => {
+                const aw = createBaseAW();
+                aw.allyCodes = [
+                    { allyCode: 123456789, mention: null, poOffset: 0, mark: null },
+                    { allyCode: 987654321, mention: null, poOffset: 0, mark: null },
+                ];
+
+                const { result, aw: awRes } = await processAWChanges({
+                    target: "allycode",
+                    interactionOptions: { subCommand: "delete", allyCodes: "123-456-789, 987654321" } as any,
+                    aw,
+                });
+
+                assert.strictEqual(awRes.allyCodes.length, 0);
+                assert.strictEqual(result.outLog, "123456789 has been removed\n987654321 has been removed");
+            });
+
+            it("removes nothing when any listed code is missing", async () => {
+                const aw = createBaseAW();
+                aw.allyCodes = [{ allyCode: 123456789, mention: null, poOffset: 0, mark: null }];
+
+                const { result, aw: awRes } = await processAWChanges({
+                    target: "allycode",
+                    interactionOptions: { subCommand: "remove", allyCodes: "123456789, 999999999" } as any,
+                    aw,
+                });
+
+                assert.strictEqual(result.error, "999999999 was not available to be removed");
+                assert.strictEqual(awRes.allyCodes.length, 1, "the present code must survive a failed batch");
+            });
+
+            it("returns the missing-code key when no valid codes are given", async () => {
+                const { result } = await processAWChanges({
+                    target: "allycode",
+                    interactionOptions: { subCommand: "remove", allyCodes: "nope" } as any,
+                    aw: createBaseAW(),
+                });
+
+                assert.deepStrictEqual(result.errorKey, ["COMMAND_ARENAWATCH_MISSING_AC", "remove"]);
+            });
+        });
+
+        describe("payout mark subcommand", () => {
+            const withMarks = () => {
+                const aw = createBaseAW();
+                aw.allyCodes = [
+                    { allyCode: 123456789, mention: null, poOffset: 0, mark: null },
+                    { allyCode: 987654321, mention: null, poOffset: 0, mark: "x" },
+                ];
+                return aw;
+            };
+            const markChange = (options: Record<string, unknown>) =>
+                processAWChanges({ target: "payout", interactionOptions: { subCommand: "mark", ...options } as any, aw: withMarks() });
+
+            it("sets a mark on a listed code and lists every code's mark", async () => {
+                const { result, aw: awRes } = await markChange({ allyCode: "123456789", mark: "*" });
+
+                assert.strictEqual(awRes.allyCodes.find((p) => p.allyCode === 123456789)?.mark, "*");
+                assert.strictEqual(result.outLog, "Updated the following marks: \n- 123456789: '*'\n- 987654321: 'x'");
+            });
+
+            it("warns that a custom emote needs the bot to share its server", async () => {
+                const { result } = await markChange({ allyCode: "123456789", mark: "<:smile:123456>" });
+
+                assert.ok(result.outLog.includes("external emote"), result.outLog);
+            });
+
+            it("clears a mark", async () => {
+                const { result, aw: awRes } = await markChange({ allyCode: "987654321", remove_mark: true });
+
+                assert.strictEqual(awRes.allyCodes.find((p) => p.allyCode === 987654321)?.mark, null);
+                assert.ok(result.outLog.includes("987654321: ''"), result.outLog);
+            });
+
+            it("requires exactly one of mark and remove_mark", async () => {
+                const neither = await markChange({ allyCode: "123456789" });
+                const both = await markChange({ allyCode: "123456789", mark: "*", remove_mark: true });
+
+                assert.strictEqual(neither.result.error, "You MUST choose either a mark, or to remove a mark");
+                assert.strictEqual(both.result.error, "You MUST choose only one of: mark, remove_mark");
+            });
+
+            it("rejects marking a code that is not listed", async () => {
+                const { result } = await markChange({ allyCode: "555555555", mark: "*" });
+
+                assert.ok(result.error?.includes("already present player"), String(result.error));
+            });
+
+            it("rejects clearing a mark that is not set", async () => {
+                const { result } = await markChange({ allyCode: "123456789", remove_mark: true });
+
+                assert.strictEqual(result.error, "There's no mark to remove.");
+            });
+        });
+
+        describe("warn and result settings", () => {
+            const withCode = () => {
+                const aw = createBaseAW();
+                aw.allyCodes.push({ allyCode: 123456789, mention: null, poOffset: 0 } as any);
+                return aw;
+            };
+            const arenaLogChange = (options: Record<string, unknown>, aw = withCode()) =>
+                processAWChanges({ target: "arena_log", interactionOptions: options as any, aw });
+
+            it("stores a warn's minutes and arena on the listed code", async () => {
+                const { aw: awRes } = await arenaLogChange({ subCommand: "warn", allyCode: "123456789", mins: 30, arena: "char" });
+
+                assert.deepStrictEqual(awRes.allyCodes[0].warn, { min: 30, arena: "char" });
+            });
+
+            it("clears a warn's minutes and arena when turned off", async () => {
+                const { result, aw: awRes } = await arenaLogChange({ subCommand: "warn", allyCode: "123456789", mins: 0, arena: "none" });
+
+                assert.deepStrictEqual(awRes.allyCodes[0].warn, { min: undefined, arena: undefined });
+                assert.ok(result.outLog.startsWith("Your warn setting for 123456789 has been updated to 0 minutes in no arena."));
+            });
+
+            it("stores and clears a result arena on the listed code", async () => {
+                const set = await arenaLogChange({ subCommand: "result", allyCode: "123456789", arena: "fleet" });
+                assert.strictEqual(set.aw.allyCodes[0].result, "fleet");
+
+                const cleared = await arenaLogChange({ subCommand: "result", allyCode: "123456789", arena: "none" }, set.aw);
+                assert.strictEqual(cleared.aw.allyCodes[0].result, undefined);
+            });
+
+            for (const subCommand of ["warn", "result"]) {
+                it(`${subCommand} rejects an invalid ally code`, async () => {
+                    const { result } = await arenaLogChange({ subCommand, allyCode: "abc", mins: 30, arena: "char" });
+
+                    assert.strictEqual(result.error, "Invalid ally code (abc)");
+                });
+
+                it(`${subCommand} rejects a code that is not listed`, async () => {
+                    const { result } = await arenaLogChange({ subCommand, allyCode: "555555555", mins: 30, arena: "char" });
+
+                    assert.strictEqual(result.error, "That ally code is not in your list.");
+                });
+            }
+        });
+
+        describe("view", () => {
+            beforeEach(async () => {
+                const client = await getMongoClient();
+                await client.db(env.MONGODB_SWGOHBOT_DB).collection("arenaPlayers").deleteMany(AW_TEST_PLAYER_FILTER);
+                await arenaPlayerRegistry.upsertPlayer({ allyCode: 633333333, name: "Zed", lastCharRank: 3, lastShipRank: 40 });
+                await arenaPlayerRegistry.upsertPlayer({ allyCode: 644444444, name: "Alpha", lastCharRank: 12, lastShipRank: 7 });
+            });
+
+            const withViewCodes = () => {
+                const aw = createBaseAW();
+                aw.allyCodes = [
+                    { allyCode: 633333333, mention: null, poOffset: 0, mark: null, warn: { min: 10, arena: "char" } } as any,
+                    { allyCode: 644444444, mention: "123456789012345678", poOffset: 0, mark: "*", result: "both" } as any,
+                ];
+                aw.arena.char = { enabled: true, channel: "arena-char" };
+                aw.payout.fleet = { enabled: true, channel: "payout-fleet", msgID: null };
+                return aw;
+            };
+            const viewChange = (options: Record<string, unknown>) =>
+                processAWChanges({ target: "view", interactionOptions: { codeCap: 5, ...options } as any, aw: withViewCodes() });
+
+            it("lists codes by name with warn/result tags and summarizes the channels", async () => {
+                const { result } = await viewChange({});
+
+                const embed = result.embed;
+                assert.ok(embed, `expected an embed, got error: ${result.error}`);
+                assert.strictEqual(embed.title, "Arena Watch Settings");
+                assert.ok(embed.description.includes("Char:     **ON **  -  <#arena-char>"), embed.description);
+                assert.ok(embed.description.includes("Ship:     **OFF**  -  N/A"), embed.description);
+                assert.ok(embed.description.includes("Rank changes: **both**"), embed.description);
+                const [members, payout] = embed.fields ?? [];
+                assert.strictEqual(members.name, "Members (2/5):");
+                assert.strictEqual(members.value, "`644444444` `[R]` * **<@123456789012345678>**\n`633333333` `[W]` **Zed**");
+                assert.ok(payout.value.includes("Ship:     **ON **  -  <#payout-fleet>"), payout.value);
+            });
+
+            it("orders by stored char rank when viewing by rank", async () => {
+                const { result } = await viewChange({ view_by: "char_rank" });
+
+                // msgArray pads runs of spaces with zero-width spaces so Discord doesn't collapse them
+                const rankLines = result.embed?.fields?.[0].value.replaceAll("​", "");
+                assert.strictEqual(rankLines, "`  3`  |  **Zed**\n` 12`  |  * **<@123456789012345678>**");
+            });
+
+            it("shows one code's settings", async () => {
+                const { result } = await viewChange({ allyCode: "633333333" });
+
+                assert.strictEqual(result.embed?.title, "Arena Watch Settings (633333333)");
+                assert.ok(result.embed?.description.includes("Name: **Zed**"), result.embed?.description);
+                assert.ok(result.embed?.description.includes("Warn Mins: **10**"), result.embed?.description);
+            });
+
+            it("rejects an invalid or unlisted code", async () => {
+                const invalid = await viewChange({ allyCode: "abc" });
+                const unlisted = await viewChange({ allyCode: "555555555" });
+
+                assert.strictEqual(invalid.result.error, "abc is not a valid ally code.");
+                assert.strictEqual(unlisted.result.error, "555555555 is not listed in your registered ally codes.");
+            });
+        });
+
+        it("returns the invalid-option key for an unknown target", async () => {
+            const { result } = await processAWChanges({ target: "bogus", interactionOptions: {} as any, aw: createBaseAW() });
+
+            assert.deepStrictEqual(result.errorKey, ["COMMAND_ARENAWATCH_INVALID_OPTION"]);
         });
     });
 
@@ -683,6 +891,75 @@ describe("ArenaWatch", () => {
 
             assert.ok(result.error);
             assert.ok(result.error.includes("not in the list"));
+        });
+
+        it("returns the missing-code key when add is given no codes", async () => {
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: " , ", codeCap: 5 } as any,
+                aw: createBaseAW(),
+            });
+
+            assert.deepStrictEqual(result.errorKey, ["COMMAND_ARENAWATCH_MISSING_AC", "add"]);
+        });
+
+        it("adds the valid codes, reports the invalid ones, and keeps a mention", async () => {
+            mockSwapi.setPlayerData(createMockPlayer({ allyCode: 633333333, name: "Mentioned" }));
+
+            const { result, aw: awRes } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "633333333:<@123456789012345678>, 12", codeCap: 5 } as any,
+                aw: createBaseAW(),
+            });
+
+            assert.deepStrictEqual(
+                awRes.allyCodes.map((p) => [p.allyCode, p.mention]),
+                [[633333333, "123456789012345678"]],
+            );
+            assert.strictEqual(result.outLog, "Invalid code (12)!\n633333333 added!");
+        });
+
+        it("warns about a custom emote mark when adding", async () => {
+            mockSwapi.setPlayerData(createMockPlayer({ allyCode: 633333333, name: "Marked" }));
+
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "633333333", mark: "<a:spin:123456>", codeCap: 5 } as any,
+                aw: createBaseAW(),
+            });
+
+            assert.ok(result.outLog.startsWith("If you are using an external emote"), result.outLog);
+            assert.ok(result.outLog.endsWith("633333333 added!"), result.outLog);
+        });
+
+        it("rejects an edit with an invalid old or new code", async () => {
+            const aw = createBaseAW();
+            aw.allyCodes.push({ allyCode: 123456789, mention: null, poOffset: 0, mark: null });
+            const edit = (old_allyCode: string, new_allyCode: string) =>
+                processAWChanges({
+                    target: "allycode",
+                    interactionOptions: { subCommand: "edit", old_allyCode, new_allyCode, codeCap: 5 } as any,
+                    aw,
+                });
+
+            assert.strictEqual((await edit("abc", "987654321")).result.error, "abc is not a valid ally code.");
+            assert.strictEqual((await edit("123456789", "abc")).result.error, "Invalid code (abc)!");
+        });
+
+        it("reports a lookup failure during an edit", async () => {
+            (swgohAPI as any).unitStats = async () => {
+                throw new Error("comlink unavailable");
+            };
+            const aw = createBaseAW();
+            aw.allyCodes.push({ allyCode: 123456789, mention: null, poOffset: 0, mark: null });
+
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "edit", old_allyCode: "123456789", new_allyCode: "987654321", codeCap: 5 } as any,
+                aw,
+            });
+
+            assert.strictEqual(result.error, "Error getting player info.\nError: comlink unavailable");
         });
     });
 

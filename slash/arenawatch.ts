@@ -482,395 +482,378 @@ export async function processAWChanges({
         errorKey: null, // Send back the lang key if available
     };
 
+    let change: Partial<AwChangeRes>;
     switch (target) {
-        case "payout": {
-            // ;aw payout enable char | fleet | both    (Toggles per arena)
-            // ;aw payout channel #channelName char     (Sets it to a channel)
-            // ;aw payout mark <allyCode>   (Sets it to mark a player with an emote)
-            const targetArena = interactionOptions.arena ?? "";
-
-            // Get the which part of the payout we're working with
-            const setting = interactionOptions.subCommand;
-            if (setting === "arena") {
-                const arenaType = interactionOptions.arenaType ?? "";
-                aw.payout.char.enabled = ["char", "both"].includes(arenaType);
-                aw.payout.fleet.enabled = ["fleet", "both"].includes(arenaType);
-                result.outLog =
-                    arenaType === "none"
-                        ? "ArenaWatch payout has been disabled."
-                        : `ArenaWatch payout for ${arenaType === "both" ? "both arenas" : arenaType} has been enabled.`;
-            } else if (setting === "channel") {
-                // Set the channel for one of the options (Char/ fleet)
-                if (!interactionOptions.channelId) {
-                    result.error = "Invalid channel, please make sure you're choosing a text channel in this server.";
-                    break;
-                }
-
-                // They got throught all that, go ahead and set it
-                aw.payout.char.channel = ["char", "both"].includes(targetArena) ? interactionOptions.channelId : null;
-                aw.payout.fleet.channel = ["fleet", "both"].includes(targetArena) ? interactionOptions.channelId : null;
-                result.outLog = `ArenaWatch payout channel for ${targetArena === "both" ? "both arenas" : targetArena} has been set to <#${interactionOptions.channelId}>.`;
-                break;
-            } else if (setting === "mark") {
-                // Setting the mark/ emote/ symbol/ whatver to help show people as friendly/ enemy
-                // ;aw payout mark 123123123 :smile:
-                const ac = interactionOptions.allyCode;
-                const mark = interactionOptions.mark;
-                const remove_mark = interactionOptions.remove_mark;
-
-                if (!mark && !remove_mark) {
-                    result.error = "You MUST choose either a mark, or to remove a mark";
-                    break;
-                }
-                if (mark && remove_mark) {
-                    result.error = "You MUST choose only one of: mark, remove_mark";
-                    break;
-                }
-
-                const player = aw.allyCodes.find((p) => p.allyCode.toString() === ac?.toString());
-                if (!player) {
-                    result.error = "Sorry, but you can only apply a mark to an already present player/ ally code";
-                    break;
-                }
-                if (remove_mark && !player?.mark?.length) {
-                    result.error = "There's no mark to remove.";
-                    break;
-                }
-
-                // If they're trying to use a custom emote, make sure it's available for the bot to use
-                const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/;
-                let cmdOut: string | null = null;
-                if (mark && emojiRegex.test(mark)) {
-                    cmdOut =
-                        "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from";
-                }
-                const resArr: string[] = [];
-                aw.allyCodes = aw.allyCodes.map((p) => {
-                    if (p.allyCode.toString() === ac?.toString()) {
-                        p.mark = remove_mark ? null : mark;
-                    }
-                    resArr.push(`${p.allyCode}: '${p.mark ?? ""}'`);
-                    return p;
-                });
-                result.outLog = `Updated the following marks: \n- ${resArr.join("\n- ")}${cmdOut ? `\n\n${cmdOut}` : ""}`;
-            }
+        case "payout":
+            change = payoutChange(interactionOptions, aw);
             break;
-        }
-        case "arena_log": {
-            const setting = interactionOptions.subCommand;
-            if (setting === "arena") {
-                const arenaType = interactionOptions.arenaType ?? "";
-                aw.arena.char.enabled = ["char", "both"].includes(arenaType);
-                aw.arena.fleet.enabled = ["fleet", "both"].includes(arenaType);
-                result.outLog =
-                    arenaType === "none"
-                        ? "ArenaWatch arena log has been disabled."
-                        : `ArenaWatch arena log for ${arenaType === "both" ? "both arenas" : arenaType} has been enabled.`;
-            } else if (setting === "channel") {
-                const targetArena = interactionOptions.arena ?? "";
-                if (!interactionOptions.channelId) {
-                    result.error = "Invalid channel, please make sure you're choosing a text channel in this server.";
-                    break;
-                }
-                aw.arena.char.channel = ["both", "char"].includes(targetArena) ? interactionOptions.channelId : null;
-                aw.arena.fleet.channel = ["both", "fleet"].includes(targetArena) ? interactionOptions.channelId : null;
-                result.outLog = `ArenaWatch channel for ${targetArena === "both" ? "both arenas" : targetArena} has been set to <#${interactionOptions.channelId}>.`;
-            } else if (setting === "warn") {
-                // ;aw warn 123123123 <# of min> <none|both|char|fleet>
-                const code = interactionOptions.allyCode;
-                const mins = interactionOptions.mins;
-                const arena = interactionOptions.arena ?? "";
-
-                if (!code || !isAllyCode(code)) {
-                    result.error = `Invalid ally code (${code})`;
-                    break;
-                }
-
-                const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
-                if (!exists) {
-                    result.error = "That ally code is not in your list.";
-                    break;
-                }
-
-                aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
-
-                if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
-                exists.warn = {
-                    min: mins && mins > 0 ? mins : undefined,
-                    arena: arena === "none" ? undefined : arena,
-                };
-                aw.allyCodes.push(exists);
-
-                const warnLines = [
-                    `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`,
-                ];
-                // Only worth flagging when they're actually turning a warning on
-                const warnMissing = arena === "none" || !mins || mins <= 0 ? [] : arenasWithoutLog(aw, arena);
-                if (warnMissing.length) warnLines.push(noLogNote(warnMissing));
-                result.outLog = warnLines.join("\n");
-            } else if (setting === "report") {
-                const arena = interactionOptions.arena ?? "";
-                if (aw.report === arena.toLowerCase()) {
-                    result.outLog = `Your report setting was already set to ${arena}`;
-                    break;
-                }
-                aw.report = arena.toLowerCase();
-                if (aw.report !== "none") {
-                    result.outLog = `Your report setting has been set to ${arena}`;
-                } else {
-                    // Warn/result post to the arena log channel, so "none" only leaves them running
-                    // if at least one arena is actually enabled with a channel to post to.
-                    const missing = arenasWithoutLog(aw, "both");
-                    const lines = ["Your report setting has been set to **none**, so rank changes won't be posted."];
-                    if (missing.length < 2) {
-                        lines.push("Payout warnings and results will still go to your arena log channel.");
-                    } else {
-                        lines.push("Payout warnings and results need an enabled arena log channel.");
-                        lines.push(noLogNote(missing));
-                    }
-                    result.outLog = lines.join("\n");
-                }
-            } else if (setting === "showvs") {
-                // Enable or disable showing when one person hits another
-                const isEnabled = interactionOptions.enabled ?? false;
-                if (isEnabled === aw.showvs) {
-                    result.outLog = `Your showvs setting was already set to ${isEnabled.toString()}`;
-                    break;
-                }
-                aw.showvs = isEnabled;
-                result.outLog = `The log will ${aw.showvs ? "now" : "not"} show when someone hits someone else.`;
-            } else if (setting === "result") {
-                // ;aw result 123123123 <none|char|fleet|both>
-                const code = interactionOptions.allyCode;
-                const arena = interactionOptions.arena ?? "";
-
-                if (!code || !isAllyCode(code)) {
-                    result.error = `Invalid ally code (${code})`;
-                    break;
-                }
-
-                const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
-                if (!exists) {
-                    result.error = "That ally code is not in your list.";
-                    break;
-                }
-
-                // Take that user out of the list
-                aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
-
-                // Update the user
-                exists.result = arena === "none" ? undefined : arena;
-
-                // Put the user back in
-                aw.allyCodes.push(exists);
-                const resultLines = [`Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`];
-                const resultMissing = arena === "none" ? [] : arenasWithoutLog(aw, arena);
-                if (resultMissing.length) resultLines.push(noLogNote(resultMissing));
-                result.outLog = resultLines.join("\n");
-            } else if (setting === "use_marks_in_log") {
-                const useMarksInLog = interactionOptions.enabled ?? false;
-                if (aw.useMarksInLog === useMarksInLog) {
-                    result.outLog = `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}`;
-                    break;
-                }
-                aw.useMarksInLog = useMarksInLog;
-                result.outLog = `UseMarksInLog has been set to ${aw.useMarksInLog.toString()}`;
-            }
+        case "arena_log":
+            change = arenaLogChange(interactionOptions, aw);
             break;
-        }
-        case "allycode": {
-            // Add/ remove
-            const action = interactionOptions.subCommand;
-            const outLog: string[] = [];
-
-            // Logic for add/ remove
-            if (action === "add") {
-                // List of ally codes to add or remove
-                const codesIn = (interactionOptions.allyCodes ?? "")
-                    .split(",") // Split em at the commas if there are more than one
-                    .map((a) => a?.trim()) // Trim off any spaces in case
-                    .filter(Boolean);
-
-                if (!codesIn.length) {
-                    result.errorKey = ["COMMAND_ARENAWATCH_MISSING_AC", action];
-                    break;
-                }
-
-                // The mark to put with the ally code (Optional)
-                const mark = interactionOptions.mark || "";
-                const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/;
-                if (emojiRegex.test(mark)) {
-                    outLog.push(
-                        "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from",
-                    );
-                }
-
-                const codes: { code: number; mention: string | null }[] = [];
-                for (const code of codesIn) {
-                    let ac: number;
-                    let mention: string | null;
-                    try {
-                        [ac, mention] = getAcMention(code);
-                        if (!isAllyCode(ac)) {
-                            outLog.push(`${ac} is not a valid ally code.`);
-                            continue;
-                        }
-                    } catch (e) {
-                        const errorMsg = e instanceof Error ? e.message : String(e);
-                        outLog.push(errorMsg);
-                        continue;
-                    }
-
-                    codes.push({
-                        code: ac,
-                        mention: mention,
-                    });
-                }
-
-                if (!codes.length) {
-                    logger.error("[slash/arenawatch] No valid ally codes provided");
-                    result.error = "There were no valid ally codes entered.";
-                    break;
-                }
-
-                // There are more than one valid code, try adding them all
-                const players = await swgohAPI.unitStats(codes.map((c) => c.code));
-                if (!players?.length) {
-                    const errorMsg =
-                        "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.";
-                    logger.error(`[slash/arenawatch] No players found for ally codes: ${codes.map((c) => c.code).join(", ")}`);
-                    result.error = errorMsg;
-                    break;
-                }
-                for (const c of codes) {
-                    let player: SWAPIPlayer;
-                    try {
-                        player = checkPlayer(aw, players, c, interactionOptions.codeCap);
-                    } catch (e) {
-                        const errorMsg = e instanceof Error ? e.message : String(e);
-                        outLog.push(errorMsg);
-                        continue;
-                    }
-
-                    aw.allyCodes.push({
-                        allyCode: c.code,
-                        mention: c.mention,
-                        poOffset: player.poUTCOffsetMinutes,
-                        mark: mark || null,
-                    });
-                    await arenaPlayerRegistry.upsertPlayer({
-                        allyCode: c.code,
-                        name: player.name,
-                        lastCharRank: player.arena?.char?.rank ?? undefined,
-                        lastShipRank: player.arena?.ship?.rank ?? undefined,
-                    });
-                    outLog.push(`${c.code} added!`);
-                }
-                result.outLog = outLog.join("\n");
-            } else if (action === "edit") {
-                // Used to add or remove a mention
-                const oldCode = interactionOptions.old_allyCode;
-                const newCode = interactionOptions.new_allyCode;
-
-                if (!oldCode || !isAllyCode(oldCode)) {
-                    result.error = `${oldCode} is not a valid ally code.`;
-                    break;
-                }
-                let ac: number;
-                let mention: string | null;
-                try {
-                    [ac, mention] = getAcMention(newCode ?? "");
-                } catch (e) {
-                    result.error = e instanceof Error ? e.message : String(e);
-                    break;
-                }
-
-                // Check if the specified code is available to edit
-                // If not, just add it in fresh
-                // If so, delte it then add it back
-                const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(oldCode, 10));
-                if (!exists) {
-                    result.error = `${oldCode} is not in the list.`;
-                    break;
-                }
-                aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(oldCode, 10));
-
-                let player: SWAPIPlayer | null = null;
-                try {
-                    const players = await swgohAPI.unitStats(ac);
-                    if (!players?.length) logger.error(`[AW Edit] Missing players ${ac}`);
-                    player = checkPlayer(aw, players, { code: ac }, interactionOptions.codeCap, true);
-                    if (!player) logger.error(`[AW Edit] Missing player after check ${ac}`);
-                } catch (e) {
-                    result.error = `Error getting player info.\n${e}`;
-                    break;
-                }
-                aw.allyCodes.push({
-                    allyCode: ac,
-                    mention: mention,
-                    poOffset: player.poUTCOffsetMinutes,
-                });
-                await arenaPlayerRegistry.upsertPlayer({
-                    allyCode: ac,
-                    name: player.name,
-                    lastCharRank: player.arena?.char?.rank ?? undefined,
-                    lastShipRank: player.arena?.ship?.rank ?? undefined,
-                });
-                outLog.push(`${ac} ${exists ? "updated" : "added"}!`);
-                result.outLog = outLog.join("\n");
-            } else if (["remove", "delete"].includes(action)) {
-                // List of ally codes to add or remove
-                const codesIn = (interactionOptions.allyCodes ?? "")
-                    .split(",") // Split em at the commas if there are more than one
-                    .map((a) => a?.trim()) // Trim off any spaces in case
-                    .filter((a) => isAllyCode(a));
-
-                // Some checks before getting to the logic
-                if (!codesIn.length) {
-                    result.errorKey = ["COMMAND_ARENAWATCH_MISSING_AC", action];
-                    break;
-                }
-
-                const numericCodes = codesIn.map((code) => Number.parseInt(code.replace(/[^\d]/g, ""), 10));
-                for (const thisCode of numericCodes) {
-                    if (!aw.allyCodes.find((ac) => ac.allyCode === thisCode)) {
-                        result.error = `${thisCode} was not available to be removed`;
-                        break;
-                    }
-                }
-                if (!result.error) {
-                    for (const thisCode of numericCodes) {
-                        aw.allyCodes = aw.allyCodes.filter((ac) => ac.allyCode !== thisCode);
-                        outLog.push(`${thisCode} has been removed`);
-                    }
-                    result.outLog = outLog.join("\n");
-                }
-            }
+        case "allycode":
+            change = await allyCodeChange(interactionOptions, aw);
             break;
-        }
-        case "view": {
-            // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-            const allyCode = interactionOptions.allyCode;
-            const view_by = interactionOptions.view_by;
-
-            const { error, embedOut } = await formatForViewing(aw, allyCode, view_by, interactionOptions.codeCap);
-            if (error) {
-                result.error = error;
-                break;
-            }
-            if (embedOut) {
-                result.embed = embedOut;
-                break;
-            }
-            result.error = "Something broke, please try again in a bit, or report it.";
+        case "view":
+            change = await viewChange(interactionOptions, aw);
             break;
-        }
         default:
             // This should never happen, but just in case
-            result.errorKey = ["COMMAND_ARENAWATCH_INVALID_OPTION"];
+            change = { errorKey: ["COMMAND_ARENAWATCH_INVALID_OPTION"] };
             break;
     }
-    return { result, aw };
+    return { result: { ...result, ...change }, aw };
+}
+
+function payoutChange(interactionOptions: InteractionOptions, aw: FilledAW): Partial<AwChangeRes> {
+    switch (interactionOptions.subCommand) {
+        case "arena": {
+            const arenaType = interactionOptions.arenaType ?? "";
+            const enabled = arenaFlags(arenaType);
+            aw.payout.char.enabled = enabled.char;
+            aw.payout.fleet.enabled = enabled.fleet;
+            return {
+                outLog:
+                    arenaType === "none"
+                        ? "ArenaWatch payout has been disabled."
+                        : `ArenaWatch payout for ${arenaLabel(arenaType)} has been enabled.`,
+            };
+        }
+        case "channel": {
+            const channelId = interactionOptions.channelId;
+            if (!channelId) return { error: INVALID_CHANNEL_ERROR };
+
+            const targetArena = interactionOptions.arena ?? "";
+            const targets = arenaFlags(targetArena);
+            aw.payout.char.channel = targets.char ? channelId : null;
+            aw.payout.fleet.channel = targets.fleet ? channelId : null;
+            return { outLog: `ArenaWatch payout channel for ${arenaLabel(targetArena)} has been set to <#${channelId}>.` };
+        }
+        case "mark":
+            return payoutMarkChange(interactionOptions, aw);
+    }
+    return {};
+}
+
+// Setting the mark/ emote/ symbol/ whatver to help show people as friendly/ enemy
+// ;aw payout mark 123123123 :smile:
+function payoutMarkChange(interactionOptions: InteractionOptions, aw: FilledAW): Partial<AwChangeRes> {
+    const ac = interactionOptions.allyCode;
+    const mark = interactionOptions.mark;
+    const remove_mark = interactionOptions.remove_mark;
+
+    if (!mark && !remove_mark) return { error: "You MUST choose either a mark, or to remove a mark" };
+    if (mark && remove_mark) return { error: "You MUST choose only one of: mark, remove_mark" };
+
+    const player = aw.allyCodes.find((p) => p.allyCode.toString() === ac?.toString());
+    if (!player) return { error: "Sorry, but you can only apply a mark to an already present player/ ally code" };
+    if (remove_mark && !player?.mark?.length) return { error: "There's no mark to remove." };
+
+    // If they're trying to use a custom emote, make sure it's available for the bot to use
+    const cmdOut = mark && CUSTOM_EMOTE_REGEX.test(mark) ? EXTERNAL_EMOTE_NOTE : null;
+    const resArr: string[] = [];
+    aw.allyCodes = aw.allyCodes.map((p) => {
+        if (p.allyCode.toString() === ac?.toString()) {
+            p.mark = remove_mark ? null : mark;
+        }
+        resArr.push(`${p.allyCode}: '${p.mark ?? ""}'`);
+        return p;
+    });
+    return { outLog: `Updated the following marks: \n- ${resArr.join("\n- ")}${cmdOut ? `\n\n${cmdOut}` : ""}` };
+}
+
+function arenaLogChange(interactionOptions: InteractionOptions, aw: FilledAW): Partial<AwChangeRes> {
+    switch (interactionOptions.subCommand) {
+        case "arena": {
+            const arenaType = interactionOptions.arenaType ?? "";
+            const enabled = arenaFlags(arenaType);
+            aw.arena.char.enabled = enabled.char;
+            aw.arena.fleet.enabled = enabled.fleet;
+            return {
+                outLog:
+                    arenaType === "none"
+                        ? "ArenaWatch arena log has been disabled."
+                        : `ArenaWatch arena log for ${arenaLabel(arenaType)} has been enabled.`,
+            };
+        }
+        case "channel": {
+            const channelId = interactionOptions.channelId;
+            if (!channelId) return { error: INVALID_CHANNEL_ERROR };
+
+            const targetArena = interactionOptions.arena ?? "";
+            const targets = arenaFlags(targetArena);
+            aw.arena.char.channel = targets.char ? channelId : null;
+            aw.arena.fleet.channel = targets.fleet ? channelId : null;
+            return { outLog: `ArenaWatch channel for ${arenaLabel(targetArena)} has been set to <#${channelId}>.` };
+        }
+        case "warn":
+            return warnChange(interactionOptions, aw);
+        case "report":
+            return reportChange(interactionOptions, aw);
+        case "showvs": {
+            // Enable or disable showing when one person hits another
+            const isEnabled = interactionOptions.enabled ?? false;
+            if (isEnabled === aw.showvs) return { outLog: `Your showvs setting was already set to ${isEnabled.toString()}` };
+            aw.showvs = isEnabled;
+            return { outLog: `The log will ${aw.showvs ? "now" : "not"} show when someone hits someone else.` };
+        }
+        case "result":
+            return resultChange(interactionOptions, aw);
+        case "use_marks_in_log": {
+            const useMarksInLog = interactionOptions.enabled ?? false;
+            if (aw.useMarksInLog === useMarksInLog) return { outLog: `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}` };
+            aw.useMarksInLog = useMarksInLog;
+            return { outLog: `UseMarksInLog has been set to ${aw.useMarksInLog.toString()}` };
+        }
+    }
+    return {};
+}
+
+// ;aw warn 123123123 <# of min> <none|both|char|fleet>
+function warnChange(interactionOptions: InteractionOptions, aw: FilledAW): Partial<AwChangeRes> {
+    const code = interactionOptions.allyCode;
+    const mins = interactionOptions.mins;
+    const arena = interactionOptions.arena ?? "";
+
+    const listed = takeListedCode(aw, code);
+    if ("error" in listed) return { error: listed.error };
+    const exists = listed.entry;
+
+    if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
+    exists.warn = {
+        min: mins && mins > 0 ? mins : undefined,
+        arena: arena === "none" ? undefined : arena,
+    };
+    aw.allyCodes.push(exists);
+
+    const warnLines = [
+        `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`,
+    ];
+    // Only worth flagging when they're actually turning a warning on
+    const warnMissing = arena === "none" || !mins || mins <= 0 ? [] : arenasWithoutLog(aw, arena);
+    if (warnMissing.length) warnLines.push(noLogNote(warnMissing));
+    return { outLog: warnLines.join("\n") };
+}
+
+// ;aw result 123123123 <none|char|fleet|both>
+function resultChange(interactionOptions: InteractionOptions, aw: FilledAW): Partial<AwChangeRes> {
+    const code = interactionOptions.allyCode;
+    const arena = interactionOptions.arena ?? "";
+
+    const listed = takeListedCode(aw, code);
+    if ("error" in listed) return { error: listed.error };
+    const exists = listed.entry;
+
+    exists.result = arena === "none" ? undefined : arena;
+    aw.allyCodes.push(exists);
+
+    const resultLines = [`Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`];
+    const resultMissing = arena === "none" ? [] : arenasWithoutLog(aw, arena);
+    if (resultMissing.length) resultLines.push(noLogNote(resultMissing));
+    return { outLog: resultLines.join("\n") };
+}
+
+function reportChange(interactionOptions: InteractionOptions, aw: FilledAW): Partial<AwChangeRes> {
+    const arena = interactionOptions.arena ?? "";
+    if (aw.report === arena.toLowerCase()) return { outLog: `Your report setting was already set to ${arena}` };
+
+    aw.report = arena.toLowerCase();
+    if (aw.report !== "none") return { outLog: `Your report setting has been set to ${arena}` };
+
+    // Warn/result post to the arena log channel, so "none" only leaves them running
+    // if at least one arena is actually enabled with a channel to post to.
+    const missing = arenasWithoutLog(aw, "both");
+    const lines = ["Your report setting has been set to **none**, so rank changes won't be posted."];
+    if (missing.length < 2) {
+        lines.push("Payout warnings and results will still go to your arena log channel.");
+    } else {
+        lines.push("Payout warnings and results need an enabled arena log channel.");
+        lines.push(noLogNote(missing));
+    }
+    return { outLog: lines.join("\n") };
+}
+
+async function allyCodeChange(interactionOptions: InteractionOptions, aw: FilledAW): Promise<Partial<AwChangeRes>> {
+    const action = interactionOptions.subCommand;
+    if (action === "add") return addAllyCodes(interactionOptions, aw);
+    if (action === "edit") return editAllyCode(interactionOptions, aw);
+    if (["remove", "delete"].includes(action)) return removeAllyCodes(interactionOptions, aw);
+    return {};
+}
+
+async function addAllyCodes(interactionOptions: InteractionOptions, aw: FilledAW): Promise<Partial<AwChangeRes>> {
+    const outLog: string[] = [];
+    const codesIn = splitCodeList(interactionOptions.allyCodes).filter(Boolean);
+    if (!codesIn.length) return { errorKey: ["COMMAND_ARENAWATCH_MISSING_AC", interactionOptions.subCommand] };
+
+    // The mark to put with the ally code (Optional)
+    const mark = interactionOptions.mark || "";
+    if (CUSTOM_EMOTE_REGEX.test(mark)) outLog.push(EXTERNAL_EMOTE_NOTE);
+
+    const codes = parseCodeMentions(codesIn, outLog);
+    if (!codes.length) {
+        logger.error("[slash/arenawatch] No valid ally codes provided");
+        return { error: "There were no valid ally codes entered." };
+    }
+
+    // There are more than one valid code, try adding them all
+    const players = await swgohAPI.unitStats(codes.map((c) => c.code));
+    if (!players?.length) {
+        logger.error(`[slash/arenawatch] No players found for ally codes: ${codes.map((c) => c.code).join(", ")}`);
+        return {
+            error: "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.",
+        };
+    }
+    for (const c of codes) {
+        let player: SWAPIPlayer;
+        try {
+            player = checkPlayer(aw, players, c, interactionOptions.codeCap);
+        } catch (e) {
+            const errorMsg = e instanceof Error ? e.message : String(e);
+            outLog.push(errorMsg);
+            continue;
+        }
+
+        aw.allyCodes.push({
+            allyCode: c.code,
+            mention: c.mention,
+            poOffset: player.poUTCOffsetMinutes,
+            mark: mark || null,
+        });
+        await upsertArenaPlayer(c.code, player);
+        outLog.push(`${c.code} added!`);
+    }
+    return { outLog: outLog.join("\n") };
+}
+
+async function editAllyCode(interactionOptions: InteractionOptions, aw: FilledAW): Promise<Partial<AwChangeRes>> {
+    const oldCode = interactionOptions.old_allyCode;
+    const newCode = interactionOptions.new_allyCode;
+
+    if (!oldCode || !isAllyCode(oldCode)) return { error: `${oldCode} is not a valid ally code.` };
+    let ac: number;
+    let mention: string | null;
+    try {
+        [ac, mention] = getAcMention(newCode ?? "");
+    } catch (e) {
+        return { error: e instanceof Error ? e.message : String(e) };
+    }
+
+    const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(oldCode, 10));
+    if (!exists) return { error: `${oldCode} is not in the list.` };
+    aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(oldCode, 10));
+
+    let player: SWAPIPlayer | null = null;
+    try {
+        const players = await swgohAPI.unitStats(ac);
+        if (!players?.length) logger.error(`[AW Edit] Missing players ${ac}`);
+        player = checkPlayer(aw, players, { code: ac }, interactionOptions.codeCap, true);
+        if (!player) logger.error(`[AW Edit] Missing player after check ${ac}`);
+    } catch (e) {
+        return { error: `Error getting player info.\n${e}` };
+    }
+    aw.allyCodes.push({
+        allyCode: ac,
+        mention: mention,
+        poOffset: player.poUTCOffsetMinutes,
+    });
+    await upsertArenaPlayer(ac, player);
+    return { outLog: `${ac} ${exists ? "updated" : "added"}!` };
+}
+
+function removeAllyCodes(interactionOptions: InteractionOptions, aw: FilledAW): Partial<AwChangeRes> {
+    const codesIn = splitCodeList(interactionOptions.allyCodes).filter((a) => isAllyCode(a));
+
+    // Some checks before getting to the logic
+    if (!codesIn.length) return { errorKey: ["COMMAND_ARENAWATCH_MISSING_AC", interactionOptions.subCommand] };
+
+    const numericCodes = codesIn.map((code) => Number.parseInt(code.replace(/[^\d]/g, ""), 10));
+    const missingCode = numericCodes.find((thisCode) => !aw.allyCodes.find((ac) => ac.allyCode === thisCode));
+    if (missingCode !== undefined) return { error: `${missingCode} was not available to be removed` };
+
+    const outLog: string[] = [];
+    for (const thisCode of numericCodes) {
+        aw.allyCodes = aw.allyCodes.filter((ac) => ac.allyCode !== thisCode);
+        outLog.push(`${thisCode} has been removed`);
+    }
+    return { outLog: outLog.join("\n") };
+}
+
+// Show the current settings for this (Also maybe in ;uc, but a summarized version?)
+async function viewChange(interactionOptions: InteractionOptions, aw: FilledAW): Promise<Partial<AwChangeRes>> {
+    const { error, embedOut } = await formatForViewing(
+        aw,
+        interactionOptions.allyCode,
+        interactionOptions.view_by,
+        interactionOptions.codeCap,
+    );
+    if (error) return { error };
+    if (embedOut) return { embed: embedOut };
+    return { error: "Something broke, please try again in a bit, or report it." };
+}
+
+const INVALID_CHANNEL_ERROR = "Invalid channel, please make sure you're choosing a text channel in this server.";
+const CUSTOM_EMOTE_REGEX = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/;
+const EXTERNAL_EMOTE_NOTE =
+    "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from";
+
+function arenaFlags(arenaType: string): { char: boolean; fleet: boolean } {
+    return { char: ["char", "both"].includes(arenaType), fleet: ["fleet", "both"].includes(arenaType) };
+}
+
+function arenaLabel(arenaType: string): string {
+    return arenaType === "both" ? "both arenas" : arenaType;
+}
+
+// List of ally codes to add or remove
+function splitCodeList(allyCodes: string | null): string[] {
+    return (allyCodes ?? "")
+        .split(",") // Split em at the commas if there are more than one
+        .map((a) => a?.trim()); // Trim off any spaces in case
+}
+
+function parseCodeMentions(codesIn: string[], outLog: string[]): { code: number; mention: string | null }[] {
+    const codes: { code: number; mention: string | null }[] = [];
+    for (const code of codesIn) {
+        let ac: number;
+        let mention: string | null;
+        try {
+            [ac, mention] = getAcMention(code);
+            if (!isAllyCode(ac)) {
+                outLog.push(`${ac} is not a valid ally code.`);
+                continue;
+            }
+        } catch (e) {
+            const errorMsg = e instanceof Error ? e.message : String(e);
+            outLog.push(errorMsg);
+            continue;
+        }
+
+        codes.push({
+            code: ac,
+            mention: mention,
+        });
+    }
+    return codes;
+}
+
+// Pulls the code out of the list so the caller can update it and push it back
+function takeListedCode(aw: FilledAW, code: string | null): { error: string } | { entry: FilledAW["allyCodes"][number] } {
+    if (!code || !isAllyCode(code)) return { error: `Invalid ally code (${code})` };
+
+    const entry = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
+    if (!entry) return { error: "That ally code is not in your list." };
+
+    aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
+    return { entry };
+}
+
+async function upsertArenaPlayer(allyCode: number, player: SWAPIPlayer) {
+    await arenaPlayerRegistry.upsertPlayer({
+        allyCode,
+        name: player.name,
+        lastCharRank: player.arena?.char?.rank ?? undefined,
+        lastShipRank: player.arena?.ship?.rank ?? undefined,
+    });
 }
 
 const defPayout = {
