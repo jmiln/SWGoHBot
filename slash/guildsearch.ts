@@ -1,4 +1,5 @@
-import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, type ChatInputCommandInteraction, InteractionContextType } from "discord.js";
+import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
@@ -179,24 +180,11 @@ export default class GuildSearch extends Command {
 
         // Get the integer options
         const top = interaction.options.getInteger("top");
-        if (top && (Number.isNaN(top) || top <= 0 || top > 50)) {
-            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_INVALID_TOP"));
-        }
-
         const starLvl = interaction.options.getInteger("rarity") || 0;
-        if (starLvl < 0 || starLvl > 7) {
-            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
+        const rangeError = integerOptionError(top, starLvl);
+        if (rangeError) {
+            return super.error(interaction, language.get(rangeError));
         }
-
-        const rarityMap = {
-            ONESTAR: 1,
-            TWOSTAR: 2,
-            THREESTAR: 3,
-            FOURSTAR: 4,
-            FIVESTAR: 5,
-            SIXSTAR: 6,
-            SEVENSTAR: 7,
-        };
 
         // Get the boolean options
         const doReverse = interaction.options.getBoolean("reverse");
@@ -206,19 +194,9 @@ export default class GuildSearch extends Command {
         await interaction.reply({ content: language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT") });
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
-        let unitList: BotUnit[] | null = null;
-        let isShip = false;
-        let searchStr: string | null = null;
-        if (searchType === "character") {
-            // Get any matches for the character
-            searchStr = interaction.options.getString("character");
-            unitList = findChar(searchStr ?? "", characters);
-        } else {
-            // Get any matches for the ship
-            searchStr = interaction.options.getString("ship");
-            unitList = findChar(searchStr ?? "", ships, true);
-            isShip = true;
-        }
+        const isShip = searchType !== "character";
+        const searchStr = interaction.options.getString(isShip ? "ship" : "character");
+        const unitList: BotUnit[] | null = isShip ? findChar(searchStr ?? "", ships, true) : findChar(searchStr ?? "", characters);
 
         if (!unitList?.length) {
             // No character found, so error
@@ -231,190 +209,116 @@ export default class GuildSearch extends Command {
         // If there's just one match, use it
         const foundUnit = unitList[0];
 
-        let guild: SWAPIGuild | null = null;
-        try {
-            guild = await swgohAPI.guild(allyCode, cooldown);
-        } catch (e) {
-            if (String(e).indexOf("player is not in a guild") > -1) {
-                return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NOT_IN_GUILD"));
-            }
-            logger.error(`[GuildSearch] Failed to get guild: ${e instanceof Error ? e.message : String(e)}`);
-            return super.error(interaction, e instanceof SwapiUserError ? e.message : language.get("BASE_SWGOH_GUILD_FETCH_FAILED"), {
-                title: "Something Broke while getting your guild's roster",
-            });
-        }
+        const guildRes = await this.fetchGuild(interaction, language, allyCode, cooldown);
+        if (!guildRes) return;
+        const { guild } = guildRes;
 
         if (!guild?.roster?.length) {
             return interaction.editReply({ content: language.get("BASE_SWGOH_NO_GUILD") });
         }
         await interaction.editReply({ content: `Found guild \`${guild.name}\`!\n*Processing...*` });
 
-        const guildAllycodes = guild.roster.map((p) => p.allyCode).filter((c): c is number => c != null);
+        const guildChar = await this.fetchGuildUnits(interaction, language, guild, foundUnit, cooldown);
+        if (!guildChar) return;
 
-        let guildChar: SWAPIUnit[];
+        if (stat) {
+            return this.sendStatResults(interaction, language, { guild, guildChar, foundUnit, stat, top, doReverse });
+        }
+        return this.sendRosterResults(interaction, language, {
+            guild,
+            guildChar,
+            foundUnit,
+            isShip,
+            sort,
+            top,
+            starLvl,
+            doReverse,
+            doZeta,
+            doOmicron,
+        });
+    }
+
+    // Resolves to null once the failure has been reported, so the caller only has to stop
+    private async fetchGuild(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        allyCode: number,
+        cooldown: PlayerCooldown,
+    ): Promise<{ guild: SWAPIGuild | null } | null> {
         try {
-            guildChar = await swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
+            return { guild: await swgohAPI.guild(allyCode, cooldown) };
+        } catch (e) {
+            if (String(e).indexOf("player is not in a guild") > -1) {
+                await super.error(interaction, language.get("COMMAND_GUILDSEARCH_NOT_IN_GUILD"));
+                return null;
+            }
+            logger.error(`[GuildSearch] Failed to get guild: ${e instanceof Error ? e.message : String(e)}`);
+            await super.error(interaction, e instanceof SwapiUserError ? e.message : language.get("BASE_SWGOH_GUILD_FETCH_FAILED"), {
+                title: "Something Broke while getting your guild's roster",
+            });
+            return null;
+        }
+    }
+
+    private async fetchGuildUnits(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        guild: SWAPIGuild,
+        foundUnit: BotUnit,
+        cooldown: PlayerCooldown,
+    ): Promise<SWAPIUnit[] | null> {
+        const guildAllycodes = guild.roster.map((p) => p.allyCode).filter((c): c is number => c != null);
+        try {
+            return await swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
             logger.error(`[GuildSearch] Failed to get guild units: ${e instanceof Error ? e.message : String(e)}`);
-            return super.error(interaction, language.get("BASE_SWGOH_GUILD_FETCH_FAILED"), {
+            await super.error(interaction, language.get("BASE_SWGOH_GUILD_FETCH_FAILED"), {
                 title: "Something Broke while getting your guild's characters",
                 footer: "Please try again in a bit",
             });
+            return null;
         }
+    }
 
-        if (stat) {
-            // Looking for a stat
-            const outArr: Record<string, string | number>[] = [];
+    private async sendStatResults(interaction: ChatInputCommandInteraction, language: Language, search: StatSearch) {
+        const { guild, foundUnit, stat, doReverse } = search;
+        const outArr = statRows(search.guildChar, stat as keyof SWAPIUnitStatTypes, search.top, doReverse);
+        const fields = statFields(outArr, foundUnit, stat, doReverse, language);
 
-            const statKey = stat as keyof SWAPIUnitStatTypes;
-            let sortedMembers = guildChar
-                .filter((gChar) => gChar?.gp)
-                .sort((a, b) => {
-                    if (!a.stats?.final) return -1;
-                    if (!b.stats?.final) return 1;
-                    if (!a.stats.final[statKey]) a.stats.final[statKey] = 0;
-                    if (!b.stats.final[statKey]) b.stats.final[statKey] = 0;
-                    return a.stats.final[statKey] < b.stats.final[statKey] ? 1 : -1;
-                });
-
-            if (top) {
-                const start = doReverse ? sortedMembers.length - top : 0;
-                const end = doReverse ? sortedMembers.length : top;
-                sortedMembers = sortedMembers.slice(start, end);
-                if (doReverse) {
-                    sortedMembers = sortedMembers.reverse();
+        const footerStr = updatedFooterStr(guild.updatedAt, language);
+        const embed = {
+            author: {
+                name: guild.name,
+            },
+            fields: [...fields, { name: constants.zws, value: footerStr }],
+        };
+        try {
+            await interaction.editReply({ content: null, embeds: [embed] });
+        } catch (err) {
+            logger.error(`ERROR(GuildSearch) ${err}`);
+            if (interaction.channel?.isSendable()) {
+                try {
+                    await interaction.channel.send({ embeds: [embed] });
+                } catch (channelErr) {
+                    logger.error(`ERROR(GuildSearch) Failed to send to channel: ${channelErr}`);
                 }
             }
-
-            for (const member of sortedMembers) {
-                const stats: Record<string, string | number> = {
-                    Protection: "N/A",
-                };
-                if (!member.stats?.final) {
-                    continue;
-                }
-                for (const s of Object.keys(member.stats.final)) {
-                    const sKey = s as keyof SWAPIUnitStatTypes;
-                    const val = member.stats.final[sKey] ?? 0;
-                    if (val % 1 !== 0) {
-                        stats[s] = `${(val * 100).toFixed(2)}%`;
-                    } else {
-                        stats[s] = val ? val.toLocaleString() : "N/A";
-                    }
-                }
-                outArr.push({
-                    ...stats,
-                    player: member.player ?? "",
-                    gp: member.gp ? member.gp.toLocaleString() : 0,
-                    gear: member.gear,
-                });
-            }
-
-            const checkableStats = {
-                Health: { short: "HP" },
-                Protection: { short: "Prot" },
-                Speed: { short: "Spd" },
-                Potency: { short: "Pot" },
-                "Physical Critical Chance": { short: "CC" },
-                "Physical Damage": { short: "PD" },
-                "Special Critical Chance": { short: "CC" },
-                "Special Damage": { short: "SD" },
-                "Critical Damage": { short: "CD" },
-                Tenacity: { short: "Ten" },
-                Accuracy: { short: "Acc" },
-                Armor: { short: "Arm" },
-                Resistance: { short: "Res" },
-            };
-
-            const fields: APIEmbedField[] = [];
-            if (!outArr.length) {
-                fields.push({
-                    name: foundUnit.name,
-                    value: language.get("COMMAND_GUILDSEARCH_NO_CHARACTER"),
-                });
-            } else {
-                const header = {
-                    gear: { value: "⚙", startWith: "`[", endWith: "|", align: "right" },
-                    gp: { value: "GP", endWith: "|", align: "right" },
-                };
-                (header as Record<string, { value: string; startWith?: string; endWith: string; align: string }>)[stat as string] = {
-                    value: checkableStats[stat as keyof typeof checkableStats].short,
-                    endWith: "]`",
-                    align: "right",
-                };
-                const outHeader = { ...header, player: { value: "", align: "left" } };
-
-                const outTable = makeTable(outHeader, outArr);
-
-                if (outTable.length) {
-                    const outMsgArr = msgArray(outTable, "\n", 700);
-                    outMsgArr.forEach((m, ix) => {
-                        const name =
-                            ix === 0
-                                ? language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse ?? false)
-                                : language.get("BASE_CONT_STRING");
-                        fields.push({
-                            name: name,
-                            value: m,
-                        });
-                    });
-                } else {
-                    fields.push({
-                        name: "-",
-                        value: language.get("BASE_SWGOH_GUILD_LOCKED_CHAR"),
-                    });
-                }
-            }
-
-            const footerStr = updatedFooterStr(guild.updatedAt, language);
-            const embed = {
-                author: {
-                    name: guild.name,
-                },
-                fields: [...fields, { name: constants.zws, value: footerStr }],
-            };
-            try {
-                await interaction.editReply({ content: null, embeds: [embed] });
-            } catch (err) {
-                logger.error(`ERROR(GuildSearch) ${err}`);
-                if (interaction.channel?.isSendable()) {
-                    try {
-                        await interaction.channel.send({ embeds: [embed] });
-                    } catch (channelErr) {
-                        logger.error(`ERROR(GuildSearch) Failed to send to channel: ${channelErr}`);
-                    }
-                }
-            }
-            return;
         }
+    }
 
+    private async sendRosterResults(interaction: ChatInputCommandInteraction, language: Language, search: RosterSearch) {
+        const { guild, guildChar, foundUnit } = search;
         // Not looking for stat info
-        const sortType = sort ? sort : top ? "gp" : "name";
+        const sortType = search.sort ? search.sort : search.top ? "gp" : "name";
 
         for (const ch of guildChar) {
             ch.zetas = ch.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1));
         }
 
-        if (
-            !guildChar?.length ||
-            (starLvl > 0 && !guildChar.filter((c) => c.rarity >= starLvl).length) ||
-            (doZeta && !guildChar.filter((c) => (c.zetas?.length ?? 0) > 0).length)
-        ) {
-            let desc = "";
-            // Go through, and if there's an error, spit it out
-            if (doZeta && !guildChar.filter((c) => (c.zetas?.length ?? 0) > 0).length) {
-                desc = language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
-            } else if (isShip && starLvl > 0) {
-                desc = language.get("COMMAND_GUILDSEARCH_NO_SHIP_STAR", starLvl);
-            } else if (starLvl > 0) {
-                desc = language.get("COMMAND_GUILDSEARCH_NO_CHARACTER_STAR", starLvl);
-            } else if (isShip) {
-                desc = language.get("COMMAND_GUILDSEARCH_NO_SHIP");
-            } else {
-                desc = language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
-            }
+        const emptyDescription = emptyRosterDescription(search, language);
+        if (emptyDescription) {
             const footerStr = updatedFooterStr(guild.updatedAt, language);
-            return super.error(interaction, desc, {
+            return super.error(interaction, emptyDescription, {
                 title: language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
                 footer: footerStr,
             });
@@ -422,149 +326,17 @@ export default class GuildSearch extends Command {
 
         const totalUnlocked = guildChar.filter((c) => c.rarity > 0).length;
 
-        // Can get the order from abilities table => skillReferenceList
-        let maxZ = 0;
-        let maxO = 0;
-        const zetas: string[] = [];
-        const omicrons: string[] = [];
         let apiChar: RawCharacter;
         try {
             apiChar = await swgohAPI.getCharacter(foundUnit.uniqueName);
         } catch (e) {
             return super.error(interaction, `Couldn't get the character - ${e}`);
         }
-        for (const ab of apiChar.skillReferenceList) {
-            if (ab.isZeta) {
-                maxZ = maxZ + 1;
-                zetas.push(ab.skillId);
-            }
-            if (ab.isOmicron) {
-                maxO = maxO + 1;
-                omicrons.push(ab.skillId);
-            }
-        }
+        const columns = abilityColumns(apiChar, guildChar);
 
-        const hasUlt = !!guildChar.find((ch) => ch?.purchasedAbilityId?.length);
-
-        let sortedGuild: SWAPIUnit[] = [];
-        if (sortType === "name") {
-            // Sort by name
-            sortedGuild = guildChar.sort((p, c) => ((p.player ?? "").toLowerCase() > (c.player ?? "").toLowerCase() ? 1 : -1));
-        } else if (sortType === "gp") {
-            // Sort by the GP
-            sortedGuild = guildChar.sort((p, c) => ((p.gp ?? 0) > (c.gp ?? 0) ? 1 : -1));
-        } else if (sortType === "gear") {
-            // Sort by the gear
-            sortedGuild = guildChar.sort((p, c) => {
-                if (p.gear === c.gear) {
-                    // If they're the same gear level, sort it by how many extra pieces they have attached
-                    return p.equipped?.length > c.equipped?.length ? 1 : -1;
-                }
-                // If they're different gear levels, it's easy
-                return p.gear > c.gear ? 1 : -1;
-            });
-        }
-
-        if (top) {
-            const start = !doReverse ? sortedGuild.length - top : 0;
-            const end = !doReverse ? sortedGuild.length : top;
-            sortedGuild = sortedGuild.slice(start, end);
-        }
-        if (doReverse) {
-            sortedGuild = sortedGuild.reverse();
-        }
-
-        const charOut: Record<string, string[]> = {};
-        const hasRelic = sortedGuild.filter((mem) => (mem?.relic?.currentTier ?? 0) > 2).length;
-        const maxGP = Math.max(...sortedGuild.map((ch) => ch.gp?.toLocaleString().length || 0));
-        for (const member of sortedGuild) {
-            // If we want just zeta, just omicron, or both, and the player doesn't have a viable character, move along
-            if (doZeta && doOmicron && !member.zetas?.length && !member.omicrons?.length) continue;
-            if (doZeta && !doOmicron && !member.zetas?.length) continue;
-            if (doOmicron && !doZeta && !member.omicrons?.length) continue;
-
-            if (Number.isNaN(member.rarity)) member.rarity = rarityMap[member.rarity as unknown as keyof typeof rarityMap];
-
-            const gearStr = getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
-            let unitStr = " | ";
-            const unitStrLen = unitStr.length;
-            if (hasUlt) {
-                unitStr += member.purchasedAbilityId?.length ? "u" : " ";
-            }
-            zetas.forEach((zeta, ix) => {
-                const pZeta = member.zetas?.find((pz) => pz.id === zeta);
-                if (!pZeta) {
-                    unitStr += " ";
-                } else {
-                    unitStr += (ix + 1).toString();
-                }
-            });
-            omicrons.forEach((omicron, ix) => {
-                const pOmicron = member.omicrons?.find((po) => po.id === omicron);
-                if (!pOmicron) {
-                    unitStr += " ";
-                } else {
-                    unitStr += (ix + 1).toString();
-                }
-            });
-            const gpStr = (member.gp ?? 0).toLocaleString();
-
-            let uStr = "";
-            if (member.rarity > 0) {
-                if (isShip) {
-                    uStr = `**\`[Lvl ${member.level.toString().padStart(2)} | ${gpStr.padStart(maxGP)}${maxZ > 0 ? unitStr : ""}]\`** ${
-                        member.player
-                    }`;
-                } else {
-                    uStr = `**\`[${gearStr} | ${gpStr.padStart(maxGP)}${unitStr.length > unitStrLen ? unitStr : ""}]\`** ${member.player}`;
-                }
-            } else {
-                uStr = member.player ?? "";
-            }
-
-            uStr = expandSpaces(uStr);
-
-            if (!charOut[member.rarity]) {
-                charOut[member.rarity] = [uStr];
-            } else {
-                charOut[member.rarity].push(uStr);
-            }
-        }
-
-        const fields: APIEmbedField[] = [];
-        let outArr: string[] = [];
-
-        if (doReverse) {
-            outArr = Object.keys(charOut).reverse();
-        } else {
-            outArr = Object.keys(charOut);
-        }
-
-        for (const star of outArr) {
-            if (Number.parseInt(star, 10) >= starLvl) {
-                const msgArr = msgArray(charOut[star], "\n", 700);
-                for (const [ix, msg] of msgArr.entries()) {
-                    const name =
-                        Number.parseInt(star, 10) === 0
-                            ? language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length)
-                            : language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
-                    fields.push({
-                        name: msgArr.length > 1 ? `${name} (${ix + 1}/${msgArr.length})` : name,
-                        value: msg,
-                    });
-                }
-            }
-        }
-        if (guild.warnings) {
-            let warn = guild.warnings.join("\n");
-            if (warn.length > 1024) {
-                warn = `${warn.slice(0, 1000)}...`;
-            }
-            fields.push({
-                name: "Guild Roster Warnings",
-                value: warn,
-            });
-        }
+        const sortedGuild = takeTop(sortRoster(guildChar, sortType), search.top, search.doReverse);
+        const charOut = groupRosterRows(sortedGuild, columns, search);
+        const fields = [...rosterFields(charOut, search, language), ...rosterWarningFields(guild)];
 
         for (const f of fields) {
             if (f.value.length > 1000) {
@@ -574,16 +346,6 @@ export default class GuildSearch extends Command {
 
         const maxUpdated = new Date(Math.max(...guildChar.map((ch) => ch.updatedAt?.getTime() ?? Number.NEGATIVE_INFINITY)));
         const footerStr = updatedFooterStr(maxUpdated, language);
-        let description: string | undefined;
-        if (doZeta || doOmicron) {
-            if (doZeta && doOmicron) {
-                description = "Showing characters with both Zeta(s) & Omicron(s)";
-            } else if (doZeta) {
-                description = "Showing characters with Zeta(s)";
-            } else {
-                description = "Showing characters with Omicron(s)";
-            }
-        }
         try {
             interaction.editReply({
                 content: null,
@@ -592,7 +354,7 @@ export default class GuildSearch extends Command {
                         author: {
                             name: language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked),
                         },
-                        description: description,
+                        description: searchDescription(search.doZeta, search.doOmicron),
                         fields: [...fields, { name: constants.zws, value: footerStr }],
                     },
                 ],
@@ -602,4 +364,315 @@ export default class GuildSearch extends Command {
             logger.error(fields);
         }
     }
+}
+
+type PlayerCooldown = Awaited<ReturnType<typeof patreonFuncs.getPlayerCooldown>>;
+
+interface StatSearch {
+    guild: SWAPIGuild;
+    guildChar: SWAPIUnit[];
+    foundUnit: BotUnit;
+    stat: string;
+    top: number | null;
+    doReverse: boolean | null;
+}
+
+interface RosterSearch {
+    guild: SWAPIGuild;
+    guildChar: SWAPIUnit[];
+    foundUnit: BotUnit;
+    isShip: boolean;
+    sort: string | null;
+    top: number | null;
+    starLvl: number;
+    doReverse: boolean | null;
+    doZeta: boolean | null;
+    doOmicron: boolean | null;
+}
+
+interface AbilityColumns {
+    zetas: string[];
+    omicrons: string[];
+    maxZ: number;
+    hasUlt: boolean;
+}
+
+const rarityMap = {
+    ONESTAR: 1,
+    TWOSTAR: 2,
+    THREESTAR: 3,
+    FOURSTAR: 4,
+    FIVESTAR: 5,
+    SIXSTAR: 6,
+    SEVENSTAR: 7,
+};
+
+const checkableStats = {
+    Health: { short: "HP" },
+    Protection: { short: "Prot" },
+    Speed: { short: "Spd" },
+    Potency: { short: "Pot" },
+    "Physical Critical Chance": { short: "CC" },
+    "Physical Damage": { short: "PD" },
+    "Special Critical Chance": { short: "CC" },
+    "Special Damage": { short: "SD" },
+    "Critical Damage": { short: "CD" },
+    Tenacity: { short: "Ten" },
+    Accuracy: { short: "Acc" },
+    Armor: { short: "Arm" },
+    Resistance: { short: "Res" },
+};
+
+function statRows(guildChar: SWAPIUnit[], statKey: keyof SWAPIUnitStatTypes, top: number | null, doReverse: boolean | null) {
+    const outArr: Record<string, string | number>[] = [];
+    let sortedMembers = guildChar
+        .filter((gChar) => gChar?.gp)
+        .sort((a, b) => {
+            if (!a.stats?.final) return -1;
+            if (!b.stats?.final) return 1;
+            if (!a.stats.final[statKey]) a.stats.final[statKey] = 0;
+            if (!b.stats.final[statKey]) b.stats.final[statKey] = 0;
+            return a.stats.final[statKey] < b.stats.final[statKey] ? 1 : -1;
+        });
+
+    if (top) {
+        const start = doReverse ? sortedMembers.length - top : 0;
+        const end = doReverse ? sortedMembers.length : top;
+        sortedMembers = sortedMembers.slice(start, end);
+        if (doReverse) {
+            sortedMembers = sortedMembers.reverse();
+        }
+    }
+
+    for (const member of sortedMembers) {
+        if (!member.stats?.final) {
+            continue;
+        }
+        outArr.push({
+            ...formatStats(member.stats.final),
+            player: member.player ?? "",
+            gp: member.gp ? member.gp.toLocaleString() : 0,
+            gear: member.gear,
+        });
+    }
+    return outArr;
+}
+
+function formatStats(finalStats: Partial<SWAPIUnitStatTypes>): Record<string, string | number> {
+    const stats: Record<string, string | number> = {
+        Protection: "N/A",
+    };
+    for (const s of Object.keys(finalStats)) {
+        const val = finalStats[s as keyof SWAPIUnitStatTypes] ?? 0;
+        if (val % 1 !== 0) {
+            stats[s] = `${(val * 100).toFixed(2)}%`;
+        } else {
+            stats[s] = val ? val.toLocaleString() : "N/A";
+        }
+    }
+    return stats;
+}
+
+function statFields(
+    outArr: Record<string, string | number>[],
+    foundUnit: BotUnit,
+    stat: string,
+    doReverse: boolean | null,
+    language: Language,
+): APIEmbedField[] {
+    if (!outArr.length) {
+        return [
+            {
+                name: foundUnit.name,
+                value: language.get("COMMAND_GUILDSEARCH_NO_CHARACTER"),
+            },
+        ];
+    }
+
+    const header = {
+        gear: { value: "⚙", startWith: "`[", endWith: "|", align: "right" },
+        gp: { value: "GP", endWith: "|", align: "right" },
+    };
+    (header as Record<string, { value: string; startWith?: string; endWith: string; align: string }>)[stat] = {
+        value: checkableStats[stat as keyof typeof checkableStats].short,
+        endWith: "]`",
+        align: "right",
+    };
+    const outHeader = { ...header, player: { value: "", align: "left" } };
+
+    const outTable = makeTable(outHeader, outArr);
+    if (!outTable.length) {
+        return [
+            {
+                name: "-",
+                value: language.get("BASE_SWGOH_GUILD_LOCKED_CHAR"),
+            },
+        ];
+    }
+    return msgArray(outTable, "\n", 700).map((m, ix) => ({
+        name:
+            ix === 0
+                ? language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse ?? false)
+                : language.get("BASE_CONT_STRING"),
+        value: m,
+    }));
+}
+
+function emptyRosterDescription({ guildChar, starLvl, doZeta, isShip }: RosterSearch, language: Language): string | null {
+    const noZetas = doZeta && !guildChar.filter((c) => (c.zetas?.length ?? 0) > 0).length;
+    const noneAtStar = starLvl > 0 && !guildChar.filter((c) => c.rarity >= starLvl).length;
+    if (guildChar?.length && !noneAtStar && !noZetas) return null;
+
+    // Go through, and if there's an error, spit it out
+    if (noZetas) return language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
+    if (isShip && starLvl > 0) return language.get("COMMAND_GUILDSEARCH_NO_SHIP_STAR", starLvl);
+    if (starLvl > 0) return language.get("COMMAND_GUILDSEARCH_NO_CHARACTER_STAR", starLvl);
+    if (isShip) return language.get("COMMAND_GUILDSEARCH_NO_SHIP");
+    return language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
+}
+
+// Can get the order from abilities table => skillReferenceList
+function abilityColumns(apiChar: RawCharacter, guildChar: SWAPIUnit[]): AbilityColumns {
+    const zetas: string[] = [];
+    const omicrons: string[] = [];
+    for (const ab of apiChar.skillReferenceList) {
+        if (ab.isZeta) zetas.push(ab.skillId);
+        if (ab.isOmicron) omicrons.push(ab.skillId);
+    }
+    return { zetas, omicrons, maxZ: zetas.length, hasUlt: !!guildChar.find((ch) => ch?.purchasedAbilityId?.length) };
+}
+
+function sortRoster(guildChar: SWAPIUnit[], sortType: string): SWAPIUnit[] {
+    if (sortType === "name") {
+        // Sort by name
+        return guildChar.sort((p, c) => ((p.player ?? "").toLowerCase() > (c.player ?? "").toLowerCase() ? 1 : -1));
+    }
+    if (sortType === "gp") {
+        // Sort by the GP
+        return guildChar.sort((p, c) => ((p.gp ?? 0) > (c.gp ?? 0) ? 1 : -1));
+    }
+    if (sortType === "gear") {
+        // Sort by the gear
+        return guildChar.sort((p, c) => {
+            if (p.gear === c.gear) {
+                // If they're the same gear level, sort it by how many extra pieces they have attached
+                return p.equipped?.length > c.equipped?.length ? 1 : -1;
+            }
+            // If they're different gear levels, it's easy
+            return p.gear > c.gear ? 1 : -1;
+        });
+    }
+    return [];
+}
+
+function takeTop(sortedGuild: SWAPIUnit[], top: number | null, doReverse: boolean | null): SWAPIUnit[] {
+    let out = sortedGuild;
+    if (top) {
+        const start = !doReverse ? out.length - top : 0;
+        const end = !doReverse ? out.length : top;
+        out = out.slice(start, end);
+    }
+    return doReverse ? out.reverse() : out;
+}
+
+function groupRosterRows(sortedGuild: SWAPIUnit[], columns: AbilityColumns, search: RosterSearch): Record<string, string[]> {
+    const { doZeta, doOmicron } = search;
+    const charOut: Record<string, string[]> = {};
+    const hasRelic = sortedGuild.filter((mem) => (mem?.relic?.currentTier ?? 0) > 2).length;
+    const maxGP = Math.max(...sortedGuild.map((ch) => ch.gp?.toLocaleString().length || 0));
+    for (const member of sortedGuild) {
+        // If we want just zeta, just omicron, or both, and the player doesn't have a viable character, move along
+        if (doZeta && doOmicron && !member.zetas?.length && !member.omicrons?.length) continue;
+        if (doZeta && !doOmicron && !member.zetas?.length) continue;
+        if (doOmicron && !doZeta && !member.omicrons?.length) continue;
+
+        if (Number.isNaN(member.rarity)) member.rarity = rarityMap[member.rarity as unknown as keyof typeof rarityMap];
+
+        const uStr = expandSpaces(formatRosterRow(member, columns, { hasRelic, maxGP, isShip: search.isShip }));
+        if (!charOut[member.rarity]) {
+            charOut[member.rarity] = [uStr];
+        } else {
+            charOut[member.rarity].push(uStr);
+        }
+    }
+    return charOut;
+}
+
+function formatRosterRow(
+    member: SWAPIUnit,
+    { zetas, omicrons, maxZ, hasUlt }: AbilityColumns,
+    { hasRelic, maxGP, isShip }: { hasRelic: number; maxGP: number; isShip: boolean },
+): string {
+    if (!(member.rarity > 0)) return member.player ?? "";
+
+    const marks = abilityMarks(member, { zetas, omicrons, maxZ, hasUlt });
+    const gpStr = (member.gp ?? 0).toLocaleString();
+
+    if (isShip) {
+        return `**\`[Lvl ${member.level.toString().padStart(2)} | ${gpStr.padStart(maxGP)}${maxZ > 0 ? ` | ${marks}` : ""}]\`** ${member.player}`;
+    }
+    const gearStr = getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
+    return `**\`[${gearStr} | ${gpStr.padStart(maxGP)}${marks.length ? ` | ${marks}` : ""}]\`** ${member.player}`;
+}
+
+function abilityMarks(member: SWAPIUnit, { zetas, omicrons, hasUlt }: AbilityColumns): string {
+    let marks = "";
+    if (hasUlt) {
+        marks += member.purchasedAbilityId?.length ? "u" : " ";
+    }
+    for (const [ix, zeta] of zetas.entries()) {
+        marks += member.zetas?.find((pz) => pz.id === zeta) ? (ix + 1).toString() : " ";
+    }
+    for (const [ix, omicron] of omicrons.entries()) {
+        marks += member.omicrons?.find((po) => po.id === omicron) ? (ix + 1).toString() : " ";
+    }
+    return marks;
+}
+
+function integerOptionError(top: number | null, starLvl: number): string | null {
+    if (top && (Number.isNaN(top) || top <= 0 || top > 50)) return "COMMAND_GUILDSEARCH_INVALID_TOP";
+    if (starLvl < 0 || starLvl > 7) return "COMMAND_GUILDSEARCH_BAD_STAR";
+    return null;
+}
+
+function rosterFields(charOut: Record<string, string[]>, { starLvl, doReverse }: RosterSearch, language: Language): APIEmbedField[] {
+    const fields: APIEmbedField[] = [];
+    const outArr = doReverse ? Object.keys(charOut).reverse() : Object.keys(charOut);
+
+    for (const star of outArr) {
+        if (Number.parseInt(star, 10) < starLvl) continue;
+        const msgArr = msgArray(charOut[star], "\n", 700);
+        for (const [ix, msg] of msgArr.entries()) {
+            const name =
+                Number.parseInt(star, 10) === 0
+                    ? language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length)
+                    : language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
+            fields.push({
+                name: msgArr.length > 1 ? `${name} (${ix + 1}/${msgArr.length})` : name,
+                value: msg,
+            });
+        }
+    }
+    return fields;
+}
+
+function rosterWarningFields(guild: SWAPIGuild): APIEmbedField[] {
+    if (!guild.warnings) return [];
+    let warn = guild.warnings.join("\n");
+    if (warn.length > 1024) {
+        warn = `${warn.slice(0, 1000)}...`;
+    }
+    return [
+        {
+            name: "Guild Roster Warnings",
+            value: warn,
+        },
+    ];
+}
+
+function searchDescription(doZeta: boolean | null, doOmicron: boolean | null): string | undefined {
+    if (doZeta && doOmicron) return "Showing characters with both Zeta(s) & Omicron(s)";
+    if (doZeta) return "Showing characters with Zeta(s)";
+    if (doOmicron) return "Showing characters with Omicron(s)";
+    return undefined;
 }
