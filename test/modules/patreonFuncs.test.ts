@@ -2520,6 +2520,239 @@ describe("PatreonFuncs Module", () => {
         });
     });
 
+    describe("processShardPatron() remaining paths", () => {
+        const A_SKIP = 888777690;
+        const A_SEEN = 888777691;
+        const A_BOTH = 888777692;
+        const A_NAMED = 888777693;
+        const A_REPEAT = 888777695;
+        const A_SPLIT = 888777696;
+        let pathFuncs: PatreonFuncs;
+        let sent: { channel: string; payload: string }[];
+        let sendOk: boolean;
+
+        before(() => {
+            sent = [];
+            sendOk = true;
+            const makeChannel = (id: string) => ({
+                type: 0,
+                permissionsFor: () => ({ has: () => true }),
+                send: async (payload: string) => {
+                    if (!sendOk) throw new Error("send failed");
+                    sent.push({ channel: id, payload });
+                    return { id: "m1" };
+                },
+            });
+            const channels: Record<string, ReturnType<typeof makeChannel>> = {
+                "chan-a": makeChannel("chan-a"),
+                "chan-b": makeChannel("chan-b"),
+            };
+            const channelsCache = { get: (id: string) => channels[id] };
+            const pathClient = {
+                user: { id: "bot123" },
+                channels: { cache: channelsCache },
+                shard: {
+                    broadcastEval: async (fn: (client: unknown, ctx: unknown) => unknown, opts: { context: unknown }) => [
+                        await fn({ channels: { cache: channelsCache }, user: { id: "bot123" } }, opts.context),
+                    ],
+                },
+            } as unknown as Client<true>;
+            pathFuncs = new PatreonFuncs();
+            pathFuncs.init(pathClient);
+        });
+
+        beforeEach(() => {
+            sent.length = 0;
+            sendOk = true;
+        });
+
+        const patron = (id: string): ActivePatron => ({ discordID: id, amount_cents: 500 });
+        const watcher = (id: string, entries: Record<string, unknown>[], aw: Record<string, unknown> = {}) =>
+            ({
+                id,
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: entries,
+                    arena: { char: { channel: "chan-a", enabled: true }, fleet: { channel: null, enabled: false } },
+                    payout: { char: { enabled: false, channel: null, msgID: null }, fleet: { enabled: false, channel: null, msgID: null } },
+                    ...aw,
+                },
+            }) as unknown as UserConfig;
+        const apiPlayer = (allyCode: number, char: number | null, ship: number | null = null, extra: Record<string, unknown> = {}) =>
+            [
+                allyCode,
+                { name: `P${allyCode}`, allyCode, arena: { char: { rank: char }, ship: { rank: ship } }, poUTCOffsetMinutes: 0, ...extra },
+            ] as [number, PlayerArenaRes];
+        const run = (user: UserConfig | null, playerEntries: [number, PlayerArenaRes][], docs: ArenaPlayer[], now = Date.now()) => {
+            const arenaPlayerMap = new Map<number, ArenaPlayer>(docs.map((d) => [d.allyCode, d]));
+            const changedCodes = new Set<number>();
+            return (pathFuncs as any)
+                .processShardPatron(
+                    patron(user?.id ?? "none"),
+                    user,
+                    new Map(playerEntries),
+                    arenaPlayerMap,
+                    changedCodes,
+                    buildRankSnapshot(arenaPlayerMap),
+                    now,
+                )
+                .then((changed: boolean) => ({ changed, arenaPlayerMap, changedCodes }));
+        };
+        // Places the char payout 30s before `now`, inside the post-payout result window
+        const justAfterCharPayout = (now: number) => (new Date(now).setUTCHours(0, 0, 0, 0) + 18 * 60 * 60 * 1000 - now + 30000) / 60000;
+
+        it("does nothing for a user without arenaWatch, or with no user at all", async () => {
+            const noWatch = await run({ id: "nowatch", accounts: [] } as unknown as UserConfig, [], []);
+            const noUser = await run(null, [], []);
+
+            assert.strictEqual(noWatch.changed, false);
+            assert.strictEqual(noUser.changed, false);
+            assert.deepStrictEqual(sent, []);
+        });
+
+        it("does nothing when neither an arena log nor a payout-times channel is on", async () => {
+            const user = watcher("alloff", [{ allyCode: A_SEEN, mention: null, poOffset: 0 }], {
+                arena: { char: { channel: "chan-a", enabled: false }, fleet: { channel: null, enabled: false } },
+            });
+
+            const { changed, arenaPlayerMap, changedCodes } = await run(
+                user,
+                [apiPlayer(A_SEEN, 9)],
+                [{ allyCode: A_SEEN, name: "Seen", lastCharRank: 5 }],
+            );
+
+            assert.strictEqual(changed, false);
+            assert.deepStrictEqual(sent, []);
+            assert.strictEqual(changedCodes.size, 0, "no rank is recorded for a watcher with nothing enabled");
+            assert.strictEqual(arenaPlayerMap.get(A_SEEN)?.lastCharRank, 5);
+        });
+
+        it("treats a missing arena config as disabled but still backfills the payout offset", async () => {
+            const user = watcher("noarena", [{ allyCode: A_SEEN, mention: null, poOffset: 0 }], {
+                arena: undefined,
+                payout: { char: { enabled: true, channel: "chan-a", msgID: null }, fleet: { enabled: false, channel: null, msgID: null } },
+            });
+
+            const { changed } = await run(
+                user,
+                [apiPlayer(A_SEEN, 9, null, { poUTCOffsetMinutes: 60 })],
+                [{ allyCode: A_SEEN, name: "Seen", lastCharRank: 5 }],
+            );
+
+            assert.deepStrictEqual(sent, [], "no log channel, so no rank line");
+            assert.strictEqual(changed, true);
+            assert.strictEqual(user.arenaWatch.allyCodes[0].poOffset, 60);
+        });
+
+        it("does nothing for a watcher with no ally codes", async () => {
+            const { changed } = await run(watcher("empty", []), [], []);
+
+            assert.strictEqual(changed, false);
+        });
+
+        it("skips an account the API returned no ranks for, and still posts the others", async () => {
+            const user = watcher("skipper", [
+                { allyCode: A_SKIP, mention: null, poOffset: 0 },
+                { allyCode: A_SEEN, mention: null, poOffset: 0 },
+            ]);
+            const docs = [
+                { allyCode: A_SKIP, name: "Skipped", lastCharRank: 3 },
+                { allyCode: A_SEEN, name: "Seen", lastCharRank: 5 },
+            ];
+
+            const { changedCodes } = await run(user, [apiPlayer(A_SKIP, null, null), apiPlayer(A_SEEN, 9)], docs);
+
+            assert.deepStrictEqual([...changedCodes], [A_SEEN]);
+            assert.strictEqual(sent.length, 1);
+            assert.ok(sent[0].payload.includes("dropped from 5 to 9"), sent[0].payload);
+            assert.ok(!sent[0].payload.includes("Skipped"), sent[0].payload);
+        });
+
+        it("sends both arenas as one message when they share a channel", async () => {
+            const user = watcher("shared", [{ allyCode: A_BOTH, mention: null, poOffset: 0 }], {
+                arena: { char: { channel: "chan-a", enabled: true }, fleet: { channel: "chan-a", enabled: true } },
+            });
+            const docs = [{ allyCode: A_BOTH, name: "Both", lastCharRank: 5, lastShipRank: 20 }];
+
+            await run(user, [apiPlayer(A_BOTH, 9, 15)], docs);
+
+            assert.strictEqual(sent.length, 1);
+            assert.strictEqual(sent[0].channel, "chan-a");
+            const { payload } = sent[0];
+            assert.ok(payload.indexOf("**Character Arena:**") < payload.indexOf("**Fleet Arena:**"), payload);
+            assert.ok(payload.includes("dropped from 5 to 9") && payload.includes("climbed from 20 to 15"), payload);
+            const entry = user.arenaWatch.allyCodes[0];
+            assert.deepStrictEqual([entry.lastCharAnnounced, entry.lastShipAnnounced], [9, 15]);
+        });
+
+        it("holds both arenas' anchors back when the shared message fails", async () => {
+            const user = watcher("sharedfail", [{ allyCode: A_BOTH, mention: null, poOffset: 0 }], {
+                arena: { char: { channel: "chan-a", enabled: true }, fleet: { channel: "chan-a", enabled: true } },
+            });
+            sendOk = false;
+
+            await run(user, [apiPlayer(A_BOTH, 9, 15)], [{ allyCode: A_BOTH, name: "Both", lastCharRank: 5, lastShipRank: 20 }]);
+
+            const entry = user.arenaWatch.allyCodes[0];
+            assert.deepStrictEqual(
+                [entry.lastCharAnnounced, entry.lastShipAnnounced],
+                [5, 20],
+                "frozen at the anchors so next tick retries",
+            );
+        });
+
+        it("sends each arena to its own channel", async () => {
+            const user = watcher("split", [{ allyCode: A_SPLIT, mention: null, poOffset: 0 }], {
+                arena: { char: { channel: "chan-a", enabled: true }, fleet: { channel: "chan-b", enabled: true } },
+            });
+
+            await run(user, [apiPlayer(A_SPLIT, 9, 15)], [{ allyCode: A_SPLIT, name: "Split", lastCharRank: 5, lastShipRank: 20 }]);
+
+            assert.deepStrictEqual(
+                sent.map((s) => [s.channel, s.payload.split("\n")[0]]),
+                [
+                    ["chan-a", ">>> **Character Arena:**"],
+                    ["chan-b", ">>> **Fleet Arena:**"],
+                ],
+            );
+        });
+
+        it("names rank lines by mention, and prefixes payout lines with the mark when marks are on", async () => {
+            const now = Date.UTC(2030, 5, 1, 18, 0, 30);
+            const poOffset = justAfterCharPayout(now);
+            const user = watcher("named", [{ allyCode: A_NAMED, mention: "123456789012345678", mark: "*", poOffset, result: "char" }], {
+                useMarksInLog: true,
+            });
+
+            await run(
+                user,
+                [apiPlayer(A_NAMED, 9, null, { poUTCOffsetMinutes: poOffset })],
+                [{ allyCode: A_NAMED, name: "Named", lastCharRank: 5 }],
+                now,
+            );
+
+            const text = sent.map((s) => s.payload).join("\n");
+            assert.ok(text.includes("- * <@123456789012345678> finished at 9 in character arena"), text);
+            assert.ok(/<@123456789012345678> has dropped from 5 to 9/.test(text), text);
+            assert.ok(!text.includes("Named"), "the mention replaces the stored name");
+        });
+
+        it("posts a payout result once per cycle", async () => {
+            const now = Date.UTC(2030, 5, 1, 18, 0, 30);
+            const poOffset = justAfterCharPayout(now);
+            const user = watcher("repeat", [{ allyCode: A_REPEAT, mention: null, poOffset, result: "char" }]);
+            const player = apiPlayer(A_REPEAT, 9, null, { poUTCOffsetMinutes: poOffset });
+
+            await run(user, [player], [{ allyCode: A_REPEAT, name: "Repeat", lastCharRank: 9 }], now);
+            const first = sent.map((s) => s.payload).join("\n");
+            sent.length = 0;
+            await run(user, [player], [{ allyCode: A_REPEAT, name: "Repeat", lastCharRank: 9 }], now + 60000);
+
+            assert.ok(first.includes(`P${A_REPEAT} finished at 9 in character arena`), first);
+            assert.deepStrictEqual(sent, [], "the result is marked for this cycle, so the next tick stays quiet");
+        });
+    });
+
     describe("formatPayouts()", () => {
         it("does not crash when a player has no stored rank and renders N/A", () => {
             const players = [

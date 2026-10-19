@@ -241,6 +241,145 @@ interface ArenaSendState {
     sent: boolean;
 }
 
+// Everything processShardPatron's account loop shares for one patron's tick
+interface ShardPatronTick {
+    aw: UserConfig["arenaWatch"];
+    playerMap: Map<number, PlayerArenaRes>;
+    arenaPlayerMap: Map<number, ArenaPlayer>;
+    changedCodes: Set<number>;
+    rankSnapshot: RankSnapshot;
+    now: number;
+    logOn: Record<ArenaKind, boolean>;
+    arenaState: Record<ArenaKind, ArenaSendState>;
+    storedByCode: Map<number, ArenaWatchConfig>;
+}
+
+interface AccountTick {
+    player: ArenaWatchAcct;
+    newPlayer: PlayerArenaRes;
+    playerDoc: ArenaPlayer;
+    snap: ArenaRankTracking | undefined;
+    nameForRank: string;
+    pName: string;
+    poOff: number | null;
+}
+
+function refreshAccountFromApi(player: ArenaWatchAcct, newPlayer: PlayerArenaRes): void {
+    // Refresh the name only when the API provides a non-empty one
+    if (newPlayer.name) {
+        player.name = newPlayer.name;
+    }
+    // Live data can omit poUTCOffsetMinutes, and copying the undefined through would
+    // clobber the stored offset and drop the account off the payout schedule.
+    if (typeof newPlayer.poUTCOffsetMinutes === "number" && player.poOffset !== newPlayer.poUTCOffsetMinutes) {
+        player.poOffset = newPlayer.poUTCOffsetMinutes;
+    }
+}
+
+// Net figures across several unposted moves must not read as a single move. One line on purpose.
+const MISSED_FOOTER = "-# Some ranks moved more than once since our last post; the numbers show the net change.";
+
+// Anchored on the rank last ANNOUNCED to this watcher, not the last observed, so a failed or
+// skipped send is covered by the next alert's span. An anchor of 0 is no baseline yet.
+function queueRankChange(
+    cfg: (typeof ARENA_LOG_CONFIG)[ArenaKind],
+    st: ArenaSendState,
+    { player, nameForRank }: AccountTick,
+    { cur, prevObs }: { cur: number; prevObs: number },
+    storedByCode: Map<number, ArenaWatchConfig>,
+): boolean {
+    const announced = player[cfg.announcedKey];
+    const anchor = announced ?? prevObs;
+    if (cur === anchor || anchor <= 0) return false;
+
+    let storedChanged = false;
+    // Freeze the announce baseline before the send so a failed first alert (no
+    // prior announced rank) is retried next tick; delivery advances it to `cur`.
+    if (announced == null) {
+        const stored = storedByCode.get(player.allyCode);
+        if (stored) {
+            stored[cfg.announcedKey] = anchor;
+            storedChanged = true;
+        }
+    }
+    st.rankChanges.push({
+        name: nameForRank,
+        allyCode: player.allyCode,
+        oldRank: anchor,
+        newRank: cur,
+        mark: player.mark,
+        missed: announced != null && announced !== prevObs,
+    });
+    st.pendingAnnounce.push({ allyCode: player.allyCode, rank: cur });
+    return storedChanged;
+}
+
+function queuePayoutLines(
+    cfg: (typeof ARENA_LOG_CONFIG)[ArenaKind],
+    st: ArenaSendState,
+    { player, pName, rank, cycle }: { player: ArenaWatchAcct; pName: string; rank: number; cycle: ReturnType<typeof payoutCycleInfo> },
+): void {
+    if (cfg.settingNames.includes(player.result ?? "") && cycle.justAfterPayout && player.alerted?.[cfg.resultMark] !== cycle.lastPayout) {
+        st.payoutLines.push(`${pName} finished at ${rank} ${cfg.resultSuffix}`);
+        st.pendingMark.push({ allyCode: player.allyCode, field: cfg.resultMark, cycle: cycle.lastPayout });
+    }
+    if (
+        cfg.settingNames.includes(player.warn?.arena ?? "") &&
+        isInWarnWindow(cycle.minTil, player.warn?.min) &&
+        player.alerted?.[cfg.warnMark] !== cycle.nextPayout
+    ) {
+        st.payoutLines.push(`${pName}'s ${cfg.warnLabel} arena payout is in ${cycle.minTil} minutes`);
+        st.pendingMark.push({ allyCode: player.allyCode, field: cfg.warnMark, cycle: cycle.nextPayout });
+    }
+}
+
+// poOffset backfill always; markers and anchors only for the channel that delivered. Rank and
+// history live in arenaPlayers, not on the user doc.
+function commitWatchState(
+    accountsToCheck: ArenaWatchAcct[],
+    storedByCode: Map<number, ArenaWatchConfig>,
+    arenaState: Record<ArenaKind, ArenaSendState>,
+): boolean {
+    let userChanged = false;
+    for (const acct of accountsToCheck) {
+        const stored = storedByCode.get(acct.allyCode);
+        if (stored && stored.poOffset !== acct.poOffset) {
+            stored.poOffset = acct.poOffset;
+            userChanged = true;
+        }
+    }
+    for (const arena of ARENAS) {
+        userChanged = commitArenaState(arena, arenaState[arena], storedByCode) || userChanged;
+    }
+    return userChanged;
+}
+
+function commitArenaState(arena: ArenaKind, st: ArenaSendState, storedByCode: Map<number, ArenaWatchConfig>): boolean {
+    let changed = false;
+    if (st.sent) {
+        for (const p of st.pendingMark) {
+            const stored = storedByCode.get(p.allyCode);
+            if (!stored) continue;
+            stored.alerted ??= {};
+            stored.alerted[p.field] = p.cycle;
+            changed = true;
+        }
+    }
+    // Announce anchors: advance unless a send was attempted and failed. Holding the anchor
+    // back when nothing was posted would measure every later alert from a rank the watcher
+    // has long since moved past.
+    if (st.attempted && !st.sent) return changed;
+    const field = ARENA_LOG_CONFIG[arena].announcedKey;
+    for (const p of st.pendingAnnounce) {
+        const stored = storedByCode.get(p.allyCode);
+        if (stored && stored[field] !== p.rank) {
+            stored[field] = p.rank;
+            changed = true;
+        }
+    }
+    return changed;
+}
+
 function newArenaSendState(rankOn: boolean): ArenaSendState {
     return {
         rankOn,
@@ -827,135 +966,105 @@ class PatreonFuncs {
         const storedByCode = new Map(user.arenaWatch.allyCodes.map((a) => [a.allyCode, a]));
         let userChanged = false;
 
+        const tick: ShardPatronTick = { aw, playerMap, arenaPlayerMap, changedCodes, rankSnapshot, now, logOn, arenaState, storedByCode };
+
         // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
         for (const player of accountsToCheck) {
-            const newPlayer = playerMap.get(player.allyCode) ?? null;
-            if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
-                // Both, since low level players can have just char arena I believe
-                continue;
-            }
-            // Refresh the name only when the API provides a non-empty one
-            if (newPlayer.name) {
-                player.name = newPlayer.name;
-            }
-            // Live data can omit poUTCOffsetMinutes, and copying the undefined through would
-            // clobber the stored offset and drop the account off the payout schedule.
-            if (typeof newPlayer.poUTCOffsetMinutes === "number" && player.poOffset !== newPlayer.poUTCOffsetMinutes) {
-                player.poOffset = newPlayer.poUTCOffsetMinutes;
-            }
-
-            // Load persisted rank/history from arenaPlayerMap; create a stub if not found.
-            // player.name was hydrated from the doc, falling back to the ally code string.
-            const playerDoc = arenaPlayerMap.get(player.allyCode) ?? {
-                allyCode: player.allyCode,
-                name: newPlayer.name || player.name,
-            };
-
-            // For a freshly-created stub this is always false (name already matches); this only
-            // refreshes an existing doc's stale name.
-            if (newPlayer.name && newPlayer.name !== playerDoc.name) {
-                playerDoc.name = newPlayer.name;
-                changedCodes.add(player.allyCode);
-            }
-
-            // prevObs = last OBSERVED rank (shared, tick-start snapshot). Advancing the observed
-            // rank on the doc feeds history / the payout list / DM alerts.
-            const snap = rankSnapshot.get(player.allyCode);
-
-            // Rank alerts use the bare name; payout warn/result may prefix the watcher's mark
-            const nameForRank = player.mention ? `<@${player.mention}>` : player.name;
-            const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${nameForRank}` : nameForRank;
-
-            // Payout timing for this account, keyed off the shared tick `now`. Null when the offset
-            // is unknown (live data can omit it), in which case payout history/alerts are skipped.
-            const poOff = typeof player.poOffset === "number" ? player.poOffset : null;
-
-            for (const arena of ARENAS) {
-                const cfg = ARENA_LOG_CONFIG[arena];
-                const st = arenaState[arena];
-                const prevObs = snap?.[cfg.docRankKey] ?? 0;
-                const cur = newPlayer.arena?.[cfg.apiKey]?.rank ?? null;
-                if (cur != null) player[cfg.acctRankKey] = cur;
-
-                if (cur != null && cur !== prevObs) {
-                    player[cfg.acctChangeKey] = prevObs - cur;
-                    playerDoc[cfg.docRankKey] = cur;
-                    playerDoc[cfg.docChangeKey] = player[cfg.acctChangeKey];
-                    changedCodes.add(player.allyCode);
-                }
-
-                // Channel rank alerts anchor on the rank we last ANNOUNCED to this watcher, not the
-                // observed rank, so a failed/skipped send is recovered by the next alert covering
-                // the whole span; `missed` flags a change bundling updates this watcher never saw.
-                // anchor 0 means no baseline yet, so skip the noise "rank 0 -> X" alert.
-                if (st.rankOn && cur != null) {
-                    const announced = player[cfg.announcedKey];
-                    const anchor = announced ?? prevObs;
-                    if (cur !== anchor && anchor > 0) {
-                        // Freeze the announce baseline before the send so a failed first alert (no
-                        // prior announced rank) is retried next tick; delivery advances it to `cur`.
-                        if (announced == null) {
-                            const stored = storedByCode.get(player.allyCode);
-                            if (stored) {
-                                stored[cfg.announcedKey] = anchor;
-                                userChanged = true;
-                            }
-                        }
-                        st.rankChanges.push({
-                            name: nameForRank,
-                            allyCode: player.allyCode,
-                            oldRank: anchor,
-                            newRank: cur,
-                            mark: player.mark,
-                            missed: announced != null && announced !== prevObs,
-                        });
-                        st.pendingAnnounce.push({ allyCode: player.allyCode, rank: cur });
-                    }
-                }
-
-                const cycle = poOff === null ? null : payoutCycleInfo(now, getPayoutTimeLeft(poOff, arena, now));
-
-                // Record payout history for all arenaWatch accounts, regardless of notification settings
-                const newHist = this.recordHistoryAtPayout(
-                    playerDoc[cfg.histKey],
-                    player[cfg.acctRankKey],
-                    cycle?.justAfterPayout ?? false,
-                    now,
-                );
-                if (newHist !== playerDoc[cfg.histKey]) {
-                    playerDoc[cfg.histKey] = newHist;
-                    changedCodes.add(player.allyCode);
-                }
-
-                // Keyed on the payout instant so a dropped tick self-heals within its window.
-                // These post to the arena log channel, so skip them when that log is off.
-                const rank = player[cfg.acctRankKey];
-                if (!logOn[arena] || !cycle || rank == null) continue;
-                if (
-                    cfg.settingNames.includes(player.result ?? "") &&
-                    cycle.justAfterPayout &&
-                    player.alerted?.[cfg.resultMark] !== cycle.lastPayout
-                ) {
-                    st.payoutLines.push(`${pName} finished at ${rank} ${cfg.resultSuffix}`);
-                    st.pendingMark.push({ allyCode: player.allyCode, field: cfg.resultMark, cycle: cycle.lastPayout });
-                }
-                if (
-                    cfg.settingNames.includes(player.warn?.arena ?? "") &&
-                    isInWarnWindow(cycle.minTil, player.warn?.min) &&
-                    player.alerted?.[cfg.warnMark] !== cycle.nextPayout
-                ) {
-                    st.payoutLines.push(`${pName}'s ${cfg.warnLabel} arena payout is in ${cycle.minTil} minutes`);
-                    st.pendingMark.push({ allyCode: player.allyCode, field: cfg.warnMark, cycle: cycle.nextPayout });
-                }
-            }
-
-            arenaPlayerMap.set(player.allyCode, playerDoc);
+            userChanged = this.collectAccountUpdates(player, tick) || userChanged;
         }
 
-        // A single subtext footer when any line bundles updates we observed but never posted, so
-        // the net numbers aren't mistaken for a single move. Kept short so it stays on one line.
-        const MISSED_FOOTER = "-# Some ranks moved more than once since our last post; the numbers show the net change.";
+        this.buildArenaFields(arenaState, aw);
+        await this.sendArenaLogs(arenaState, arenaCfg);
 
+        // arenaTick persists the user doc once per patron when userChanged is true (see the loop),
+        // so both consumers avoid double-writing the same doc.
+        return commitWatchState(accountsToCheck, storedByCode, arenaState) || userChanged;
+    }
+
+    // Returns whether a stored watch entry changed (a first-alert announce baseline was frozen)
+    private collectAccountUpdates(player: ArenaWatchAcct, tick: ShardPatronTick): boolean {
+        const { aw, playerMap, arenaPlayerMap, changedCodes, rankSnapshot } = tick;
+        const newPlayer = playerMap.get(player.allyCode) ?? null;
+        if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
+            // Both, since low level players can have just char arena I believe
+            return false;
+        }
+        refreshAccountFromApi(player, newPlayer);
+
+        // player.name was hydrated from the doc, falling back to the ally code string.
+        const playerDoc = arenaPlayerMap.get(player.allyCode) ?? {
+            allyCode: player.allyCode,
+            name: newPlayer.name || player.name,
+        };
+
+        // For a freshly-created stub this is always false (name already matches); this only
+        // refreshes an existing doc's stale name.
+        if (newPlayer.name && newPlayer.name !== playerDoc.name) {
+            playerDoc.name = newPlayer.name;
+            changedCodes.add(player.allyCode);
+        }
+
+        // Rank alerts use the bare name; payout warn/result may prefix the watcher's mark
+        const nameForRank = player.mention ? `<@${player.mention}>` : player.name;
+        const account: AccountTick = {
+            player,
+            newPlayer,
+            playerDoc,
+            // prevObs = last OBSERVED rank (shared, tick-start snapshot). Advancing the observed
+            // rank on the doc feeds history / the payout list / DM alerts.
+            snap: rankSnapshot.get(player.allyCode),
+            nameForRank,
+            pName: aw.useMarksInLog && player.mark ? `${player.mark} ${nameForRank}` : nameForRank,
+            // Payout timing for this account, keyed off the shared tick `now`. Null when the offset
+            // is unknown (live data can omit it), in which case payout history/alerts are skipped.
+            poOff: typeof player.poOffset === "number" ? player.poOffset : null,
+        };
+
+        let storedChanged = false;
+        for (const arena of ARENAS) {
+            storedChanged = this.collectArenaUpdates(arena, account, tick) || storedChanged;
+        }
+
+        arenaPlayerMap.set(player.allyCode, playerDoc);
+        return storedChanged;
+    }
+
+    private collectArenaUpdates(arena: ArenaKind, account: AccountTick, tick: ShardPatronTick): boolean {
+        const { player, newPlayer, playerDoc, snap, pName, poOff } = account;
+        const { changedCodes, now, logOn } = tick;
+        const cfg = ARENA_LOG_CONFIG[arena];
+        const st = tick.arenaState[arena];
+        const prevObs = snap?.[cfg.docRankKey] ?? 0;
+        const cur = newPlayer.arena?.[cfg.apiKey]?.rank ?? null;
+        if (cur != null) player[cfg.acctRankKey] = cur;
+
+        if (cur != null && cur !== prevObs) {
+            player[cfg.acctChangeKey] = prevObs - cur;
+            playerDoc[cfg.docRankKey] = cur;
+            playerDoc[cfg.docChangeKey] = player[cfg.acctChangeKey];
+            changedCodes.add(player.allyCode);
+        }
+
+        const storedChanged = st.rankOn && cur != null ? queueRankChange(cfg, st, account, { cur, prevObs }, tick.storedByCode) : false;
+
+        const cycle = poOff === null ? null : payoutCycleInfo(now, getPayoutTimeLeft(poOff, arena, now));
+
+        // Record payout history for all arenaWatch accounts, regardless of notification settings
+        const newHist = this.recordHistoryAtPayout(playerDoc[cfg.histKey], player[cfg.acctRankKey], cycle?.justAfterPayout ?? false, now);
+        if (newHist !== playerDoc[cfg.histKey]) {
+            playerDoc[cfg.histKey] = newHist;
+            changedCodes.add(player.allyCode);
+        }
+
+        // Keyed on the payout instant so a dropped tick self-heals within its window.
+        const rank = player[cfg.acctRankKey];
+        if (logOn[arena] && cycle && rank != null) {
+            queuePayoutLines(cfg, st, { player, pName, rank, cycle });
+        }
+        return storedChanged;
+    }
+
+    private buildArenaFields(arenaState: Record<ArenaKind, ArenaSendState>, aw: UserConfig["arenaWatch"]): void {
         for (const arena of ARENAS) {
             const st = arenaState[arena];
             // checkRanks applies the aw.report climb/drop filter, so it can return nothing even for
@@ -968,81 +1077,49 @@ class PatreonFuncs {
                 st.fields.push(out.map((c) => `- ${c}`).join("\n"));
             }
         }
+    }
 
-        // `attempted` is false when nothing was posted and no later tick would change that, which
-        // is not a delivery failure, so the announce anchors below still advance.
-        if (ARENAS.some((arena) => arenaState[arena].fields.length)) {
-            if (arenaChar.channel && arenaChar.channel === arenaFleet.channel) {
-                // If they're both set to the same channel, send it all in one message
-                const fields = ARENAS.flatMap((arena) => arenaState[arena].fields);
-                if (ARENAS.some((arena) => arenaState[arena].missed)) fields.push(MISSED_FOOTER);
-                const outcome = await this.sendToChannel(arenaChar.channel, `>>> ${fields.join("\n")}`);
-                // One message carries both arenas, but only the arena that contributed lines to it
-                // can count as delivered
-                for (const arena of ARENAS) {
-                    const st = arenaState[arena];
-                    st.attempted = st.fields.length > 0 && outcome !== SEND_OUTCOME.UNDELIVERABLE;
-                    st.sent = outcome === SEND_OUTCOME.SENT && st.fields.length > 0;
-                }
-            } else {
-                // Else they each have their own channels, so send em there (sendToChannel never
-                // rejects - it resolves an outcome either way - so Promise.all is safe here)
-                for (const arena of ARENAS) {
-                    const st = arenaState[arena];
-                    if (st.missed) st.fields.push(MISSED_FOOTER);
-                }
-                const outcomes = await Promise.all(
-                    ARENAS.map((arena) =>
-                        arenaState[arena].fields.length
-                            ? this.sendToChannel(arenaCfg[arena].channel, `>>> ${arenaState[arena].fields.join("\n")}`)
-                            : Promise.resolve<SendOutcome>(SEND_OUTCOME.UNDELIVERABLE),
-                    ),
-                );
-                ARENAS.forEach((arena, ix) => {
-                    const st = arenaState[arena];
-                    st.attempted = st.fields.length > 0 && outcomes[ix] !== SEND_OUTCOME.UNDELIVERABLE;
-                    st.sent = outcomes[ix] === SEND_OUTCOME.SENT;
-                });
+    // `attempted` is false when nothing was posted and no later tick would change that, which
+    // is not a delivery failure, so the announce anchors still advance.
+    private async sendArenaLogs(
+        arenaState: Record<ArenaKind, ArenaSendState>,
+        arenaCfg: Record<ArenaKind, { channel: string | null; enabled: boolean }>,
+    ): Promise<void> {
+        if (!ARENAS.some((arena) => arenaState[arena].fields.length)) return;
+
+        if (arenaCfg.char.channel && arenaCfg.char.channel === arenaCfg.fleet.channel) {
+            // If they're both set to the same channel, send it all in one message
+            const fields = ARENAS.flatMap((arena) => arenaState[arena].fields);
+            if (ARENAS.some((arena) => arenaState[arena].missed)) fields.push(MISSED_FOOTER);
+            const outcome = await this.sendToChannel(arenaCfg.char.channel, `>>> ${fields.join("\n")}`);
+            // One message carries both arenas, but only the arena that contributed lines to it
+            // can count as delivered
+            for (const arena of ARENAS) {
+                const st = arenaState[arena];
+                st.attempted = st.fields.length > 0 && outcome !== SEND_OUTCOME.UNDELIVERABLE;
+                st.sent = outcome === SEND_OUTCOME.SENT && st.fields.length > 0;
             }
+            return;
         }
 
-        // Persist per-watcher state on the user doc: poOffset backfill always, plus the announce /
-        // payout markers for whichever channel delivered. rank/history live in arenaPlayers.
-        for (const acct of accountsToCheck) {
-            const stored = storedByCode.get(acct.allyCode);
-            if (stored && stored.poOffset !== acct.poOffset) {
-                stored.poOffset = acct.poOffset;
-                userChanged = true;
-            }
-        }
-
+        // Else they each have their own channels, so send em there (sendToChannel never
+        // rejects - it resolves an outcome either way - so Promise.all is safe here)
         for (const arena of ARENAS) {
             const st = arenaState[arena];
-            if (st.sent) {
-                for (const p of st.pendingMark) {
-                    const stored = storedByCode.get(p.allyCode);
-                    if (!stored) continue;
-                    stored.alerted ??= {};
-                    stored.alerted[p.field] = p.cycle;
-                    userChanged = true;
-                }
-            }
-            // Announce anchors: advance unless a send was attempted and failed. Holding the anchor
-            // back when nothing was posted would measure every later alert from a rank the watcher
-            // has long since moved past.
-            if (st.attempted && !st.sent) continue;
-            const field = ARENA_LOG_CONFIG[arena].announcedKey;
-            for (const p of st.pendingAnnounce) {
-                const stored = storedByCode.get(p.allyCode);
-                if (stored && stored[field] !== p.rank) {
-                    stored[field] = p.rank;
-                    userChanged = true;
-                }
-            }
+            if (st.missed) st.fields.push(MISSED_FOOTER);
         }
-        // arenaTick persists the user doc once per patron when userChanged is true (see the loop),
-        // so both consumers avoid double-writing the same doc.
-        return userChanged;
+        const outcomes = await Promise.all(
+            ARENAS.map((arena) =>
+                arenaState[arena].fields.length
+                    ? this.sendToChannel(arenaCfg[arena].channel, `>>> ${arenaState[arena].fields.join("\n")}`)
+                    : Promise.resolve<SendOutcome>(SEND_OUTCOME.UNDELIVERABLE),
+            ),
+        );
+        ARENAS.forEach((arena, ix) => {
+            const st = arenaState[arena];
+            st.attempted = st.fields.length > 0 && outcomes[ix] !== SEND_OUTCOME.UNDELIVERABLE;
+            st.sent = outcomes[ix] === SEND_OUTCOME.SENT;
+        });
     }
 
     async guildsUpdate(): Promise<void> {
