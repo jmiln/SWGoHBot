@@ -1,9 +1,12 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
+import Language from "../../base/Language.ts";
 import constants from "../../data/constants/constants.ts";
+import DeDE from "../../languages/de_DE.ts";
 import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
+import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import MyCharacter from "../../slash/mycharacter.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit, createRealLanguage } from "../mocks/index.ts";
@@ -304,17 +307,116 @@ describe("MyCharacter", () => {
             assert.strictEqual(noFinal.description, "Something went wrong, I couldn't get the stats for that character");
         });
 
-        it("formats percentages, mod bonuses, and the fixed dodge chance", async (t) => {
-            const stats = { final: { Speed: 300, Potency: 0.5, Health: 40000 }, mods: { Speed: 30, Potency: 0.1 }, gp: 25000 };
+        it("formats percentages without trailing zeros, with one space before the mod bonus", async (t) => {
+            const stats = {
+                final: { Speed: 300, Potency: 0.5, Health: 40000, "Critical Damage": 2.22, "Physical Critical Chance": 0.5425 },
+                mods: { Speed: 30, Potency: 0.1, "Physical Critical Chance": 0.1175 },
+                gp: 25000,
+            };
 
             const { field } = await show(t, {}, { roster: [vader({ stats })] });
 
             const statLines = field("Stats").split("\n");
-            const line = (label: string) => (statLines.find((l) => l.startsWith(label)) ?? "").trimEnd();
-            assert.match(line("Speed"), /:: 300 *\(30\)$/);
-            assert.match(line("Potency"), /:: 50\.00% *\(10\.00%\)$/);
-            assert.match(line("Health"), /:: 40,000$/);
-            assert.match(line("Dodge"), /:: 2\.00%$/);
+            const line = (label: string) => statLines.find((l) => l.startsWith(label));
+            assert.strictEqual(line("Speed"), "Speed      :: 300 (30)");
+            assert.strictEqual(line("Potency"), "Potency    :: 50% (10%)");
+            assert.strictEqual(line("Health"), "Health     :: 40,000");
+            assert.strictEqual(line("Crit Dmg"), "Crit Dmg   :: 222%");
+            assert.strictEqual(line("Crit %"), "Crit %     :: 54.25% (11.75%)");
+        });
+
+        it("shows four sections, with armor and resistance under General and no survivability rows", async (t) => {
+            const stats = { final: { Intelligence: 100, Armor: 0.35, Resistance: 0.25 }, mods: {}, gp: 1 };
+
+            const { field } = await show(t, {}, { roster: [vader({ stats })] });
+
+            const statLines = field("Stats").split("\n");
+            assert.deepStrictEqual(
+                statLines.filter((l) => l.startsWith("==")),
+                ["== Primary ==", "== General ==", "== Phys Off ==", "== Spec Off =="],
+            );
+            const section = (header: string) => {
+                const start = statLines.indexOf(`== ${header} ==`);
+                const end = statLines.findIndex((l, ix) => ix > start && (l.startsWith("==") || l === ""));
+                return statLines.slice(start + 1, end < 0 ? undefined : end);
+            };
+            assert.deepStrictEqual(section("General"), [
+                "Health     :: 0",
+                "Protection :: 0",
+                "Armor      :: 35%",
+                "Resistance :: 25%",
+                "Speed      :: 0",
+                "Crit Dmg   :: 0",
+                "Potency    :: 0",
+                "Tenacity   :: 0",
+                "HP Steal   :: 0",
+            ]);
+            assert.deepStrictEqual(section("Phys Off"), ["Damage     :: 0", "Crit %     :: 0", "Armor Pen  :: 0", "Accuracy   :: 0"]);
+            assert.deepStrictEqual(section("Spec Off"), ["Damage     :: 0", "Crit %     :: 0", "Res Pen    :: 0", "Accuracy   :: 0"]);
+            assert.ok(statLines.includes("Tactics    :: 100"), statLines.join(" | "));
+            assert.ok(!statLines.some((l) => /Dodge|Deflect|Crit Avoid/.test(l)), statLines.join(" | "));
+        });
+
+        it("keeps every line of a fully-populated stat block within 30 characters", async (t) => {
+            const big = 250000;
+            const statNamesInBlock = [
+                "Strength",
+                "Agility",
+                "Intelligence",
+                "Health",
+                "Protection",
+                "Speed",
+                "Critical Damage",
+                "Potency",
+                "Tenacity",
+                "Health Steal",
+                "Physical Damage",
+                "Physical Critical Chance",
+                "Armor Penetration",
+                "Accuracy",
+                "Armor",
+                "Critical Avoidance",
+                "Special Damage",
+                "Special Critical Chance",
+                "Resistance Penetration",
+                "Resistance",
+            ];
+            const isChance = (s: string) => /Chance|Potency|Tenacity|Steal|Critical Damage|Accuracy|Avoidance|^Armor$|^Resistance$/.test(s);
+            const final = Object.fromEntries(statNamesInBlock.map((s) => [s, isChance(s) ? 1.2575 : big]));
+            const mods = Object.fromEntries(statNamesInBlock.map((s) => [s, isChance(s) ? 0.3175 : 20000]));
+
+            const { field } = await show(t, {}, { roster: [vader({ stats: { final, mods, gp: big } })] });
+
+            const tooLong = field("Stats")
+                .split("\n")
+                .filter((l) => !l.startsWith("```") && l.length > 30);
+            assert.deepStrictEqual(tooLong, []);
+        });
+
+        it("keeps a language's full stat names when it has no short set", async (t) => {
+            Language.registerLanguage(defaultGuildSettings.language, createRealLanguage());
+            stubImageServer(t, false);
+            swgohAPI.player = async () =>
+                createMockPlayer({
+                    allyCode: 123456789,
+                    name: "TestPlayer",
+                    updatedAt: new Date("2030-06-01T00:00:00Z"),
+                    roster: [vader()],
+                });
+            swgohAPI.langChar = async (c) => c;
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789" },
+            });
+
+            await new MyCharacter().run(createCommandContext({ interaction, language: new DeDE() }));
+
+            const embed = getLastReply(interaction).embeds[0];
+            const stats = (embed.data ?? embed).fields
+                .find((f: { name: string }) => f.name === "Stats")
+                .value.replaceAll(constants.zws, "");
+            assert.ok(stats.includes("Tempo"), stats);
+            assert.ok(stats.includes("Koerperl. Krit. Chance"), stats);
+            assert.ok(!stats.includes("Crit %"), stats);
         });
 
         it("adds the player's roster warnings", async (t) => {

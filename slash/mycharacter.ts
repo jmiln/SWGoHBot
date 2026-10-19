@@ -213,11 +213,9 @@ const ABILITY_ORDER = ["basic", "special", "leader", "unique", "crew", "contract
 
 const statNames: Record<string, string[]> = {
     "Primary Attributes": ["Strength", "Agility", "Intelligence"],
-    General: ["Health", "Protection", "Speed", "Critical Damage", "Potency", "Tenacity", "Health Steal"],
+    General: ["Health", "Protection", "Armor", "Resistance", "Speed", "Critical Damage", "Potency", "Tenacity", "Health Steal"],
     "Physical Offense": ["Physical Damage", "Physical Critical Chance", "Armor Penetration", "Accuracy"],
-    "Physical Survivability": ["Armor", "Dodge Chance", "Critical Avoidance"],
     "Special Offense": ["Special Damage", "Special Critical Chance", "Resistance Penetration", "Accuracy"],
-    "Special Survivability": ["Resistance", "Deflection Chance", "Critical Avoidance"],
 };
 
 const langMap: Record<string, string> = {
@@ -241,18 +239,13 @@ const langMap: Record<string, string> = {
     "Physical Critical Rating": "PHYSCRIT",
     "Armor Penetration": "ARMORPEN",
     Accuracy: "ACCURACY",
-    "Physical Survivability": "PHYSSURV",
     Armor: "ARMOR",
-    "Dodge Chance": "DODGECHANCE",
-    "Critical Avoidance": "CRITAVOID",
     "Special Offense": "SPECOFF",
     "Special Damage": "SPECDMG",
     "Special Critical Chance": "SPECCRIT",
     "Special Critical Rating": "SPECCRIT",
     "Resistance Penetration": "RESPEN",
-    "Special Survivability": "SPECSURV",
     Resistance: "RESISTANCE",
-    "Deflection Chance": "DEFLECTION",
 };
 
 function gearSlotGrid(equipped: SWAPIUnit["equipped"]): string {
@@ -292,11 +285,10 @@ function abilityTierLabel(a: SWAPIUnitSkill, isShip: boolean): string {
 
 function statFields(stats: NonNullable<SWAPIUnit["stats"]>, isShip: boolean, language: Language, unitName: string): APIEmbedField[] {
     const final = stats.final as SWAPIUnitStatTypes;
-    const langStr = language.get("BASE_STAT_NAMES") as unknown as Record<string, string>;
-
-    let keys = Object.keys(final);
-    if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
-    const maxLen = keys?.reduce((long, str) => Math.max(long, langStr[langMap[str]] ? langStr[langMap[str]].length : 0), 0) || 0;
+    // Only a language's own short set: the English fallback would replace its full names with English
+    const shortNames = language.language.BASE_STAT_NAMES_SHORT as Record<string, string> | undefined;
+    const langStr = shortNames ?? (language.get("BASE_STAT_NAMES") as unknown as Record<string, string>);
+    const maxLen = Math.max(...Object.values(statNames).flatMap((rows) => rows.map((s) => langStr[langMap[s]]?.length ?? 0)));
 
     // Stick in some standatd keys to help it not be wonky
     if (final["Physical Accuracy"] && final["Special Accuracy"]) final.Accuracy = final["Physical Accuracy"];
@@ -305,7 +297,7 @@ function statFields(stats: NonNullable<SWAPIUnit["stats"]>, isShip: boolean, lan
 
     const statArr: string[] = [];
     for (const sn of Object.keys(statNames)) {
-        let statStr = `== ${sn} ==\n`;
+        let statStr = `== ${shortNames?.[langMap[sn]] ?? sn} ==\n`;
         for (const s of statNames[sn]) {
             statStr += statLine(s, { final, mods: isShip ? null : stats.mods, langStr, maxLen, unitName });
         }
@@ -338,15 +330,11 @@ function statLine(
         );
         return `${s.toString().padEnd(8 - s.length)}\n`;
     }
-    const label = `${thisLangStr}${" ".repeat(Math.max(maxLen - thisLangStr.length, 0))} :: `;
-    if (s === "Dodge Chance" || s === "Deflection Chance") {
-        return `${label}2.00%\n`;
-    }
-    const str = formatStatValue(final[sKey]);
-    const modStr = mods?.[sKey] ? `(${formatStatValue(mods[sKey])})` : "";
-    return `${label}${str.toString().padEnd(8 - str.length) + modStr}\n`;
+    const label = `${thisLangStr.padEnd(maxLen)} :: `;
+    const modStr = mods?.[sKey] ? ` (${formatStatValue(mods[sKey])})` : "";
+    return `${label}${formatStatValue(final[sKey])}${modStr}\n`;
 }
 
 function formatStatValue(value: number): string {
-    return value % 1 === 0 ? value.toLocaleString() : `${(value * 100).toFixed(2)}%`;
+    return value % 1 === 0 ? value.toLocaleString() : `${(value * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%`;
 }
