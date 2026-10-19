@@ -9,7 +9,7 @@ const SWAPIUnitSkillSchema = z.object({
     zetaTier: z.number().optional(),
     isOmicron: z.boolean().optional(),
     omicronTier: z.number().optional(),
-    omicronMode: z.null().optional(),
+    omicronMode: z.union([z.number(), z.string()]).nullable().optional(),
     type: z.string().optional(),
     tierStr: z.string().optional(),
     defId: z.string().optional(),

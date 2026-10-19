@@ -1722,13 +1722,12 @@ function processAbilities(
         let zetaTier: number | null = null;
         let omicronTier: number | null = null;
         let isOmicron = false;
-        for (const [ix, tier] of tierList.entries()) {
-            const mod = tier.split("_").slice(-1)[0];
-            if (mod === "ZETA") {
+        for (const [ix, tier] of skill.tier.entries()) {
+            if (tier.isZetaTier) {
                 isZeta = true;
                 zetaTier = ix + 1;
             }
-            if (mod === "OMICRON") {
+            if (tier.isOmicronTier) {
                 isOmicron = true;
                 omicronTier = ix + 1;
             }
@@ -1748,6 +1747,7 @@ function processAbilities(
             zetaTier,
             isOmicron,
             omicronTier,
+            omicronMode: isOmicron ? (skill.omicronMode ?? null) : null,
         });
 
         skillMap[skill.id] = {

@@ -1,4 +1,7 @@
+import type { components } from "./comlinkGamedata.js";
 import type { PlayerDatacron } from "./datacron_types.ts";
+
+export type OmicronMode = components["schemas"]["OmicronMode"];
 
 export type SWAPILang =
     | "eng_us"
@@ -395,6 +398,7 @@ export interface ComlinkAbility {
     zetaTier: number | null;
     isOmicron: boolean;
     omicronTier: number | null;
+    omicronMode: OmicronMode | null;
 }
 
 export interface ComlinkMod {
@@ -442,7 +446,7 @@ export interface SWAPIUnitSkill {
     zetaTier?: number;
     isOmicron?: boolean;
     omicronTier?: number;
-    omicronMode?: null; // Not sure, they all seem to be null
+    omicronMode?: OmicronMode | null;
 
     // And these just sometimes mid-command usage
     type?: string;
@@ -455,7 +459,7 @@ export interface SWAPIUnitAbility {
     nameKey?: string;
     zetaTier: number;
     omicronTier: number;
-    omicronMode: null;
+    omicronMode: OmicronMode | null;
 }
 
 export interface SWAPIMod {

@@ -249,10 +249,17 @@ describe("processAbilities", () => {
         ...overrides,
     });
 
-    const makeSkill = (abilityReference: string, tiers: string[]) => ({
+    type TierFixture = string | { recipeId: string; isZetaTier?: boolean; isOmicronTier?: boolean };
+    // A plain recipe id gets the game's tier flags derived from its name, as real game data has them
+    const makeSkill = (abilityReference: string, tiers: TierFixture[], extra: Record<string, unknown> = {}) => ({
         id: `skill_${abilityReference}`,
         abilityReference,
-        tier: tiers.map((recipeId) => ({ recipeId })),
+        tier: tiers.map((t) =>
+            typeof t === "string"
+                ? { recipeId: t, isZetaTier: t.split("_").includes("ZETA"), isOmicronTier: t.split("_").includes("OMICRON") }
+                : t,
+        ),
+        ...extra,
     });
 
     it("matches abilities to skills by abilityReference", () => {
@@ -283,6 +290,56 @@ describe("processAbilities", () => {
         const { abilitiesOut } = processAbilities(abilities, skills);
         assert.strictEqual(abilitiesOut[0].isOmicron, true);
         assert.strictEqual(abilitiesOut[0].omicronTier, 3);
+    });
+
+    it("detects an omicron whose recipe carries a suffix after OMICRON", () => {
+        const abilities = [makeAbility("ab1")] as any;
+        const skills = [
+            makeSkill("ab1", ["SKILLRECIPE_PASSIVE_T1", "SKILLRECIPE_PASSIVE_T2_ZETA", "SKILLRECIPE_PASSIVE_T3_OMICRON_DISCOUNTED"]),
+        ] as any;
+        const { abilitiesOut } = processAbilities(abilities, skills);
+        assert.strictEqual(abilitiesOut[0].isOmicron, true);
+        assert.strictEqual(abilitiesOut[0].omicronTier, 3);
+    });
+
+    it("detects a zeta whose recipe carries a suffix after ZETA", () => {
+        const abilities = [makeAbility("ab1")] as any;
+        const skills = [makeSkill("ab1", ["SKILLRECIPE_PASSIVE_T1", "SKILLRECIPE_PASSIVE_T2_ZETA_DISCOUNTED"])] as any;
+        const { abilitiesOut } = processAbilities(abilities, skills);
+        assert.strictEqual(abilitiesOut[0].isZeta, true);
+        assert.strictEqual(abilitiesOut[0].zetaTier, 2);
+    });
+
+    it("takes zeta and omicron tiers from the game's tier flags, not the recipe names", () => {
+        const abilities = [makeAbility("ab1")] as any;
+        const skills = [
+            makeSkill("ab1", [
+                { recipeId: "RECIPE_T1" },
+                { recipeId: "RECIPE_T2_ZETA", isZetaTier: false },
+                { recipeId: "RECIPE_T3", isZetaTier: true },
+                { recipeId: "RECIPE_T4", isOmicronTier: true },
+            ]),
+        ] as any;
+        const { abilitiesOut } = processAbilities(abilities, skills);
+        assert.strictEqual(abilitiesOut[0].isZeta, true);
+        assert.strictEqual(abilitiesOut[0].zetaTier, 3);
+        assert.strictEqual(abilitiesOut[0].isOmicron, true);
+        assert.strictEqual(abilitiesOut[0].omicronTier, 4);
+    });
+
+    it("stores the omicron's game mode", () => {
+        const abilities = [makeAbility("ab1")] as any;
+        const skills = [makeSkill("ab1", ["RECIPE_T1", "RECIPE_T2_OMICRON"], { omicronMode: 8 })] as any;
+        const { abilitiesOut } = processAbilities(abilities, skills);
+        assert.strictEqual(abilitiesOut[0].omicronMode, 8);
+    });
+
+    it("stores no game mode for an ability without an omicron", () => {
+        // Non-omicron skills carry omicronMode 1 (ALL_OMICRON) in the game data
+        const abilities = [makeAbility("ab1")] as any;
+        const skills = [makeSkill("ab1", ["RECIPE_T1", "RECIPE_T2_ZETA"], { omicronMode: 1 })] as any;
+        const { abilitiesOut } = processAbilities(abilities, skills);
+        assert.strictEqual(abilitiesOut[0].omicronMode, null);
     });
 
     it("does not flag as zeta/omicron when no matching suffix", () => {
