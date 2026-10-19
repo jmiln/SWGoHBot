@@ -1,5 +1,12 @@
 import { inspect } from "node:util";
-import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import {
+    type APIEmbedField,
+    ApplicationCommandOptionType,
+    type ChatInputCommandInteraction,
+    codeBlock,
+    InteractionContextType,
+} from "discord.js";
+import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
@@ -9,8 +16,8 @@ import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import { toProperCase } from "../modules/utils/text.ts";
 import { getUnitImage } from "../modules/utils/unitImages.ts";
-import type { SWAPIUnitStatTypes } from "../types/swapi_types.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { SWAPIPlayer, SWAPIUnit, SWAPIUnitSkill, SWAPIUnitStatTypes } from "../types/swapi_types.ts";
+import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class MyCharacter extends Command {
     static readonly metadata = {
@@ -118,237 +125,80 @@ export default class MyCharacter extends Command {
             });
         }
 
+        return this.showUnit(interaction, language, swgohLanguage, { unit, player, thisUnit, searchType, footerStr });
+    }
+
+    private async showUnit(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        swgohLanguage: CommandContext["swgohLanguage"],
+        {
+            unit,
+            player,
+            thisUnit,
+            searchType,
+            footerStr,
+        }: { unit: BotUnit; player: SWAPIPlayer; thisUnit: SWAPIUnit; searchType: string; footerStr: string },
+    ) {
         const thisLangChar = await swgohAPI.langChar(thisUnit, swgohLanguage);
 
         const stats = thisUnit.stats;
         const isShip = thisUnit.combatType === 2;
 
-        const abilities: Record<string, string[]> = {
-            basic: [],
-            special: [],
-            leader: [],
-            unique: [],
-            contract: [],
-            crew: [],
-            hardware: [],
-        };
-
-        let gearStr = "";
-        if (searchType === "character") {
-            gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
-            for (const e of thisUnit.equipped) {
-                gearStr = gearStr.replace(e.slot.toString(), "X");
-            }
-            gearStr = gearStr.replace(/[0-9]/g, "  ");
-            gearStr = expandSpaces(gearStr);
-        }
         if (!thisLangChar.skills) {
             logger.log(JSON.stringify(thisLangChar));
-        } else {
-            for (const a of thisLangChar.skills) {
-                a.type = toProperCase(a.id.split("skill")[0]);
-                if (a.tier === a.tiers) {
-                    if (a.isOmicron) {
-                        // Maxed Omicron ability
-                        a.tierStr = "Max O";
-                    } else if (a.isZeta) {
-                        // Maxed Zeta ability
-                        a.tierStr = "Max ✦";
-                    } else if (isShip) {
-                        a.tierStr = "Max";
-                    } else {
-                        // Maxed Omega ability
-                        a.tierStr = "Max ⭓";
-                    }
-                } else {
-                    // Unmaxed ability
-                    a.tierStr = `Lvl ${a.tier}`;
-                }
-                try {
-                    abilities[`${a.type ? a.type.toLowerCase() : (a.defId?.toLowerCase() ?? "")}`].push(
-                        `\`${a.tierStr} [${a.type ? a.type.charAt(0) : (a.defId?.charAt(0) ?? "")}]\` ${a.nameKey}`,
-                    );
-                } catch (err) {
-                    logger.error(`ERROR[MC]: bad ability type: ${inspect(a)} - Error: ${err instanceof Error ? err.message : String(err)}`);
-                }
-            }
         }
-
-        const abilitiesOut = abilities.basic
-            .concat(abilities.special)
-            .concat(abilities.leader)
-            .concat(abilities.unique)
-            .concat(abilities.crew)
-            .concat(abilities.contract)
-            .concat(abilities.hardware);
-
-        const statNames: Record<string, string[]> = {
-            "Primary Attributes": ["Strength", "Agility", "Intelligence"],
-            General: ["Health", "Protection", "Speed", "Critical Damage", "Potency", "Tenacity", "Health Steal"],
-            "Physical Offense": ["Physical Damage", "Physical Critical Chance", "Armor Penetration", "Accuracy"],
-            "Physical Survivability": ["Armor", "Dodge Chance", "Critical Avoidance"],
-            "Special Offense": ["Special Damage", "Special Critical Chance", "Resistance Penetration", "Accuracy"],
-            "Special Survivability": ["Resistance", "Deflection Chance", "Critical Avoidance"],
-        };
-
-        const langStr = language.get("BASE_STAT_NAMES") as unknown as Record<string, string>;
-        const langMap: Record<string, string> = {
-            "Primary Attributes": "PRIMARY",
-            Strength: "STRENGTH",
-            Agility: "AGILITY",
-            Intelligence: "TACTICS",
-            General: "GENERAL",
-            Health: "HEALTH",
-            Protection: "PROTECTION",
-            Speed: "SPEED",
-            "Critical Damage": "CRITDMG",
-            Potency: "POTENCY",
-            Tenacity: "TENACITY",
-            "Health Steal": "HPSTEAL",
-            "Defense Penetration": "DEFENSEPEN",
-            "Physical Accuracy": "ACCURACY",
-            "Physical Offense": "PHYSOFF",
-            "Physical Damage": "PHYSDMG",
-            "Physical Critical Chance": "PHYSCRIT",
-            "Physical Critical Rating": "PHYSCRIT",
-            "Armor Penetration": "ARMORPEN",
-            Accuracy: "ACCURACY",
-            "Physical Survivability": "PHYSSURV",
-            Armor: "ARMOR",
-            "Dodge Chance": "DODGECHANCE",
-            "Critical Avoidance": "CRITAVOID",
-            "Special Offense": "SPECOFF",
-            "Special Damage": "SPECDMG",
-            "Special Critical Chance": "SPECCRIT",
-            "Special Critical Rating": "SPECCRIT",
-            "Resistance Penetration": "RESPEN",
-            "Special Survivability": "SPECSURV",
-            Resistance: "RESISTANCE",
-            "Deflection Chance": "DEFLECTION",
-        };
+        const abilitiesOut = abilityLines(thisLangChar.skills ?? [], isShip);
 
         if (!stats) return super.error(interaction, language.get("COMMAND_MYCHARACTER_NO_STATS"));
         if (!stats.final) return super.error(interaction, language.get("COMMAND_MYCHARACTER_STATS_ERROR"));
 
-        let keys = Object.keys(stats.final);
-        if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
-        const maxLen = keys?.reduce((long, str) => Math.max(long, langStr[langMap[str]] ? langStr[langMap[str]].length : 0), 0) || 0;
-
-        // Stick in some standatd keys to help it not be wonky
-        if (stats.final["Physical Accuracy"] && stats.final["Special Accuracy"]) stats.final.Accuracy = stats.final["Physical Accuracy"];
-        if (stats.final["Physical Critical Rating"]) stats.final["Physical Critical Chance"] = stats.final["Physical Critical Rating"];
-        if (stats.final["Special Critical Rating"]) stats.final["Special Critical Chance"] = stats.final["Special Critical Rating"];
-
-        const statArr: string[] = [];
-        for (const sn of Object.keys(statNames)) {
-            let statStr = `== ${sn} ==\n`;
-            for (let s of statNames[sn]) {
-                if (s.indexOf("Rating") >= 0) s = s.replace("Rating", "Chance");
-                const sKey = s as keyof SWAPIUnitStatTypes;
-                if (!stats.final[sKey]) stats.final[sKey] = 0;
-                const thisLangStr = langStr[langMap[s]];
-                if (!thisLangStr?.length) {
-                    logger.log(
-                        `[/mycharacter] Missing stat for ${unit.name}\nLangStr: \n${inspect(s)}\nThisLangMap: ${
-                            langMap[s]
-                        }\nThisLangStr: ${inspect(thisLangStr)}`,
-                    );
-                    statStr += `${s.toString().padEnd(8 - s.length)}\n`;
-                } else {
-                    const rep = maxLen - (thisLangStr?.length || 0);
-                    if (s === "Dodge Chance" || s === "Deflection Chance") {
-                        statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: 2.00%\n`;
-                    } else {
-                        statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
-                        const str =
-                            stats.final[sKey] % 1 === 0 ? stats.final[sKey].toLocaleString() : `${(stats.final[sKey] * 100).toFixed(2)}%`;
-                        const modStr = isShip
-                            ? ""
-                            : stats.mods[sKey]
-                              ? stats.mods[sKey] % 1 === 0
-                                  ? `(${stats.mods[sKey].toLocaleString()})`
-                                  : `(${(stats.mods[sKey] * 100).toFixed(2)}%)`
-                              : "";
-                        statStr += `${str.toString().padEnd(8 - str.length) + modStr}\n`;
-                    }
-                }
-            }
-            statArr.push(expandSpaces(statStr));
-        }
-
-        const fields: APIEmbedField[] = [];
-        msgArray(statArr, "\n", 1000).forEach((m: string, ix: number) => {
-            fields.push({
-                name: ix === 0 ? "Stats" : "-",
-                value: codeBlock("asciidoc", m),
-            });
-        });
-
+        const fields = statFields(stats, isShip, language, unit.name);
         if (player.warnings) {
             fields.push({
                 name: "Warnings",
                 value: player.warnings.join("\n"),
             });
         }
-        let gearOut = "";
-        if (!isShip) {
-            // If it's a character, go ahead and work out the gear
-            gearOut = `\n${[`${language.get("BASE_GEAR_SHORT")}: ${thisUnit.gear}`, `${gearStr}`].join("\n")}`;
-        }
-
-        const unitImg = await getUnitImage(thisUnit.defId, thisUnit);
-
         fields.push({
             name: constants.zws,
             value: footerStr,
         });
 
+        let gearOut = "";
+        if (!isShip) {
+            // If it's a character, go ahead and work out the gear
+            const gearStr = searchType === "character" ? gearSlotGrid(thisUnit.equipped) : "";
+            gearOut = `\n${[`${language.get("BASE_GEAR_SHORT")}: ${thisUnit.gear}`, `${gearStr}`].join("\n")}`;
+        }
+
+        const unitImg = await getUnitImage(thisUnit.defId, thisUnit);
+        const embed = {
+            author: {
+                name: `${thisUnit.player ? thisUnit.player : player.name}'s ${unit.name}`,
+                url: unit.url || undefined,
+            },
+            description: `\`${language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${thisUnit.rarity}* | ${thisUnit.gp} gp\`${gearOut}`,
+            fields: [
+                {
+                    name: language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                    value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities",
+                },
+            ].concat(fields),
+        };
+
         if (!unitImg) {
             // If it couldn't get an image for the character
             return interaction.editReply({
                 content: null,
-                embeds: [
-                    {
-                        author: {
-                            name: `${thisUnit.player ? thisUnit.player : player.name}'s ${unit.name}`,
-                            url: unit.url || undefined,
-                            icon_url: unit.avatarURL || undefined,
-                        },
-                        description: `\`${language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
-                            thisUnit.rarity
-                        }* | ${thisUnit.gp} gp\`${gearOut}`,
-                        fields: [
-                            {
-                                name: language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                                value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities",
-                            },
-                        ].concat(fields),
-                    },
-                ],
+                embeds: [{ ...embed, author: { ...embed.author, icon_url: unit.avatarURL || undefined } }],
             });
         }
 
         // But if it could, go ahead and send it
         return interaction.editReply({
             content: null,
-            embeds: [
-                {
-                    author: {
-                        name: `${thisUnit.player ? thisUnit.player : player.name}'s ${unit.name}`,
-                        url: unit.url,
-                    },
-                    thumbnail: { url: "attachment://image.png" },
-                    description: `\`${language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
-                        thisUnit.rarity
-                    }* | ${thisUnit.gp} gp\`${gearOut}`,
-                    fields: [
-                        {
-                            name: language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities",
-                        },
-                    ].concat(fields),
-                },
-            ],
+            embeds: [{ ...embed, thumbnail: { url: "attachment://image.png" } }],
             files: [
                 {
                     attachment: unitImg,
@@ -357,4 +207,146 @@ export default class MyCharacter extends Command {
             ],
         });
     }
+}
+
+const ABILITY_ORDER = ["basic", "special", "leader", "unique", "crew", "contract", "hardware"];
+
+const statNames: Record<string, string[]> = {
+    "Primary Attributes": ["Strength", "Agility", "Intelligence"],
+    General: ["Health", "Protection", "Speed", "Critical Damage", "Potency", "Tenacity", "Health Steal"],
+    "Physical Offense": ["Physical Damage", "Physical Critical Chance", "Armor Penetration", "Accuracy"],
+    "Physical Survivability": ["Armor", "Dodge Chance", "Critical Avoidance"],
+    "Special Offense": ["Special Damage", "Special Critical Chance", "Resistance Penetration", "Accuracy"],
+    "Special Survivability": ["Resistance", "Deflection Chance", "Critical Avoidance"],
+};
+
+const langMap: Record<string, string> = {
+    "Primary Attributes": "PRIMARY",
+    Strength: "STRENGTH",
+    Agility: "AGILITY",
+    Intelligence: "TACTICS",
+    General: "GENERAL",
+    Health: "HEALTH",
+    Protection: "PROTECTION",
+    Speed: "SPEED",
+    "Critical Damage": "CRITDMG",
+    Potency: "POTENCY",
+    Tenacity: "TENACITY",
+    "Health Steal": "HPSTEAL",
+    "Defense Penetration": "DEFENSEPEN",
+    "Physical Accuracy": "ACCURACY",
+    "Physical Offense": "PHYSOFF",
+    "Physical Damage": "PHYSDMG",
+    "Physical Critical Chance": "PHYSCRIT",
+    "Physical Critical Rating": "PHYSCRIT",
+    "Armor Penetration": "ARMORPEN",
+    Accuracy: "ACCURACY",
+    "Physical Survivability": "PHYSSURV",
+    Armor: "ARMOR",
+    "Dodge Chance": "DODGECHANCE",
+    "Critical Avoidance": "CRITAVOID",
+    "Special Offense": "SPECOFF",
+    "Special Damage": "SPECDMG",
+    "Special Critical Chance": "SPECCRIT",
+    "Special Critical Rating": "SPECCRIT",
+    "Resistance Penetration": "RESPEN",
+    "Special Survivability": "SPECSURV",
+    Resistance: "RESISTANCE",
+    "Deflection Chance": "DEFLECTION",
+};
+
+function gearSlotGrid(equipped: SWAPIUnit["equipped"]): string {
+    let gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
+    for (const e of equipped) {
+        gearStr = gearStr.replace(e.slot.toString(), "X");
+    }
+    gearStr = gearStr.replace(/[0-9]/g, "  ");
+    return expandSpaces(gearStr);
+}
+
+function abilityLines(skills: SWAPIUnitSkill[], isShip: boolean): string[] {
+    const abilities: Record<string, string[]> = Object.fromEntries(ABILITY_ORDER.map((type) => [type, []]));
+    for (const a of skills) {
+        const type = toProperCase(a.id.split("skill")[0]);
+        const typeKey = type ? type.toLowerCase() : (a.defId?.toLowerCase() ?? "");
+        if (!abilities[typeKey]) {
+            logger.error(`ERROR[MC]: bad ability type: ${inspect(a)}`);
+            continue;
+        }
+        abilities[typeKey].push(`\`${abilityTierLabel(a, isShip)} [${type ? type.charAt(0) : (a.defId?.charAt(0) ?? "")}]\` ${a.nameKey}`);
+    }
+    return ABILITY_ORDER.flatMap((type) => abilities[type]);
+}
+
+function abilityTierLabel(a: SWAPIUnitSkill, isShip: boolean): string {
+    // Unmaxed ability
+    if (a.tier !== a.tiers) return `Lvl ${a.tier}`;
+    // Maxed Omicron ability
+    if (a.isOmicron) return "Max O";
+    // Maxed Zeta ability
+    if (a.isZeta) return "Max ✦";
+    if (isShip) return "Max";
+    // Maxed Omega ability
+    return "Max ⭓";
+}
+
+function statFields(stats: NonNullable<SWAPIUnit["stats"]>, isShip: boolean, language: Language, unitName: string): APIEmbedField[] {
+    const final = stats.final as SWAPIUnitStatTypes;
+    const langStr = language.get("BASE_STAT_NAMES") as unknown as Record<string, string>;
+
+    let keys = Object.keys(final);
+    if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));
+    const maxLen = keys?.reduce((long, str) => Math.max(long, langStr[langMap[str]] ? langStr[langMap[str]].length : 0), 0) || 0;
+
+    // Stick in some standatd keys to help it not be wonky
+    if (final["Physical Accuracy"] && final["Special Accuracy"]) final.Accuracy = final["Physical Accuracy"];
+    if (final["Physical Critical Rating"]) final["Physical Critical Chance"] = final["Physical Critical Rating"];
+    if (final["Special Critical Rating"]) final["Special Critical Chance"] = final["Special Critical Rating"];
+
+    const statArr: string[] = [];
+    for (const sn of Object.keys(statNames)) {
+        let statStr = `== ${sn} ==\n`;
+        for (const s of statNames[sn]) {
+            statStr += statLine(s, { final, mods: isShip ? null : stats.mods, langStr, maxLen, unitName });
+        }
+        statArr.push(expandSpaces(statStr));
+    }
+
+    return msgArray(statArr, "\n", 1000).map((m: string, ix: number) => ({
+        name: ix === 0 ? "Stats" : "-",
+        value: codeBlock("asciidoc", m),
+    }));
+}
+
+function statLine(
+    statName: string,
+    {
+        final,
+        mods,
+        langStr,
+        maxLen,
+        unitName,
+    }: { final: SWAPIUnitStatTypes; mods: SWAPIUnitStatTypes | null; langStr: Record<string, string>; maxLen: number; unitName: string },
+): string {
+    const s = statName.indexOf("Rating") >= 0 ? statName.replace("Rating", "Chance") : statName;
+    const sKey = s as keyof SWAPIUnitStatTypes;
+    if (!final[sKey]) final[sKey] = 0;
+    const thisLangStr = langStr[langMap[s]];
+    if (!thisLangStr?.length) {
+        logger.log(
+            `[/mycharacter] Missing stat for ${unitName}\nLangStr: \n${inspect(s)}\nThisLangMap: ${langMap[s]}\nThisLangStr: ${inspect(thisLangStr)}`,
+        );
+        return `${s.toString().padEnd(8 - s.length)}\n`;
+    }
+    const label = `${thisLangStr}${" ".repeat(Math.max(maxLen - thisLangStr.length, 0))} :: `;
+    if (s === "Dodge Chance" || s === "Deflection Chance") {
+        return `${label}2.00%\n`;
+    }
+    const str = formatStatValue(final[sKey]);
+    const modStr = mods?.[sKey] ? `(${formatStatValue(mods[sKey])})` : "";
+    return `${label}${str.toString().padEnd(8 - str.length) + modStr}\n`;
+}
+
+function formatStatValue(value: number): string {
+    return value % 1 === 0 ? value.toLocaleString() : `${(value * 100).toFixed(2)}%`;
 }

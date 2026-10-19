@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
+import constants from "../../data/constants/constants.ts";
 import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
@@ -165,5 +166,209 @@ describe("MyCharacter", () => {
         assert.ok(stats.includes(":: 50,000"), "Expected the rendered Health value with a locale comma");
         assert.ok(stats.includes("Protection"), "Expected the Protection stat label");
         assert.ok(stats.includes(":: 20,000"), "Expected the rendered Protection value");
+    });
+
+    describe("output", () => {
+        const ZETA_STAR = String.fromCodePoint(0x2726);
+        const OMEGA = String.fromCodePoint(0x2b53);
+
+        const vader = (overrides: Record<string, any> = {}) =>
+            createMockUnit({
+                defId: "VADER",
+                combatType: 1,
+                level: 85,
+                rarity: 7,
+                gear: 12,
+                gp: 25000,
+                equipped: [],
+                skills: [],
+                stats: { final: { Speed: 180, Health: 50000 } as any, mods: {} as any, gp: 25000 },
+                ...overrides,
+            });
+
+        const stubImageServer = (
+            t: { mock: { method: (obj: any, name: string, impl: (...args: any[]) => any) => unknown } },
+            hasImage: boolean,
+        ) =>
+            t.mock.method(globalThis, "fetch", async () =>
+                hasImage ? new Response(new Uint8Array([1, 2, 3])) : new Response(null, { status: 503 }),
+            );
+
+        async function show(
+            t: { mock: { method: (obj: any, name: string, impl: (...args: any[]) => any) => unknown } },
+            options: Record<string, unknown>,
+            { roster = [vader()], player = {}, image = false, langChar = (c: any) => c }: Record<string, any> = {},
+        ) {
+            stubImageServer(t, image);
+            swgohAPI.player = async () =>
+                createMockPlayer({
+                    allyCode: 123456789,
+                    name: "TestPlayer",
+                    updatedAt: new Date("2030-06-01T00:00:00Z"),
+                    roster,
+                    ...player,
+                });
+            swgohAPI.langChar = async (c) => langChar(c);
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789", ...options },
+            });
+            await new MyCharacter().run(createCommandContext({ interaction, language: createRealLanguage() }));
+            const reply = getLastReply(interaction);
+            const embed = reply.embeds?.[0]?.data ?? reply.embeds?.[0];
+            const field = (name: string): string =>
+                (embed?.fields?.find((f: { name: string }) => f.name.includes(name))?.value ?? "").replaceAll(constants.zws, "");
+            return { reply, embed, field, description: (embed?.description ?? "").replaceAll(constants.zws, "") };
+        }
+
+        it("lists the close matches when the search is ambiguous", async (t) => {
+            const { description } = await show(t, { character: "Darth" });
+
+            assert.ok(description.startsWith("Your search came up with too many results"), description);
+        });
+
+        it("reports a failed player fetch", async (t) => {
+            stubImageServer(t, false);
+            swgohAPI.player = async () => {
+                throw new Error("timeout");
+            };
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789" },
+            });
+
+            await new MyCharacter().run(createCommandContext({ interaction, language: createRealLanguage() }));
+
+            const embed = getLastReply(interaction).embeds[0].data;
+            assert.strictEqual(embed.author.name, "Something Broke");
+            assert.strictEqual(embed.description, "Sorry, I couldn't fetch player data right now. Please try again later.");
+        });
+
+        it("says when the ally code has no roster", async (t) => {
+            const { description } = await show(t, {}, { player: { roster: undefined } });
+
+            assert.strictEqual(description, "I could not find any player with that ally code, please double check that it's correct");
+        });
+
+        it("marks each equipped gear slot", async (t) => {
+            const { description } = await show(
+                t,
+                {},
+                {
+                    roster: [
+                        vader({
+                            equipped: [
+                                { equipmentId: 1, slot: 0 },
+                                { equipmentId: 2, slot: 4 },
+                            ],
+                        }),
+                    ],
+                },
+            );
+
+            assert.ok(description.includes("Gear: 12\n   [X]  [  ]\n[  ]       [X]\n   [  ]  [  ]"), description);
+        });
+
+        it("labels each ability by type and how far it is upgraded", async (t) => {
+            const skills = [
+                { id: "uniqueskill_VADER01", nameKey: "Inspiring", tier: 9, tiers: 9, isOmicron: true },
+                { id: "leaderskill_VADER", nameKey: "Inspiring Through Fear", tier: 8, tiers: 8, isZeta: true },
+                { id: "specialskill_VADER01", nameKey: "Mass Choke", tier: 5, tiers: 8 },
+                { id: "basicskill_VADER", nameKey: "Terrifying Swing", tier: 8, tiers: 8 },
+                { id: "mysteryskill_VADER", nameKey: "Unknown Type", tier: 1, tiers: 8 },
+            ];
+
+            const { field } = await show(t, {}, { roster: [vader({ skills })] });
+
+            assert.strictEqual(
+                field("Abilities"),
+                [
+                    `\`Max ${OMEGA} [B]\` Terrifying Swing`,
+                    "`Lvl 5 [S]` Mass Choke",
+                    `\`Max ${ZETA_STAR} [L]\` Inspiring Through Fear`,
+                    "`Max O [U]` Inspiring",
+                ].join("\n"),
+                "abilities come in basic, special, leader, unique order, and unknown types are left out",
+            );
+        });
+
+        it("says when no abilities could be loaded", async (t) => {
+            const { field } = await show(t, {}, { langChar: (c: any) => ({ ...c, skills: undefined }) });
+
+            assert.strictEqual(field("Abilities"), "Couldn't find abilities");
+        });
+
+        it("errors when the unit has no stats, or no final stats", async (t) => {
+            const noStats = await show(t, {}, { roster: [vader({ stats: undefined })] });
+            const noFinal = await show(t, {}, { roster: [vader({ stats: { mods: {} } })] });
+
+            assert.strictEqual(noStats.description, "Something went wrong. Please make sure you have that character unlocked");
+            assert.strictEqual(noFinal.description, "Something went wrong, I couldn't get the stats for that character");
+        });
+
+        it("formats percentages, mod bonuses, and the fixed dodge chance", async (t) => {
+            const stats = { final: { Speed: 300, Potency: 0.5, Health: 40000 }, mods: { Speed: 30, Potency: 0.1 }, gp: 25000 };
+
+            const { field } = await show(t, {}, { roster: [vader({ stats })] });
+
+            const statLines = field("Stats").split("\n");
+            const line = (label: string) => (statLines.find((l) => l.startsWith(label)) ?? "").trimEnd();
+            assert.match(line("Speed"), /:: 300 *\(30\)$/);
+            assert.match(line("Potency"), /:: 50\.00% *\(10\.00%\)$/);
+            assert.match(line("Health"), /:: 40,000$/);
+            assert.match(line("Dodge"), /:: 2\.00%$/);
+        });
+
+        it("adds the player's roster warnings", async (t) => {
+            const { field } = await show(t, {}, { player: { warnings: ["Roster is from cache", "Mods are stale"] } });
+
+            assert.strictEqual(field("Warnings"), "Roster is from cache\nMods are stale");
+        });
+
+        it("attaches the unit image when the image server returns one", async (t) => {
+            const { reply, embed } = await show(t, {}, { image: true });
+
+            assert.deepStrictEqual(
+                reply.files?.map((f: { name: string }) => f.name),
+                ["image.png"],
+            );
+            assert.strictEqual(embed.thumbnail?.url, "attachment://image.png");
+            assert.strictEqual(embed.author.name, "TestPlayer's Darth Vader");
+        });
+
+        it("falls back to the unit's avatar when there is no image", async (t) => {
+            const { reply, embed } = await show(t, {}, { image: false });
+
+            assert.strictEqual(reply.files, undefined);
+            assert.strictEqual(embed.thumbnail, undefined);
+            assert.ok(embed.author.icon_url, "expected the avatar URL as the author icon");
+            assert.strictEqual(embed.author.name, "TestPlayer's Darth Vader");
+        });
+
+        it("shows a ship without gear or mod bonuses", async (t) => {
+            const houndsTooth = createMockUnit({
+                defId: "HOUNDSTOOTH",
+                combatType: 2,
+                level: 85,
+                rarity: 7,
+                gear: 1,
+                gp: 50000,
+                equipped: [],
+                skills: [{ id: "basicskill_HOUNDSTOOTH", nameKey: "Big Shot", tier: 8, tiers: 8 } as any],
+                stats: { final: { Speed: 150 } as any, mods: { Speed: 10 } as any, gp: 50000 },
+            });
+
+            const { description, field } = await show(
+                t,
+                { _subcommand: "ship", ship: "Hound's Tooth", character: undefined },
+                { roster: [houndsTooth] },
+            );
+
+            assert.ok(!description.includes("Gear"), description);
+            assert.strictEqual(field("Abilities"), "`Max [B]` Big Shot");
+            const speed = field("Stats")
+                .split("\n")
+                .find((l) => l.startsWith("Speed"))
+                ?.trimEnd();
+            assert.match(speed ?? "", /:: 150$/);
+        });
     });
 });
