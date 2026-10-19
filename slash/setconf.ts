@@ -2,9 +2,11 @@ import {
     ApplicationCommandOptionType,
     type AutocompleteFocusedOption,
     type AutocompleteInteraction,
+    type ChatInputCommandInteraction,
     codeBlock,
     InteractionContextType,
 } from "discord.js";
+import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import { setconfOptions } from "../data/constants/setconfOptions.ts";
 import { characterNameList, characters, shipNameList, ships } from "../data/constants/units.ts";
@@ -12,7 +14,9 @@ import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { GuildConfigSettings } from "../schemas/guildConfigs.schema.ts";
+import type { GuildConfigTWList } from "../types/guildConfig_types.ts";
+import type { BotUnit, CommandContext } from "../types/types.ts";
 
 // Set the base subargs up
 type OptOut = {
@@ -96,7 +100,7 @@ const options = {
 for (const [key, value] of Object.entries(setconfOptions)) {
     // Fill out the options based on the default settings in the config file
     const optOut: OptOut = {
-        name: key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
+        name: toOptionName(key),
         type: value.type,
         description: value.description,
     };
@@ -134,7 +138,8 @@ export default class SetConf extends Command {
             return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
         }
 
-        const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
+        const guildId = interaction.guild.id;
+        const guildConf = await getGuildSettings({ guildId });
         if (!guildConf) {
             return super.error(
                 interaction,
@@ -142,212 +147,167 @@ export default class SetConf extends Command {
             );
         }
 
-        const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
+        if (interaction.options.getSubcommandGroup() === "twlist") {
+            return this.manageTWList(interaction, language, guildId, subCommand);
+        }
+        return this.updateSettings(interaction, language, guildId, guildConf, subCommand);
+    }
 
-        function getCharName(defId: string) {
-            return (
-                characterNameList.find((char) => char.defId === defId)?.name ||
-                shipNameList.find((ship) => ship.defId === defId)?.name ||
-                "N/A"
-            );
+    private async manageTWList(interaction: ChatInputCommandInteraction, language: Language, guildId: string, subCommand: string) {
+        const guildTWList = await getGuildTWList({ guildId });
+
+        // View the available list
+        if (subCommand === "view") {
+            const outArr = formatTWList(guildTWList);
+            if (!outArr.length) return super.error(interaction, language.get("COMMAND_SETCONF_TW_NO_UNITS"));
+            return super.success(interaction, outArr.join("\n"), { title: "Your current list:" });
         }
 
-        if (subCommandGroup === "twlist") {
-            const guildTWList = await getGuildTWList({ guildId: interaction.guild.id });
+        // Otherwise we're gonna be managing the lists
+        const addUnitDefId = interaction.options.getString("add_unit");
+        const removeUnitDefId = interaction.options.getString("remove_unit");
 
-            // View the available list
-            if (subCommand === "view") {
-                const outArr: string[] = [];
-                for (const key of Object.keys(guildTWList)) {
-                    const list = guildTWList[key as keyof typeof guildTWList];
-                    if (!list?.length) continue;
-                    outArr.push(`* **${key}**: \n${list.map((defId: string) => `  - ${getCharName(defId)}`).join("\n")}`);
-                }
-                if (!outArr.length) return super.error(interaction, language.get("COMMAND_SETCONF_TW_NO_UNITS"));
-                return super.success(interaction, outArr.join("\n"), { title: "Your current list:" });
-            }
+        if (addUnitDefId) {
+            return subCommand === "blacklist"
+                ? this.addToBlacklist(interaction, language, guildId, guildTWList, addUnitDefId)
+                : this.addToTWList(interaction, language, guildId, guildTWList, addUnitDefId);
+        }
+        if (removeUnitDefId) {
+            return subCommand === "blacklist"
+                ? this.removeFromBlacklist(interaction, language, guildId, guildTWList, removeUnitDefId)
+                : this.removeFromTWList(interaction, language, guildId, guildTWList, removeUnitDefId);
+        }
+        return super.error(interaction, language.get("COMMAND_SETCONF_TW_NO_UNIT_SPECIFIED"));
+    }
 
-            // Otherwise we're gonna be managing the lists
-            const addUnitDefId = interaction.options.getString("add_unit");
-            const removeUnitDefId = interaction.options.getString("remove_unit");
+    private async addToTWList(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        guildId: string,
+        guildTWList: GuildConfigTWList,
+        addUnitDefId: string,
+    ) {
+        if (listedCategories(guildTWList).some((key) => guildTWList[key]?.includes(addUnitDefId))) {
+            return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_LIST", addUnitDefId));
+        }
+        const placement = twListPlacement(addUnitDefId);
+        if (placement) {
+            guildTWList[placement.category] ??= [];
+            guildTWList[placement.category]?.push(placement.defId);
+        }
+        return this.saveTWList(
+            interaction,
+            guildId,
+            guildTWList,
+            language.get("COMMAND_SETCONF_UNIT_ADDED", addUnitDefId),
+            `Broke while trying to add ${addUnitDefId}.`,
+        );
+    }
 
-            if (!addUnitDefId && !removeUnitDefId) {
-                return super.error(interaction, language.get("COMMAND_SETCONF_TW_NO_UNIT_SPECIFIED"));
-            }
+    private async addToBlacklist(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        guildId: string,
+        guildTWList: GuildConfigTWList,
+        addUnitDefId: string,
+    ) {
+        if (!guildTWList.Blacklist) guildTWList.Blacklist = [];
+        if (guildTWList.Blacklist?.includes(addUnitDefId)) {
+            return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_BLACKLIST", addUnitDefId));
+        }
+        guildTWList.Blacklist.push(addUnitDefId);
+        return this.saveTWList(
+            interaction,
+            guildId,
+            guildTWList,
+            language.get("COMMAND_SETCONF_UNIT_ADDED_BLACKLIST", addUnitDefId),
+            `Broke while trying to add ${addUnitDefId} to the blacklist.`,
+        );
+    }
 
-            if (addUnitDefId) {
-                if (subCommand === "manage_list") {
-                    for (const key of Object.keys(guildTWList)) {
-                        if (key === "Blacklist") continue;
-                        if (guildTWList[key as keyof typeof guildTWList]?.includes(addUnitDefId)) {
-                            return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_LIST", addUnitDefId));
-                        }
-                    }
-                    const thisChar = characters.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
-                    if (thisChar) {
-                        if (thisChar.factions.includes("Galactic Legend")) {
-                            guildTWList["Galactic Legends"] ??= [];
-                            guildTWList["Galactic Legends"].push(thisChar.uniqueName);
-                        } else if (thisChar.side === "dark") {
-                            guildTWList["Dark Side"] ??= [];
-                            guildTWList["Dark Side"].push(thisChar.uniqueName);
-                        } else if (thisChar.side === "neutral") {
-                            guildTWList.Neutral ??= [];
-                            guildTWList.Neutral.push(thisChar.uniqueName);
-                        } else {
-                            guildTWList["Light Side"] ??= [];
-                            guildTWList["Light Side"].push(thisChar.uniqueName);
-                        }
-                    } else {
-                        const thisShip = ships.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
-                        if (thisShip) {
-                            if (thisShip.factions.includes("Capital Ship")) {
-                                guildTWList["Capital Ships"] ??= [];
-                                guildTWList["Capital Ships"].push(thisShip.uniqueName);
-                            } else {
-                                guildTWList.Ships ??= [];
-                                guildTWList.Ships.push(thisShip.uniqueName);
-                            }
-                        }
-                    }
-
-                    try {
-                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_ADDED", addUnitDefId));
-                    } catch (err) {
-                        return super.error(
-                            interaction,
-                            `Broke while trying to add ${addUnitDefId}.\n${err instanceof Error ? err.message : String(err)}`,
-                        );
-                    }
-                } else if (subCommand === "blacklist") {
-                    if (!guildTWList.Blacklist) guildTWList.Blacklist = [];
-                    if (guildTWList.Blacklist?.includes(addUnitDefId)) {
-                        return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_BLACKLIST", addUnitDefId));
-                    }
-                    guildTWList.Blacklist.push(addUnitDefId);
-                    try {
-                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_ADDED_BLACKLIST", addUnitDefId));
-                    } catch (err) {
-                        return super.error(
-                            interaction,
-                            `Broke while trying to add ${addUnitDefId} to the blacklist.\n${err instanceof Error ? err.message : String(err)}`,
-                        );
-                    }
-                }
-            }
-
-            if (removeUnitDefId) {
-                if (subCommand === "manage_list") {
-                    for (const key of Object.keys(guildTWList)) {
-                        if (key === "Blacklist") continue;
-                        const k = key as keyof typeof guildTWList;
-                        if (guildTWList[k]?.includes(removeUnitDefId)) {
-                            guildTWList[k] = guildTWList[k]?.filter((u: string) => u !== removeUnitDefId);
-                        }
-                    }
-                    try {
-                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_REMOVED", removeUnitDefId));
-                    } catch (err) {
-                        return super.error(
-                            interaction,
-                            `Broke while trying to remove ${removeUnitDefId}.\n${err instanceof Error ? err.message : String(err)}`,
-                        );
-                    }
-                } else if (subCommand === "blacklist") {
-                    const blacklist = guildTWList.Blacklist ?? [];
-                    if (!blacklist.includes(removeUnitDefId)) {
-                        return super.error(interaction, language.get("COMMAND_SETCONF_NOT_IN_BLACKLIST", removeUnitDefId));
-                    }
-                    guildTWList.Blacklist = blacklist.filter((u) => u !== removeUnitDefId);
-                    try {
-                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_REMOVED_BLACKLIST", removeUnitDefId));
-                    } catch (err) {
-                        return super.error(
-                            interaction,
-                            `Broke while trying to remove ${removeUnitDefId} from the blacklist.\n${err instanceof Error ? err.message : String(err)}`,
-                        );
-                    }
-                }
+    private async removeFromTWList(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        guildId: string,
+        guildTWList: GuildConfigTWList,
+        removeUnitDefId: string,
+    ) {
+        for (const key of listedCategories(guildTWList)) {
+            if (guildTWList[key]?.includes(removeUnitDefId)) {
+                guildTWList[key] = guildTWList[key]?.filter((u: string) => u !== removeUnitDefId);
             }
         }
+        return this.saveTWList(
+            interaction,
+            guildId,
+            guildTWList,
+            language.get("COMMAND_SETCONF_UNIT_REMOVED", removeUnitDefId),
+            `Broke while trying to remove ${removeUnitDefId}.`,
+        );
+    }
 
+    private async removeFromBlacklist(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        guildId: string,
+        guildTWList: GuildConfigTWList,
+        removeUnitDefId: string,
+    ) {
+        const blacklist = guildTWList.Blacklist ?? [];
+        if (!blacklist.includes(removeUnitDefId)) {
+            return super.error(interaction, language.get("COMMAND_SETCONF_NOT_IN_BLACKLIST", removeUnitDefId));
+        }
+        guildTWList.Blacklist = blacklist.filter((u) => u !== removeUnitDefId);
+        return this.saveTWList(
+            interaction,
+            guildId,
+            guildTWList,
+            language.get("COMMAND_SETCONF_UNIT_REMOVED_BLACKLIST", removeUnitDefId),
+            `Broke while trying to remove ${removeUnitDefId} from the blacklist.`,
+        );
+    }
+
+    private async saveTWList(
+        interaction: ChatInputCommandInteraction,
+        guildId: string,
+        guildTWList: GuildConfigTWList,
+        successMsg: string,
+        failMsg: string,
+    ) {
+        try {
+            await setGuildTWList({ guildId, twListOut: guildTWList });
+            return super.success(interaction, successMsg);
+        } catch (err) {
+            return super.error(interaction, `${failMsg}\n${err instanceof Error ? err.message : String(err)}`);
+        }
+    }
+
+    private async updateSettings(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        guildId: string,
+        guildConf: GuildConfigSettings,
+        subCommand: string,
+    ) {
         const settingsIn: Record<string, unknown> = {};
         const errors: string[] = [];
         const changeLog: string[] = [];
         for (const [key, defConf] of Object.entries(setconfOptions)) {
-            const optionKey = key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
-            const keyType = defConf?.type;
-            let settingStr: string | number | boolean | null = null;
-            let nameStr: string | null = null;
-            if (keyType === ApplicationCommandOptionType.String) {
-                settingStr = interaction.options.getString(optionKey);
-                if (!settingStr) continue;
-                if (key === "timezone" && !isValidZone(settingStr)) {
-                    // If it's not a valid timezone, let em know
-                    errors.push(language.get("BASE_INVALID_TIMEZONE"));
-                    continue;
-                }
-            } else if (keyType === ApplicationCommandOptionType.Integer) {
-                settingStr = interaction.options.getInteger(optionKey);
-                if (settingStr === null) continue;
-                if (key === "eventCountdown" && settingStr < 0) {
-                    // Make sure the entered number is positive
-                    errors.push(`${settingStr} is not a valid entry, it __must__ be above 0`);
-                    continue;
-                }
-            } else if (keyType === ApplicationCommandOptionType.Boolean) {
-                settingStr = interaction.options.getBoolean(optionKey);
-            } else if (keyType === ApplicationCommandOptionType.Channel) {
-                const channel = interaction.options.getChannel(optionKey);
-                if (!channel) continue;
-                nameStr = `#${channel.name}`;
-                settingStr = channel.id;
-            } else if (keyType === ApplicationCommandOptionType.Role) {
-                const role = interaction.options.getRole(optionKey);
-                if (!role) continue;
-                nameStr = role.name;
-                settingStr = role.id;
-                if (!settingStr) continue;
-            } else {
-                errors.push(`[Setconf] Invalid keyType: ${keyType}`);
+            const input = readSettingInput(interaction, language, key, defConf?.type);
+            if (!input) continue;
+            if ("error" in input) {
+                errors.push(input.error);
                 continue;
             }
 
-            const newSetting = changeSetting(subCommand, key, settingStr, nameStr);
+            const change = changeSetting(subCommand, key, guildConf[key as keyof typeof guildConf], input);
+            if (!change) continue;
+            changeLog.push(change.log);
 
             // If it got here, then the setting should be valid and changed
-            if (newSetting !== null && newSetting !== guildConf[key as keyof typeof guildConf]) {
-                settingsIn[key] = newSetting;
-            }
-        }
-
-        function changeSetting(action: string, key: string, setting: string | number | boolean | null, name: string | null) {
-            if (setting === null) return null;
-            if (action === "set") {
-                // Just send back the setting
-                changeLog.push(`Set ${key} to ${name ? name : setting}`);
-                return setting;
-            }
-            if (action === "add") {
-                // Stick it into the old one
-                const newArr = [...(guildConf[key as keyof typeof guildConf] as unknown[])];
-                newArr.push(setting);
-                changeLog.push(`Added ${setting} to ${key}`);
-
-                return [...new Set(newArr)];
-            }
-            if (action === "remove") {
-                // Take out a setting from an array
-                let newArr = [...(guildConf[key as keyof typeof guildConf] as unknown[])];
-                newArr = newArr.filter((s) => s !== setting && s !== name);
-                changeLog.push(`Removed ${setting} from ${key}`);
-
-                return [...new Set(newArr)];
+            if (change.value !== guildConf[key as keyof typeof guildConf]) {
+                settingsIn[key] = change.value;
             }
         }
 
@@ -363,77 +323,165 @@ export default class SetConf extends Command {
             }
 
             // Actually change stuff in the db
-            await setGuildSettings({ guildId: interaction.guild.id, settings: guildConf });
+            await setGuildSettings({ guildId, settings: guildConf });
             return super.success(interaction, codeBlock(changeLog.map((c) => `* ${c}`).join("\n")));
         }
         return super.error(interaction, language.get("COMMAND_SETCONF_NOTHING_UPDATED"));
     }
 
     async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
-        const subCommandGroup = interaction.options.getSubcommandGroup();
-        const subCommand = interaction.options.getSubcommand();
+        if (interaction.options.getSubcommandGroup() !== "twlist") return;
 
-        if (subCommandGroup === "twlist") {
-            const searchKey = focusedOption.value?.trim().toLowerCase();
-            if (focusedOption.name === "add_unit") {
-                const aliases = await getGuildAliases({ guildId: interaction?.guild?.id ?? "" });
-                const unitList = [
-                    ...aliases.map((alias) => ({ name: `${alias.name} (${alias.alias})`, defId: alias.defId })),
-                    ...characterNameList,
-                    ...shipNameList,
-                ];
-                const outArr =
-                    unitList
-                        .filter((unit) => unit.name.toLowerCase().includes(searchKey))
-                        .map((key) => ({ name: key.name, value: key.defId }))
-                        .slice(0, 24) || [];
-                await interaction.respond(outArr);
-            } else if (focusedOption.name === "remove_unit") {
-                const guildTWList = await getGuildTWList({ guildId: interaction?.guild?.id ?? "" });
-                if (subCommand === "blacklist") {
-                    const outArr =
-                        (guildTWList.Blacklist ?? [])
-                            .filter((defId) => {
-                                if (!searchKey?.length) return true;
-                                const thisUnit =
-                                    characterNameList.find((char) => char.defId === defId) ||
-                                    shipNameList.find((ship) => ship.defId === defId);
-                                return thisUnit?.name.toLowerCase().includes(searchKey) ?? false;
-                            })
-                            .map((defId) => {
-                                const thisUnit =
-                                    characterNameList.find((char) => char.defId === defId) ||
-                                    shipNameList.find((ship) => ship.defId === defId);
-                                return thisUnit ? { name: thisUnit.name, value: thisUnit.defId } : null;
-                            })
-                            .filter((entry) => entry !== null)
-                            .slice(0, 24) || [];
-                    await interaction.respond(outArr);
-                } else if (subCommand === "manage_list") {
-                    const defIdList = Object.keys(guildTWList).reduce<string[]>((acc, key) => {
-                        if (key === "Blacklist" || !guildTWList[key as keyof typeof guildTWList]?.length) return acc;
-                        return acc.concat(guildTWList[key as keyof typeof guildTWList] ?? []);
-                    }, []);
-                    // [...guildTWList.GLs, ...guildTWList.characters, ...guildTWList.ships, ...guildTWList.capitalShips];
-                    const outArr =
-                        defIdList
-                            .filter((defId) => {
-                                if (!searchKey?.length) return true;
-                                const thisUnit =
-                                    characterNameList.find((char) => char.defId === defId) ||
-                                    shipNameList.find((ship) => ship.defId === defId);
-                                return thisUnit?.name.toLowerCase().includes(searchKey) ?? false;
-                            })
-                            .map((key) => {
-                                const thisUnit =
-                                    characterNameList.find((char) => char.defId === key) || shipNameList.find((ship) => ship.defId === key);
-                                return thisUnit ? { name: thisUnit.name, value: thisUnit.defId } : null;
-                            })
-                            .filter((entry) => entry !== null)
-                            .slice(0, 24) || [];
-                    await interaction.respond(outArr);
-                }
-            }
+        const searchKey = focusedOption.value?.trim().toLowerCase() ?? "";
+        const guildId = interaction?.guild?.id ?? "";
+        if (focusedOption.name === "add_unit") {
+            const aliases = await getGuildAliases({ guildId });
+            const unitList = [
+                ...aliases.map((alias) => ({ name: `${alias.name} (${alias.alias})`, defId: alias.defId })),
+                ...characterNameList,
+                ...shipNameList,
+            ];
+            const outArr = unitList
+                .filter((unit) => unit.name.toLowerCase().includes(searchKey))
+                .map((key) => ({ name: key.name, value: key.defId }))
+                .slice(0, MAX_CHOICES);
+            await interaction.respond(outArr);
+            return;
+        }
+        if (focusedOption.name !== "remove_unit") return;
+
+        const subCommand = interaction.options.getSubcommand();
+        const guildTWList = await getGuildTWList({ guildId });
+        if (subCommand === "blacklist") {
+            await interaction.respond(unitChoices(guildTWList.Blacklist ?? [], searchKey));
+        } else if (subCommand === "manage_list") {
+            // [...guildTWList.GLs, ...guildTWList.characters, ...guildTWList.ships, ...guildTWList.capitalShips];
+            const defIdList = listedCategories(guildTWList).flatMap((key) => guildTWList[key] ?? []);
+            await interaction.respond(unitChoices(defIdList, searchKey));
         }
     }
+}
+
+const MAX_CHOICES = 24;
+
+type SettingValue = { value: string | number | boolean; name: string | null };
+
+function toOptionName(key: string) {
+    return key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
+}
+
+function findNamedUnit(defId: string) {
+    return characterNameList.find((char) => char.defId === defId) || shipNameList.find((ship) => ship.defId === defId);
+}
+
+function unitChoices(defIds: string[], searchKey: string) {
+    return defIds
+        .flatMap((defId) => {
+            const thisUnit = findNamedUnit(defId);
+            if (!thisUnit?.name.toLowerCase().includes(searchKey)) return [];
+            return [{ name: thisUnit.name, value: thisUnit.defId }];
+        })
+        .slice(0, MAX_CHOICES);
+}
+
+function listedCategories(guildTWList: GuildConfigTWList) {
+    return (Object.keys(guildTWList) as (keyof GuildConfigTWList)[]).filter((key) => key !== "Blacklist");
+}
+
+function formatTWList(guildTWList: GuildConfigTWList) {
+    const outArr: string[] = [];
+    for (const key of Object.keys(guildTWList)) {
+        const list = guildTWList[key as keyof typeof guildTWList];
+        if (!list?.length) continue;
+        outArr.push(`* **${key}**: \n${list.map((defId: string) => `  - ${findNamedUnit(defId)?.name || "N/A"}`).join("\n")}`);
+    }
+    return outArr;
+}
+
+function twListPlacement(unitName: string): { category: keyof GuildConfigTWList; defId: string } | null {
+    const thisChar = characters.find((u) => u.uniqueName === unitName || u.name === unitName);
+    if (thisChar) return { category: characterCategory(thisChar), defId: thisChar.uniqueName };
+
+    const thisShip = ships.find((u) => u.uniqueName === unitName || u.name === unitName);
+    if (!thisShip) return null;
+    return { category: thisShip.factions.includes("Capital Ship") ? "Capital Ships" : "Ships", defId: thisShip.uniqueName };
+}
+
+function characterCategory(thisChar: BotUnit): keyof GuildConfigTWList {
+    if (thisChar.factions.includes("Galactic Legend")) return "Galactic Legends";
+    if (thisChar.side === "dark") return "Dark Side";
+    if (thisChar.side === "neutral") return "Neutral";
+    return "Light Side";
+}
+
+function readSettingInput(
+    interaction: ChatInputCommandInteraction,
+    language: Language,
+    key: string,
+    keyType: ApplicationCommandOptionType,
+): SettingValue | { error: string } | null {
+    const input = readOptionValue(interaction, toOptionName(key), keyType);
+    if (!input || "error" in input) return input;
+    const error = settingError(language, key, input.value);
+    return error ? { error } : input;
+}
+
+function settingError(language: Language, key: string, value: SettingValue["value"]) {
+    if (key === "timezone" && !isValidZone(String(value))) {
+        // If it's not a valid timezone, let em know
+        return language.get("BASE_INVALID_TIMEZONE");
+    }
+    if (key === "eventCountdown" && Number(value) < 0) {
+        // Make sure the entered number is positive
+        return `${value} is not a valid entry, it __must__ be above 0`;
+    }
+    return null;
+}
+
+function readOptionValue(
+    interaction: ChatInputCommandInteraction,
+    optionKey: string,
+    keyType: ApplicationCommandOptionType,
+): SettingValue | { error: string } | null {
+    switch (keyType) {
+        case ApplicationCommandOptionType.String: {
+            const value = interaction.options.getString(optionKey);
+            return value ? { value, name: null } : null;
+        }
+        case ApplicationCommandOptionType.Integer: {
+            const value = interaction.options.getInteger(optionKey);
+            return value === null ? null : { value, name: null };
+        }
+        case ApplicationCommandOptionType.Boolean: {
+            const value = interaction.options.getBoolean(optionKey);
+            return value === null ? null : { value, name: null };
+        }
+        case ApplicationCommandOptionType.Channel: {
+            const channel = interaction.options.getChannel(optionKey);
+            return channel ? { value: channel.id, name: `#${channel.name}` } : null;
+        }
+        case ApplicationCommandOptionType.Role: {
+            const role = interaction.options.getRole(optionKey);
+            return role?.id ? { value: role.id, name: role.name } : null;
+        }
+        default:
+            return { error: `[Setconf] Invalid keyType: ${keyType}` };
+    }
+}
+
+function changeSetting(action: string, key: string, current: unknown, { value, name }: SettingValue) {
+    if (action === "set") {
+        // Just send back the setting
+        return { value, log: `Set ${key} to ${name ? name : value}` };
+    }
+    if (action === "add") {
+        // Stick it into the old one
+        return { value: [...new Set([...(current as unknown[]), value])], log: `Added ${value} to ${key}` };
+    }
+    if (action === "remove") {
+        // Take out a setting from an array
+        const newArr = (current as unknown[]).filter((s) => s !== value && s !== name);
+        return { value: [...new Set(newArr)], log: `Removed ${value} from ${key}` };
+    }
+    return null;
 }
