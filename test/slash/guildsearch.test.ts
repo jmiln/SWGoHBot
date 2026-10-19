@@ -542,8 +542,9 @@ describe("GuildSearch Command Functionality", () => {
             ...overrides,
         });
 
-        // A maxed skill: guildsearch counts a zeta as tier === tiers
-        const maxedSkill = (id: string, flags: Record<string, boolean>) => ({ id, tier: 8, tiers: 8, ...flags });
+        // guildUnitStats lists the skill in both skills and zetas once it reaches its zeta tier
+        const zetaSkill = (id: string) => ({ id, isZeta: true, tier: 8, tiers: 8, zetaTier: 8 });
+        const withZeta = (id: string) => ({ skills: [zetaSkill(id)], zetas: [zetaSkill(id)] });
 
         async function search(
             options: Record<string, unknown>,
@@ -632,7 +633,7 @@ describe("GuildSearch Command Functionality", () => {
                     ],
                 };
                 const units = [
-                    member("zetaB", { gp: 1000, skills: [maxedSkill("zB", { isZeta: true })], omicrons: [{ id: "oC" }] }),
+                    member("zetaB", { gp: 1000, ...withZeta("zB"), omicrons: [{ id: "oC" }] }),
                     member("ult", { gp: 2000, purchasedAbilityId: ["ULT"] }),
                 ];
 
@@ -653,10 +654,7 @@ describe("GuildSearch Command Functionality", () => {
             });
 
             it("shows only members with both when zetas and omicrons are set", async () => {
-                const units = [
-                    member("both", { skills: [maxedSkill("zA", { isZeta: true })], omicrons: [{ id: "oC" }] }),
-                    member("zetaOnly", { skills: [maxedSkill("zA", { isZeta: true })] }),
-                ];
+                const units = [member("both", { ...withZeta("zA"), omicrons: [{ id: "oC" }] }), member("zetaOnly", withZeta("zA"))];
 
                 const { embed, fields } = await search({ zetas: true, omicrons: true }, { units });
 
@@ -664,8 +662,27 @@ describe("GuildSearch Command Functionality", () => {
                 assert.ok(fields[0].value.includes("both"), fields[0].value);
             });
 
+            it("counts a zeta from its zeta tier, below the ability's max tier", async () => {
+                // Shaped like uniqueskill_BOOMADIER01: zeta at level 8 of 9, then an omicron recipe that is not flagged as one
+                const zetaSkill = { id: "zA", isZeta: true, tier: 8, tiers: 9, zetaTier: 8 };
+                const units = [member("zetaNoOmicron", { skills: [zetaSkill], zetas: [zetaSkill] })];
+
+                const { fields } = await search({ zetas: true }, { units });
+
+                assert.ok(fields[0]?.value.includes("zetaNoOmicron"), JSON.stringify(fields));
+            });
+
+            it("does not count an omicron-only ability as a zeta", async () => {
+                const omicronSkill = { id: "oC", isZeta: false, isOmicron: true, tier: 8, tiers: 8, zetaTier: null, omicronTier: 8 };
+                const units = [member("omicronOnly", { skills: [omicronSkill], zetas: [], omicrons: [omicronSkill] })];
+
+                const { reply } = await search({ zetas: true }, { units });
+
+                assert.ok(getReplyDescription(reply)?.includes("applied any zetas"), getReplyDescription(reply));
+            });
+
             it("describes a zetas-only search", async () => {
-                const { embed } = await search({ zetas: true }, { units: [member("z", { skills: [maxedSkill("zA", { isZeta: true })] })] });
+                const { embed } = await search({ zetas: true }, { units: [member("z", withZeta("zA"))] });
 
                 assert.strictEqual(embed.description, "Showing characters with Zeta(s)");
             });

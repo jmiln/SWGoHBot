@@ -294,7 +294,7 @@ export default class Event extends Command {
             case "delete":
                 return this.deleteEvent(interaction, language);
             case "trigger":
-                return this.triggerEvent(interaction, guildConf);
+                return this.triggerEvent(interaction, language, guildConf);
             case "edit":
                 return this.editEvent(interaction, language, guildConf, guildEvents);
         }
@@ -471,15 +471,18 @@ export default class Event extends Command {
         return super.error(interaction, result.error ?? "");
     }
 
-    private async triggerEvent(interaction: ChatInputCommandInteraction<"cached">, guildConf: GuildConfigSettings) {
+    private async triggerEvent(interaction: ChatInputCommandInteraction<"cached">, language: Language, guildConf: GuildConfigSettings) {
         const eventName = interaction.options.getString("name") ?? "";
 
         // As long as it does exist, go ahead and try triggering it
         const eventIn = await eventSocket.getEventByName(interaction.guild.id, eventName);
+        if (!eventIn) {
+            return super.error(interaction, language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName));
+        }
 
         let channel: GuildBasedChannel | null = null;
-        const announceMessage = `**${eventIn?.name || eventName}**\n${eventIn?.message || ""}`;
-        if (eventIn?.channel && eventIn.channel !== "") {
+        const announceMessage = `**${eventIn.name}**\n${eventIn.message || ""}`;
+        if (eventIn.channel && eventIn.channel !== "") {
             // If they"ve set a channel, try using it
             channel = interaction.guild.channels.cache.get(eventIn.channel) ?? findChannelByNameOrId(interaction.guild, eventIn.channel);
         } else {
@@ -489,7 +492,7 @@ export default class Event extends Command {
         const botMember = interaction.guild.members.me;
         if (!channel?.isSendable() || !botMember || !(await hasViewAndSend(channel, botMember))) {
             return interaction.reply({
-                content: `Could not trigger *${eventIn?.name || eventName}*: I can't post in its channel. Set a channel on the event, or configure \`announceChan\`, and make sure I can view and send messages there.`,
+                content: `Could not trigger *${eventIn.name}*: I can't post in its channel. Set a channel on the event, or configure \`announceChan\`, and make sure I can view and send messages there.`,
                 flags: MessageFlags.Ephemeral,
             });
         }
@@ -497,13 +500,13 @@ export default class Event extends Command {
         try {
             await channel.send({ content: announceMessage });
             return interaction.reply({
-                content: `Successfully triggered ${eventIn?.name}`,
+                content: `Successfully triggered ${eventIn.name}`,
                 flags: MessageFlags.Ephemeral,
             });
         } catch (err) {
             logger.error(`Event trigger Broke! ${announceMessage} - Error: ${err instanceof Error ? err.message : String(err)}`);
             return interaction.reply({
-                content: `Broke when trying to trigger *${eventIn?.name}*.\nIf this continues, please report it.`,
+                content: `Broke when trying to trigger *${eventIn.name}*.\nIf this continues, please report it.`,
                 flags: MessageFlags.Ephemeral,
             });
         }

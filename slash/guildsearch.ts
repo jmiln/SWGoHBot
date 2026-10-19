@@ -311,10 +311,6 @@ export default class GuildSearch extends Command {
         // Not looking for stat info
         const sortType = search.sort ? search.sort : search.top ? "gp" : "name";
 
-        for (const ch of guildChar) {
-            ch.zetas = ch.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1));
-        }
-
         const emptyDescription = emptyRosterDescription(search, language);
         if (emptyDescription) {
             const footerStr = updatedFooterStr(guild.updatedAt, language);

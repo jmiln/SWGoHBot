@@ -841,6 +841,17 @@ describe("Event", () => {
             assert.strictEqual(sent[0]?.channel, "channel2");
         });
 
+        it("posts nothing and errors when the event does not exist", async () => {
+            await setGuildSettings({ guildId: EV_GUILD, settings: { ...defaultGuildSettings, announceChan: "announce" } });
+
+            const { sent, reply } = await trigger(null);
+
+            assert.deepStrictEqual(sent, []);
+            const embed = reply.embeds?.[0]?.data ?? reply.embeds?.[0];
+            assert.strictEqual(embed?.description, "Sorry, but I cannot find the event `callout`");
+            assert.ok(reply.flags, "the error should be ephemeral");
+        });
+
         it("tells the user when there is no channel it can post in", async () => {
             const { sent, reply } = await trigger(storedEvent({ name: "callout", channel: null }));
 
