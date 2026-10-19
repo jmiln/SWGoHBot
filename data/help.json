@@ -382,7 +382,7 @@
                             {
                                 "name": "timezone",
                                 "type": 3,
-                                "description": "A timezone identifyer (Ex: US/Pacific)"
+                                "description": "A timezone (e.g. America/New_York) or UTC offset (e.g. -4:00)"
                             },
                             {
                                 "name": "time_until",
@@ -392,7 +392,7 @@
                             {
                                 "name": "flag",
                                 "type": 3,
-                                "description": "An emote to show next to the name"
+                                "description": "An emoji (standard, or custom from a server the bot is in) or a single symbol to show by the name"
                             }
                         ]
                     },
@@ -426,7 +426,7 @@
                     {
                         "name": "view",
                         "type": 1,
-                        "description": "Copy the shard times from this channel to the target channel",
+                        "description": "Show the payout times for this channel",
                         "options": [
                             {
                                 "name": "ships",

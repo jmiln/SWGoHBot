@@ -363,9 +363,22 @@ describe("Shardtimes", () => {
             ...overrides,
         });
 
-        async function runShard(optionsData: Record<string, any>, { permLevel = 0, me = { id: "bot123" }, guildSettings = {} } = {}) {
+        async function runShard(
+            optionsData: Record<string, any>,
+            {
+                permLevel = 0,
+                me = { id: "bot123" } as any,
+                guildSettings = {},
+                emojis = {} as Record<string, string>,
+                shard = null as any,
+            } = {},
+        ) {
             const interaction = makeShardInteraction(optionsData);
             (interaction.guild as any).members.me = me;
+            for (const [id, markup] of Object.entries(emojis)) {
+                (interaction as any).client.emojis.cache.set(id, { id, toString: () => markup });
+            }
+            (interaction as any).client.shard = shard;
             await new Shardtimes().run(
                 createCommandContext({
                     interaction,
@@ -378,6 +391,16 @@ describe("Shardtimes", () => {
             const embed = reply?.embeds?.[0]?.data ?? reply?.embeds?.[0];
             return { reply, embed, text: reply?.content ?? embed?.description ?? "", interaction };
         }
+
+        // Node re-reads process.env.TZ on assignment, so local-time Date methods follow it
+        const setProcessTimezone = (t: { after: (fn: () => void) => void }, tz: string) => {
+            const original = process.env.TZ;
+            process.env.TZ = tz;
+            t.after(() => {
+                if (original === undefined) delete process.env.TZ;
+                else process.env.TZ = original;
+            });
+        };
 
         const stored = async () => getGuildShardTimes({ guildId: GUILD_ID });
         const timesIn = async (channelId: string) => (await stored()).find((sh) => sh.channelId === channelId)?.times;
@@ -428,22 +451,80 @@ describe("Shardtimes", () => {
                 assert.match(String(soon?.timezone), /^\d{1,2}:(00|15|30|45)$/);
             });
 
+            it("stores time_until in UTC even when the process is not in UTC", async (t) => {
+                setProcessTimezone(t, "America/New_York");
+                t.mock.timers.enable({ apis: ["Date"], now: Date.UTC(2030, 5, 1, 12, 0) });
+
+                const { text } = await runShard({ _subcommand: "add", user: "Soon", time_until: "02:30" }, { permLevel: 6 });
+
+                assert.strictEqual((await timesIn(CHANNEL_ID))?.Soon.timezone, "14:30", "12:00 UTC + 2:30 is 14:30 UTC");
+                assert.strictEqual(text, "User successfully added!");
+            });
+
             it("rejects a malformed time_until", async () => {
                 const { text } = await runShard({ _subcommand: "add", user: "me", time_until: "soon" });
 
                 assert.ok(text.startsWith("Invalid time until your payout"), text);
             });
 
-            it("keeps a custom emoji's ID as the flag and drops anything else", async () => {
-                await runShard(
-                    { _subcommand: "add", user: "Emoji", timezone: "Europe/London", flag: "<:flag_us:445566>" },
-                    { permLevel: 6 },
-                );
-                await runShard({ _subcommand: "add", user: "Plain", timezone: "Europe/London", flag: "US" }, { permLevel: 6 });
+            describe("flag", () => {
+                const addWithFlag = (flag: string, opts: { emojis?: Record<string, string>; shard?: any } = {}) =>
+                    runShard({ _subcommand: "add", user: "Flagged", timezone: "Europe/London", flag }, { permLevel: 6, ...opts });
+                const storedFlag = async () => (await timesIn(CHANNEL_ID))?.Flagged?.flag;
 
-                const times = await timesIn(CHANNEL_ID);
-                assert.strictEqual(times?.Emoji.flag, "445566");
-                assert.strictEqual(times?.Plain.flag, "");
+                for (const [label, flag] of [
+                    ["a standard emoji", "\u{1F600}"],
+                    ["a flag pair", "\u{1F1FA}\u{1F1F8}"],
+                    ["a single ASCII symbol", "*"],
+                ] as const) {
+                    it(`accepts ${label} as typed`, async () => {
+                        const { text } = await addWithFlag(flag);
+
+                        assert.strictEqual(text, "User successfully added!");
+                        assert.strictEqual(await storedFlag(), flag);
+                    });
+                }
+
+                it("accepts a custom or animated emoji the bot can use, stored as its full markup", async () => {
+                    await addWithFlag("<:flag_us:445566>", { emojis: { "445566": "<:flag_us:445566>" } });
+                    assert.strictEqual(await storedFlag(), "<:flag_us:445566>");
+
+                    await addWithFlag("<a:spin:778899>", { emojis: { "778899": "<a:spin:778899>" } });
+                    assert.strictEqual(await storedFlag(), "<a:spin:778899>");
+                });
+
+                it("finds a custom emoji on another shard", async () => {
+                    const otherShardClient = { emojis: { cache: new Map([["445566", {}]]) } };
+                    const thisShardClient = { emojis: { cache: new Map() } };
+                    const shard = {
+                        broadcastEval: async (fn: (c: any, ctx: any) => unknown, { context }: { context: unknown }) => [
+                            fn(thisShardClient, context),
+                            fn(otherShardClient, context),
+                        ],
+                    };
+
+                    const { text } = await addWithFlag("<:flag_us:445566>", { shard });
+
+                    assert.strictEqual(text, "User successfully added!");
+                    assert.strictEqual(await storedFlag(), "<:flag_us:445566>");
+                });
+
+                for (const [label, flag] of [
+                    ["a custom emoji the bot can't use", "<:flag_us:445566>"],
+                    ["plain text", "US"],
+                    ["a single letter", "A"],
+                    ["two emoji", "\u{1F600}\u{1F600}"],
+                ] as const) {
+                    it(`rejects ${label} and saves nothing`, async () => {
+                        const { text } = await addWithFlag(flag);
+
+                        assert.strictEqual(
+                            text,
+                            "That flag isn't something I can show. Use one emoji (standard, or custom from a server I'm in) or a single symbol like *",
+                        );
+                        assert.strictEqual(await storedFlag(), undefined);
+                    });
+                }
             });
 
             for (const [label, previous, expectedFrom] of [
@@ -516,13 +597,18 @@ describe("Shardtimes", () => {
         describe("copy", () => {
             const copyTo = (dest: unknown, opts: { permLevel?: number; me?: any } = {}) =>
                 runShard({ _subcommand: "copy", dest_channel: dest }, { permLevel: 6, ...opts });
+            const postable = (id: string, canPost = true) => ({
+                id,
+                guild: { id: GUILD_ID },
+                permissionsFor: () => ({ has: () => canPost }),
+            });
 
             beforeEach(async () => {
                 await setGuildShardTimes({ guildId: GUILD_ID, stOut: [{ channelId: CHANNEL_ID, times: { Source: entry() as any } }] });
             });
 
             it("copies this channel's entries to a channel that has none", async () => {
-                const { text } = await copyTo({ id: DEST_ID });
+                const { text } = await copyTo(postable(DEST_ID));
 
                 assert.strictEqual(text, `Shard info copied to <#${DEST_ID}>`);
                 assert.deepStrictEqual(Object.keys((await timesIn(DEST_ID)) ?? {}), ["Source"]);
@@ -538,7 +624,7 @@ describe("Shardtimes", () => {
                     ],
                 });
 
-                await copyTo({ id: DEST_ID });
+                await copyTo(postable(DEST_ID));
 
                 assert.deepStrictEqual(Object.keys((await timesIn(DEST_ID)) ?? {}), ["Source"]);
                 assert.strictEqual((await stored()).length, 2, "no duplicate destination entry");
@@ -553,22 +639,38 @@ describe("Shardtimes", () => {
                     ],
                 });
 
-                const { text } = await copyTo({ id: DEST_ID });
+                const { text } = await copyTo(postable(DEST_ID));
 
                 assert.strictEqual(text, "Sorry, but the destination channel already has some shard info listed");
                 assert.deepStrictEqual(Object.keys((await timesIn(DEST_ID)) ?? {}), ["Existing"]);
             });
 
             it("refuses to copy a channel onto itself", async () => {
-                const { text } = await copyTo({ id: CHANNEL_ID });
+                const { text } = await copyTo(postable(CHANNEL_ID));
 
                 assert.strictEqual(text, "You can't copy to/from the same channel");
             });
 
+            it("refuses a destination the bot can't post in", async () => {
+                const { text } = await copyTo(postable(DEST_ID, false));
+
+                assert.strictEqual(text, `I don't have permission to view/send messages in <#${DEST_ID}>`);
+                assert.strictEqual(await timesIn(DEST_ID), undefined);
+            });
+
+            it("refuses when this channel has nothing to copy", async () => {
+                await setGuildShardTimes({ guildId: GUILD_ID, stOut: [{ channelId: CHANNEL_ID, times: {} }] });
+
+                const { text } = await copyTo(postable(DEST_ID));
+
+                assert.strictEqual(text, "This channel doesn't have any shard times to copy from.");
+                assert.strictEqual(await timesIn(DEST_ID), undefined);
+            });
+
             it("needs an admin, a destination, and the bot in the server", async () => {
-                const notAdmin = await copyTo({ id: DEST_ID }, { permLevel: 0 });
+                const notAdmin = await copyTo(postable(DEST_ID), { permLevel: 0 });
                 const noDest = await copyTo(undefined);
-                const noBot = await copyTo({ id: DEST_ID }, { me: null });
+                const noBot = await copyTo(postable(DEST_ID), { me: null });
 
                 assert.ok(notAdmin.text.startsWith("Sorry, but either you're not an admin"), notAdmin.text);
                 assert.strictEqual(noDest.text, "Cannot find a match for ``");
@@ -617,7 +719,21 @@ describe("Shardtimes", () => {
                 assert.strictEqual(embed.fields[0].name, "23:00");
             });
 
-            it("groups by time, sorts names, shows cached emoji flags, and stacks them when vertical", async (t) => {
+            it("times a time_until entry from the UTC date, even when the local date is still yesterday", async (t) => {
+                // 02:00 UTC on the 2nd is 22:00 on the 1st in New York; today's 01:00 UTC payout has passed
+                setProcessTimezone(t, "America/New_York");
+                t.mock.timers.enable({ apis: ["Date"], now: Date.UTC(2030, 5, 2, 2, 0) });
+                await setGuildShardTimes({
+                    guildId: GUILD_ID,
+                    stOut: [{ channelId: CHANNEL_ID, times: { Late: entry({ zoneType: "hhmm", timezone: "1:00" }) as any } }],
+                });
+
+                const { embed } = await runShard({ _subcommand: "view" });
+
+                assert.strictEqual(embed.fields[0].name, "23:00");
+            });
+
+            it("groups by time, sorts names, and stacks them when vertical", async (t) => {
                 t.mock.timers.enable({ apis: ["Date"], now: NOW });
                 await setGuildShardTimes({
                     guildId: GUILD_ID,
@@ -625,26 +741,48 @@ describe("Shardtimes", () => {
                         {
                             channelId: CHANNEL_ID,
                             times: {
-                                zed: entry({ zoneType: "utc", timezone: 0, flag: "445566" }) as any,
-                                Amy: entry({ zoneType: "utc", timezone: 0, flag: "999" }) as any,
+                                zed: entry({ zoneType: "utc", timezone: 0 }) as any,
+                                Amy: entry({ zoneType: "utc", timezone: 0 }) as any,
                             },
                         },
                     ],
                 });
-                const interactionEmoji = { toString: () => "<:us:445566>" };
 
                 const flat = await runShard({ _subcommand: "view" });
-                const vertical = await (async () => {
-                    const interaction = makeShardInteraction({ _subcommand: "view" });
-                    (interaction as any).client.emojis.cache.set("445566", interactionEmoji);
-                    await new Shardtimes().run(
-                        createCommandContext({ interaction, guildSettings: createMockGuildSettings({ shardtimeVertical: true }) }),
-                    );
-                    return (interaction as any)._getReplies().at(-1).embeds[0];
-                })();
+                const vertical = await runShard({ _subcommand: "view" }, { guildSettings: { shardtimeVertical: true } });
 
-                assert.strictEqual(flat.embed.fields[0].value, "999Amy - 445566zed", "an uncached flag shows its raw ID");
-                assert.strictEqual(vertical.fields[0].value, "999Amy\n<:us:445566>zed");
+                assert.strictEqual(flat.embed.fields[0].value, "Amy - zed");
+                assert.strictEqual(vertical.embed.fields[0].value, "Amy\nzed");
+            });
+
+            it("shows each kind of flag before its name", async (t) => {
+                t.mock.timers.enable({ apis: ["Date"], now: NOW });
+                const flagged = (flag: string) => entry({ zoneType: "utc", timezone: 0, flag }) as any;
+                await setGuildShardTimes({
+                    guildId: GUILD_ID,
+                    stOut: [
+                        {
+                            channelId: CHANNEL_ID,
+                            times: {
+                                a_custom: flagged("<:us:445566>"),
+                                b_standard: flagged("\u{1F600}"),
+                                c_symbol: flagged("*"),
+                                d_legacyCached: flagged("112233"),
+                                e_legacyGone: flagged("998877"),
+                            },
+                        },
+                    ],
+                });
+
+                const { embed } = await runShard({ _subcommand: "view" }, { emojis: { "112233": "<:old:112233>" } });
+
+                assert.deepStrictEqual(embed.fields[0].value.split(" - "), [
+                    "<:us:445566>a_custom",
+                    "\u{1F600}b_standard",
+                    "\\*c_symbol",
+                    "<:old:112233>d_legacyCached",
+                    "e_legacyGone",
+                ]);
             });
         });
     });

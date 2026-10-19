@@ -4,6 +4,8 @@ import {
     type AutocompleteFocusedOption,
     type AutocompleteInteraction,
     type ChatInputCommandInteraction,
+    type Client,
+    escapeMarkdown,
     type GuildEmoji,
     InteractionContextType,
     type TextChannel,
@@ -53,7 +55,7 @@ export default class Shardtimes extends Command {
                     {
                         name: "timezone",
                         type: ApplicationCommandOptionType.String,
-                        description: "A timezone identifyer (Ex: US/Pacific)",
+                        description: "A timezone (e.g. America/New_York) or UTC offset (e.g. -4:00)",
                     },
                     {
                         name: "time_until",
@@ -63,7 +65,7 @@ export default class Shardtimes extends Command {
                     {
                         name: "flag",
                         type: ApplicationCommandOptionType.String,
-                        description: "An emote to show next to the name",
+                        description: "An emoji (standard, or custom from a server the bot is in) or a single symbol to show by the name",
                     },
                 ],
             },
@@ -103,7 +105,7 @@ export default class Shardtimes extends Command {
             {
                 name: "view",
                 type: ApplicationCommandOptionType.Subcommand,
-                description: "Copy the shard times from this channel to the target channel",
+                description: "Show the payout times for this channel",
                 options: [
                     {
                         name: "ships",
@@ -204,13 +206,18 @@ export default class Shardtimes extends Command {
             return super.error(interaction, payout.error);
         }
 
+        const flag = await resolveFlag(interaction.options.getString("flag"), interaction.client);
+        if (flag === null) {
+            return super.error(interaction, language.get("COMMAND_SHARDTIMES_INVALID_FLAG"));
+        }
+
         const previous = shardTimes.times[userID];
         const previousZone = previous ? describeStoredZone(previous) : null;
         shardTimes.times[userID] = {
             type: type,
             zoneType: payout.zoneType,
             timezone: payout.timezone,
-            flag: emojiIdFromFlag(interaction.options.getString("flag")),
+            flag: flag,
         };
         if (targetIndex > -1) {
             shardArr[targetIndex] = shardTimes;
@@ -270,12 +277,12 @@ export default class Shardtimes extends Command {
         }
 
         // Make sure there are times to copy from
-        if (!Object.keys(shardTimes).length) {
+        if (!Object.keys(shardTimes.times).length) {
             return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_NO_SOURCE"));
         }
 
         const botMember = interaction.guild.members.me;
-        if (!botMember || !hasViewAndSend(destChannel, botMember)) {
+        if (!botMember || !(await hasViewAndSend(destChannel, botMember))) {
             return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
         }
 
@@ -442,17 +449,41 @@ function quarterHourAfter(timeUntil: string): string {
     const updatedTime = new Date(
         new Date().setTime(nowTime.getTime() + (Number.parseInt(hour, 10) || 0) * hourMS + (Number.parseInt(minute, 10) || 0) * minMS),
     );
-    const tempH = updatedTime.getHours();
-    const tempM = updatedTime.getMinutes();
+    const tempH = updatedTime.getUTCHours();
+    const tempM = updatedTime.getUTCMinutes();
 
     const totalMin = tempH * 60 + tempM;
     const rounded = Math.round(totalMin / 15) * 15;
     return `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
 }
 
-function emojiIdFromFlag(flag: string | null): string {
-    if (!flag?.match(/<:.+:\d+>/)) return "";
-    return flag.replace(/<:.*:/, "").replace(/>$/, "");
+const STANDARD_EMOJI = /^\p{RGI_Emoji}$/v;
+const CUSTOM_EMOJI = /^<a?:\w+:(\d+)>$/;
+const ASCII_SYMBOL = /^[\x21-\x2F\x3A-\x40\x5B-\x60\x7B-\x7E]$/;
+// Entries saved before flags were stored as full markup hold a bare custom-emoji ID
+const LEGACY_EMOJI_ID = /^\d+$/;
+
+// "" when no flag was given, null when the flag can't be shown
+async function resolveFlag(flagIn: string | null, client: Client<true>): Promise<string | null> {
+    const flag = flagIn?.trim() ?? "";
+    if (!flag || STANDARD_EMOJI.test(flag) || ASCII_SYMBOL.test(flag)) return flag;
+    const emojiId = flag.match(CUSTOM_EMOJI)?.[1];
+    if (emojiId && (await botCanUseEmoji(client, emojiId))) return flag;
+    return null;
+}
+
+// Each shard only caches the emoji of the servers it hosts
+async function botCanUseEmoji(client: Client<true>, emojiId: string): Promise<boolean> {
+    if (!client.shard) return client.emojis.cache.has(emojiId);
+    try {
+        const results = await client.shard.broadcastEval((c, { emojiId }) => c.emojis.cache.has(emojiId), { context: { emojiId } });
+        return results.some(Boolean);
+    } catch (err) {
+        logger.error(
+            `[shardtimes] Emoji lookup across shards failed, checking this shard only: ${err instanceof Error ? err.message : String(err)}`,
+        );
+        return client.emojis.cache.has(emojiId);
+    }
 }
 
 function describeStoredZone(entry: ShardEntry): string | number {
@@ -470,9 +501,11 @@ function describeStoredZone(entry: ShardEntry): string | number {
     return entry.timezone;
 }
 
-function displayFlag(flag: string, emojiCache: Map<string, GuildEmoji>): GuildEmoji | string {
-    if (flag === "") return "";
-    return emojiCache.get(flag) ?? flag;
+function displayFlag(flag: string, emojiCache: Map<string, GuildEmoji>): string {
+    if (!flag) return "";
+    if (LEGACY_EMOJI_ID.test(flag)) return emojiCache.get(flag)?.toString() ?? "";
+    // A lone * or _ would otherwise merge with the bold markers around the name
+    return ASCII_SYMBOL.test(flag) ? escapeMarkdown(flag) : flag;
 }
 
 function truncateName(name: string): string {
@@ -508,5 +541,5 @@ function timeTil(zone: string | number, timeToAdd: number, type: string, logCont
 function getUTCAtTime(hhmm: string) {
     const [hr, min] = hhmm.split(":").map((t) => Number.parseInt(t, 10));
     const nowDate = new Date();
-    return Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), hr, min);
+    return Date.UTC(nowDate.getUTCFullYear(), nowDate.getUTCMonth(), nowDate.getUTCDate(), hr, min);
 }

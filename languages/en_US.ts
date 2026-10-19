@@ -1645,6 +1645,7 @@ export default class extends Language {
             COMMAND_SHARDTIMES_INVALID_USER: "Invalid user, please enter \"me\", mention someone here, or input their discord ID.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "You need to enter a timezone.",
             COMMAND_SHARDTIMES_INVALID_TIME_TIL: "Invalid time until your payout, it must be in the format of `00:00`, so if you have **13** minutes until your payout, you'd enter `00:13`",
+            COMMAND_SHARDTIMES_INVALID_FLAG: "That flag isn't something I can show. Use one emoji (standard, or custom from a server I'm in) or a single symbol like *",
             COMMAND_SHARDTIMES_USER_ADDED: "User successfully added!",
             COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `Updated user from ${from} to ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "Something went wrong when adding this user. Please try again.",
