@@ -1,4 +1,10 @@
-import { type APIEmbedField, ApplicationCommandOptionType, type ChatInputCommandInteraction, InteractionContextType } from "discord.js";
+import {
+    type APIEmbed,
+    type APIEmbedField,
+    ApplicationCommandOptionType,
+    type ChatInputCommandInteraction,
+    InteractionContextType,
+} from "discord.js";
 import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
@@ -286,24 +292,12 @@ export default class GuildSearch extends Command {
         const fields = statFields(outArr, foundUnit, stat, doReverse, language);
 
         const footerStr = updatedFooterStr(guild.updatedAt, language);
-        const embed = {
+        await sendResultEmbed(interaction, {
             author: {
                 name: guild.name,
             },
             fields: [...fields, { name: constants.zws, value: footerStr }],
-        };
-        try {
-            await interaction.editReply({ content: null, embeds: [embed] });
-        } catch (err) {
-            logger.error(`ERROR(GuildSearch) ${err}`);
-            if (interaction.channel?.isSendable()) {
-                try {
-                    await interaction.channel.send({ embeds: [embed] });
-                } catch (channelErr) {
-                    logger.error(`ERROR(GuildSearch) Failed to send to channel: ${channelErr}`);
-                }
-            }
-        }
+        });
     }
 
     private async sendRosterResults(interaction: ChatInputCommandInteraction, language: Language, search: RosterSearch) {
@@ -342,22 +336,27 @@ export default class GuildSearch extends Command {
 
         const maxUpdated = new Date(Math.max(...guildChar.map((ch) => ch.updatedAt?.getTime() ?? Number.NEGATIVE_INFINITY)));
         const footerStr = updatedFooterStr(maxUpdated, language);
-        try {
-            interaction.editReply({
-                content: null,
-                embeds: [
-                    {
-                        author: {
-                            name: language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked),
-                        },
-                        description: searchDescription(search.doZeta, search.doOmicron),
-                        fields: [...fields, { name: constants.zws, value: footerStr }],
-                    },
-                ],
-            });
-        } catch (e) {
-            logger.error(`Error sending message in guildsearch - ${e}`);
-            logger.error(fields);
+        await sendResultEmbed(interaction, {
+            author: {
+                name: language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked),
+            },
+            description: searchDescription(search.doZeta, search.doOmicron),
+            fields: [...fields, { name: constants.zws, value: footerStr }],
+        });
+    }
+}
+
+async function sendResultEmbed(interaction: ChatInputCommandInteraction, embed: APIEmbed) {
+    try {
+        await interaction.editReply({ content: null, embeds: [embed] });
+    } catch (err) {
+        logger.error(`ERROR(GuildSearch) ${err}`);
+        if (interaction.channel?.isSendable()) {
+            try {
+                await interaction.channel.send({ embeds: [embed] });
+            } catch (channelErr) {
+                logger.error(`ERROR(GuildSearch) Failed to send to channel: ${channelErr}`);
+            }
         }
     }
 }
@@ -392,16 +391,6 @@ interface AbilityColumns {
     maxZ: number;
     hasUlt: boolean;
 }
-
-const rarityMap = {
-    ONESTAR: 1,
-    TWOSTAR: 2,
-    THREESTAR: 3,
-    FOURSTAR: 4,
-    FIVESTAR: 5,
-    SIXSTAR: 6,
-    SEVENSTAR: 7,
-};
 
 const checkableStats = {
     Health: { short: "HP" },
@@ -581,8 +570,6 @@ function groupRosterRows(sortedGuild: SWAPIUnit[], columns: AbilityColumns, sear
         if (doZeta && doOmicron && !member.zetas?.length && !member.omicrons?.length) continue;
         if (doZeta && !doOmicron && !member.zetas?.length) continue;
         if (doOmicron && !doZeta && !member.omicrons?.length) continue;
-
-        if (Number.isNaN(member.rarity)) member.rarity = rarityMap[member.rarity as unknown as keyof typeof rarityMap];
 
         const uStr = expandSpaces(formatRosterRow(member, columns, { hasRelic, maxGP, isShip: search.isShip }));
         if (!charOut[member.rarity]) {

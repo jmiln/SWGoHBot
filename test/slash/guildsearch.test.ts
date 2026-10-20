@@ -734,6 +734,28 @@ describe("GuildSearch Command Functionality", () => {
                 const embed = (interaction as any)._getReplies().at(-1).embeds[0];
                 assert.ok(embed.fields[0].value.replaceAll("​", "").includes("[Lvl 85 | 50,000]"), embed.fields[0].value);
             });
+
+            it("falls back to posting in the channel when the reply edit fails", async () => {
+                swgohAPI.guild = async () => makeMockGuild() as any;
+                swgohAPI.guildUnitStats = async () => [member("a")] as any;
+                swgohAPI.getCharacter = async () => mockRawChar;
+                patreonFuncs.getPlayerCooldown = async () => ({ player: 60000, guild: 3600000 }) as any;
+                const sent: any[] = [];
+                const interaction = createMockInteraction({
+                    optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789" },
+                });
+                const originalEdit = interaction.editReply.bind(interaction);
+                (interaction as any).editReply = async (data: any) => {
+                    if (data.embeds) throw new Error("Unknown Message");
+                    return originalEdit(data);
+                };
+                (interaction as any).channel = { isSendable: () => true, send: async (m: any) => sent.push(m) };
+
+                await new GuildSearch().run(createCommandContext({ interaction, language: createRealLanguage() }));
+
+                assert.strictEqual(sent.length, 1);
+                assert.strictEqual(sent[0].embeds[0].author.name, "Test Guild's Darth Vader (1)");
+            });
         });
 
         describe("no matching members", () => {
