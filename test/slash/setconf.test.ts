@@ -5,6 +5,7 @@ import cache from "../../modules/cache.ts";
 import { guildConfigDB } from "../../modules/guildConfig/db.ts";
 import { getGuildSettings } from "../../modules/guildConfig/settings.ts";
 import userReg from "../../modules/users.ts";
+import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import SetConf from "../../slash/setconf.ts";
 import type { GuildConfigTWList } from "../../types/guildConfig_types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
@@ -84,8 +85,8 @@ async function storedDoc() {
     return guildConfigDB.getOne<{ settings: Record<string, unknown>; twList: GuildConfigTWList }>({ guildId: SC_GUILD });
 }
 
-async function runSetConf(optionsData: Record<string, unknown>) {
-    const interaction = createMockInteraction({ optionsData, guild: { id: SC_GUILD } as any });
+async function runSetConf(optionsData: Record<string, unknown>, guildId = SC_GUILD) {
+    const interaction = createMockInteraction({ optionsData, guild: { id: guildId } as any });
     await new SetConf().run(createCommandContext({ interaction, language: createRealLanguage() }));
     return interaction;
 }
@@ -170,6 +171,33 @@ describe("SetConf twlist", () => {
             assert.deepStrictEqual(doc?.twList["Dark Side"], ["4LOM"]);
         });
 
+        it("refuses a listed unit given by its display name", async () => {
+            await seedGuild({ twList: { Neutral: ["HONDO"] } });
+            const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "manage_list", add_unit: "Hondo Ohnaka" });
+
+            assertErrorReply(interaction, "Trying to add Hondo Ohnaka. This unit is already in your list");
+            const doc = await storedDoc();
+            assert.deepStrictEqual(doc?.twList.Neutral, ["HONDO"]);
+        });
+
+        it("refuses a name that is not a unit and saves nothing", async () => {
+            const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "manage_list", add_unit: "Not A Unit" });
+
+            assertErrorReply(interaction, "I couldn't find a unit called Not A Unit");
+            const doc = await storedDoc();
+            assert.deepStrictEqual(doc?.twList, EMPTY_TW_LIST);
+        });
+
+        it("reports a failed save as an error without exposing the database message", async (t) => {
+            t.mock.method(guildConfigDB, "put", async () => {
+                throw new Error("connection reset by 10.0.0.5");
+            });
+            const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "manage_list", add_unit: "4LOM" });
+
+            assertErrorReply(interaction, "Broke while trying to add 4LOM.");
+            assert.ok(!replyDescription(interaction).includes("10.0.0.5"), `Database detail leaked: ${replyDescription(interaction)}`);
+        });
+
         it("removes a unit from every list but leaves the blacklist alone", async () => {
             await seedGuild({ twList: { "Dark Side": ["4LOM", "TRIPLEZERO"], Neutral: ["4LOM"], Blacklist: ["4LOM"] } });
             const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "manage_list", remove_unit: "4LOM" });
@@ -203,6 +231,38 @@ describe("SetConf twlist", () => {
             await seedGuild({ twList: { Blacklist: ["HONDO"] } });
             const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "blacklist", add_unit: "HONDO" });
             assertErrorReply(interaction, "Trying to add HONDO. This unit is already in your blacklist");
+        });
+
+        it("stores a display name as the unit's defId", async () => {
+            await runSetConf({ _subcommandGroup: "twlist", _subcommand: "blacklist", add_unit: "Hondo Ohnaka" });
+            const doc = await storedDoc();
+            assert.deepStrictEqual(doc?.twList.Blacklist, ["HONDO"]);
+        });
+
+        it("refuses a blacklisted unit given by its display name", async () => {
+            await seedGuild({ twList: { Blacklist: ["HONDO"] } });
+            const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "blacklist", add_unit: "Hondo Ohnaka" });
+
+            assertErrorReply(interaction, "Trying to add Hondo Ohnaka. This unit is already in your blacklist");
+            const doc = await storedDoc();
+            assert.deepStrictEqual(doc?.twList.Blacklist, ["HONDO"]);
+        });
+
+        it("refuses a name that is not a unit and saves nothing", async () => {
+            const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "blacklist", add_unit: "Not A Unit" });
+
+            assertErrorReply(interaction, "I couldn't find a unit called Not A Unit");
+            const doc = await storedDoc();
+            assert.deepStrictEqual(doc?.twList.Blacklist, []);
+        });
+
+        it("reports a failed save as an error", async (t) => {
+            await seedGuild({ twList: { Blacklist: ["HONDO"] } });
+            t.mock.method(guildConfigDB, "put", async () => {
+                throw new Error("connection reset");
+            });
+            const interaction = await runSetConf({ _subcommandGroup: "twlist", _subcommand: "blacklist", remove_unit: "HONDO" });
+            assertErrorReply(interaction, "Broke while trying to remove HONDO from the blacklist.");
         });
 
         it("removes a blacklisted unit", async () => {
@@ -283,6 +343,24 @@ describe("SetConf settings", () => {
         assertErrorReply(interaction, "It looks like nothing needed to be updated");
     });
 
+    it("logs only the options whose value changed", async () => {
+        await seedGuild({ settings: { timezone: "America/New_York" } });
+        const interaction = await runSetConf({ _subcommand: "set", timezone: "America/New_York", shardtime_vertical: true });
+
+        assert.strictEqual(replyDescription(interaction), codeBlock("* Set shardtimeVertical to true"));
+    });
+
+    it("reports nothing updated when adding a countdown that is already listed", async () => {
+        await seedGuild({ settings: { eventCountdown: [60, 30] } });
+        const interaction = await runSetConf({ _subcommand: "add", event_countdown: 60 });
+        assertErrorReply(interaction, "It looks like nothing needed to be updated");
+    });
+
+    it("reports nothing updated when removing a role that is not set", async () => {
+        const interaction = await runSetConf({ _subcommand: "remove", admin_role: { id: "333333333333333333", name: "Members" } });
+        assertErrorReply(interaction, "It looks like nothing needed to be updated");
+    });
+
     it("adds a countdown value to the list without duplicating it", async () => {
         await seedGuild({ settings: { eventCountdown: [60, 30] } });
         const interaction = await runSetConf({ _subcommand: "add", event_countdown: 15 });
@@ -292,12 +370,30 @@ describe("SetConf settings", () => {
         assert.deepStrictEqual(doc?.settings.eventCountdown, [60, 30, 15]);
     });
 
-    it("rejects a negative countdown", async () => {
-        const interaction = await runSetConf({ _subcommand: "add", event_countdown: -5 });
+    for (const countdown of [-5, 0, 2881]) {
+        it(`rejects a countdown of ${countdown}`, async () => {
+            const interaction = await runSetConf({ _subcommand: "add", event_countdown: countdown });
 
-        assertErrorReply(interaction, "-5 is not a valid entry, it __must__ be above 0");
-        const doc = await storedDoc();
-        assert.deepStrictEqual(doc?.settings, {});
+            assertErrorReply(interaction, `${countdown} is not a valid entry, it __must__ be between 1 and 2880`);
+            const doc = await storedDoc();
+            assert.deepStrictEqual(doc?.settings, {});
+        });
+    }
+
+    it("accepts a countdown at the 2880 maximum", async () => {
+        await seedGuild({ settings: { eventCountdown: [60] } });
+        const interaction = await runSetConf({ _subcommand: "add", event_countdown: 2880 });
+
+        assert.strictEqual(replyDescription(interaction), codeBlock("* Added 2880 to eventCountdown"));
+    });
+
+    it("registers the countdown bounds with Discord on both add and remove", () => {
+        for (const subName of ["add", "remove"]) {
+            const sub = new SetConf().commandData.options.find((o: any) => o.name === subName);
+            const option = sub.options.find((o: any) => o.name === "event_countdown");
+            assert.strictEqual(option.minValue, 1, `${subName} min`);
+            assert.strictEqual(option.maxValue, 2880, `${subName} max`);
+        }
     });
 
     it("adds an admin role by id", async () => {
@@ -315,6 +411,29 @@ describe("SetConf settings", () => {
         assert.strictEqual(replyDescription(interaction), codeBlock("* Removed 222222222222222222 from adminRole"));
         const settings = await getGuildSettings({ guildId: SC_GUILD });
         assert.deepStrictEqual(settings.adminRole, ["Administrator"]);
+    });
+});
+
+describe("SetConf on a guild with no saved config", () => {
+    const FRESH_GUILD = "setconf-test-fresh-guild";
+
+    before(async () => {
+        cache.init(await getMongoClient());
+        await guildConfigDB.remove({ guildId: FRESH_GUILD });
+    });
+
+    after(async () => {
+        await guildConfigDB.remove({ guildId: FRESH_GUILD });
+        await closeMongoClient();
+    });
+
+    it("saves the change instead of writing it into the shared defaults", async () => {
+        const interaction = await runSetConf({ _subcommand: "set", timezone: "America/New_York" }, FRESH_GUILD);
+
+        assert.strictEqual(replyDescription(interaction), codeBlock("* Set timezone to America/New_York"));
+        assert.strictEqual(defaultGuildSettings.timezone, "America/Los_Angeles", "the defaults every other guild reads must not change");
+        const doc = await guildConfigDB.getOne<{ settings: Record<string, unknown> }>({ guildId: FRESH_GUILD });
+        assert.strictEqual(doc?.settings.timezone, "America/New_York");
     });
 });
 

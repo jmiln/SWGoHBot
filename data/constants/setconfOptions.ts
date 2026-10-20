@@ -1,11 +1,12 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { BOT_LANGUAGES, type GuildConfigSettings, SWGOH_LANGUAGES } from "../../schemas/guildConfigs.schema.ts";
 
-interface SetconfOption {
+export interface SetconfOption {
     type: ApplicationCommandOptionType;
     description: string;
     choices?: readonly string[];
     isArray?: boolean;
+    range?: { min: number; max: number };
 }
 
 // The discord-facing half of the guild settings; defaults live in schemas/guildConfigs.schema.ts.
@@ -32,7 +33,8 @@ export const setconfOptions: Record<keyof GuildConfigSettings, SetconfOption> = 
     eventCountdown: {
         type: ApplicationCommandOptionType.Integer,
         isArray: true,
-        description: "Set how long before events it should warn you.",
+        range: { min: 1, max: 2880 },
+        description: "(1-2880) Minutes before an event to send a countdown alert",
     },
     language: {
         type: ApplicationCommandOptionType.String,

@@ -1579,6 +1579,7 @@ export default class extends Language {
             COMMAND_SETCONF_TW_NO_UNIT_SPECIFIED: "You must specify a unit to add or remove",
             COMMAND_SETCONF_UNIT_IN_LIST: (defId) => `Trying to add ${defId}. This unit is already in your list`,
             COMMAND_SETCONF_UNIT_ADDED: (defId) => `Added ${defId} to your list`,
+            COMMAND_SETCONF_UNKNOWN_UNIT: (unit) => `I couldn't find a unit called ${unit}. Pick one from the list as you type`,
             COMMAND_SETCONF_UNIT_IN_BLACKLIST: (defId) => `Trying to add ${defId}. This unit is already in your blacklist`,
             COMMAND_SETCONF_UNIT_ADDED_BLACKLIST: (defId) => `Added ${defId} to your blacklist`,
             COMMAND_SETCONF_UNIT_REMOVED: (defId) => `Removed ${defId} from your list`,

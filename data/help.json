@@ -1014,7 +1014,9 @@
                             {
                                 "name": "event_countdown",
                                 "type": 4,
-                                "description": "Set how long before events it should warn you."
+                                "description": "(1-2880) Minutes before an event to send a countdown alert",
+                                "minValue": 1,
+                                "maxValue": 2880
                             }
                         ]
                     },
@@ -1031,7 +1033,9 @@
                             {
                                 "name": "event_countdown",
                                 "type": 4,
-                                "description": "Set how long before events it should warn you."
+                                "description": "(1-2880) Minutes before an event to send a countdown alert",
+                                "minValue": 1,
+                                "maxValue": 2880
                             }
                         ]
                     },

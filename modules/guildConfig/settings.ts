@@ -3,11 +3,12 @@ import { guildConfigDB } from "./db.ts";
 
 // Get the guildsettings from the mongo db
 export async function getGuildSettings({ guildId }: { guildId?: string }) {
-    if (!guildId) return defaultGuildSettings;
+    // Cloned so a caller editing its copy cannot rewrite the defaults every other guild reads
+    if (!guildId) return structuredClone(defaultGuildSettings);
 
     const guildSettings = await guildConfigDB.getOne({ guildId: guildId }, { settings: 1 });
-    if (!guildSettings) return defaultGuildSettings;
-    return { ...defaultGuildSettings, ...(guildSettings.settings as object) };
+    if (!guildSettings) return structuredClone(defaultGuildSettings);
+    return { ...structuredClone(defaultGuildSettings), ...(guildSettings.settings as object) };
 }
 
 // Set any guildSettings that do not match the defaultGuildSettings in the bot's config

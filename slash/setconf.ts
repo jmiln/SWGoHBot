@@ -8,7 +8,7 @@ import {
 } from "discord.js";
 import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
-import { setconfOptions } from "../data/constants/setconfOptions.ts";
+import { type SetconfOption, setconfOptions } from "../data/constants/setconfOptions.ts";
 import { characterNameList, characters, shipNameList, ships } from "../data/constants/units.ts";
 import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
@@ -24,6 +24,8 @@ type OptOut = {
     type: ApplicationCommandOptionType;
     description: string;
     choices?: { name: string; value: string }[];
+    minValue?: number;
+    maxValue?: number;
 };
 const options = {
     add: {
@@ -112,6 +114,10 @@ for (const [key, value] of Object.entries(setconfOptions)) {
             };
         });
     }
+    if (value.range) {
+        optOut.minValue = value.range.min;
+        optOut.maxValue = value.range.max;
+    }
     if (value.isArray) {
         options.add.options.push(optOut);
         options.remove.options.push(optOut);
@@ -188,14 +194,13 @@ export default class SetConf extends Command {
         guildTWList: GuildConfigTWList,
         addUnitDefId: string,
     ) {
-        if (listedCategories(guildTWList).some((key) => guildTWList[key]?.includes(addUnitDefId))) {
+        const unit = resolveTWUnit(addUnitDefId);
+        if (!unit) return super.error(interaction, language.get("COMMAND_SETCONF_UNKNOWN_UNIT", addUnitDefId));
+        if (listedCategories(guildTWList).some((key) => guildTWList[key]?.includes(unit.defId))) {
             return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_LIST", addUnitDefId));
         }
-        const placement = twListPlacement(addUnitDefId);
-        if (placement) {
-            guildTWList[placement.category] ??= [];
-            guildTWList[placement.category]?.push(placement.defId);
-        }
+        guildTWList[unit.category] ??= [];
+        guildTWList[unit.category]?.push(unit.defId);
         return this.saveTWList(
             interaction,
             guildId,
@@ -212,11 +217,13 @@ export default class SetConf extends Command {
         guildTWList: GuildConfigTWList,
         addUnitDefId: string,
     ) {
+        const unit = resolveTWUnit(addUnitDefId);
+        if (!unit) return super.error(interaction, language.get("COMMAND_SETCONF_UNKNOWN_UNIT", addUnitDefId));
         if (!guildTWList.Blacklist) guildTWList.Blacklist = [];
-        if (guildTWList.Blacklist?.includes(addUnitDefId)) {
+        if (guildTWList.Blacklist?.includes(unit.defId)) {
             return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_BLACKLIST", addUnitDefId));
         }
-        guildTWList.Blacklist.push(addUnitDefId);
+        guildTWList.Blacklist.push(unit.defId);
         return this.saveTWList(
             interaction,
             guildId,
@@ -275,12 +282,9 @@ export default class SetConf extends Command {
         successMsg: string,
         failMsg: string,
     ) {
-        try {
-            await setGuildTWList({ guildId, twListOut: guildTWList });
-            return super.success(interaction, successMsg);
-        } catch (err) {
-            return super.error(interaction, `${failMsg}\n${err instanceof Error ? err.message : String(err)}`);
-        }
+        const { success } = await setGuildTWList({ guildId, twListOut: guildTWList });
+        if (!success) return super.error(interaction, failMsg);
+        return super.success(interaction, successMsg);
     }
 
     private async updateSettings(
@@ -294,21 +298,20 @@ export default class SetConf extends Command {
         const errors: string[] = [];
         const changeLog: string[] = [];
         for (const [key, defConf] of Object.entries(setconfOptions)) {
-            const input = readSettingInput(interaction, language, key, defConf?.type);
+            const input = readSettingInput(interaction, language, key, defConf);
             if (!input) continue;
             if ("error" in input) {
                 errors.push(input.error);
                 continue;
             }
 
-            const change = changeSetting(subCommand, key, guildConf[key as keyof typeof guildConf], input);
-            if (!change) continue;
-            changeLog.push(change.log);
+            const current = guildConf[key as keyof typeof guildConf];
+            const change = changeSetting(subCommand, key, current, input);
+            if (!change || isSameSetting(current, change.value)) continue;
 
             // If it got here, then the setting should be valid and changed
-            if (change.value !== guildConf[key as keyof typeof guildConf]) {
-                settingsIn[key] = change.value;
-            }
+            changeLog.push(change.log);
+            settingsIn[key] = change.value;
         }
 
         // If there are any errors, tell em and don't actually change anything
@@ -398,7 +401,7 @@ function formatTWList(guildTWList: GuildConfigTWList) {
     return outArr;
 }
 
-function twListPlacement(unitName: string): { category: keyof GuildConfigTWList; defId: string } | null {
+function resolveTWUnit(unitName: string): { category: keyof GuildConfigTWList; defId: string } | null {
     const thisChar = characters.find((u) => u.uniqueName === unitName || u.name === unitName);
     if (thisChar) return { category: characterCategory(thisChar), defId: thisChar.uniqueName };
 
@@ -418,22 +421,21 @@ function readSettingInput(
     interaction: ChatInputCommandInteraction,
     language: Language,
     key: string,
-    keyType: ApplicationCommandOptionType,
+    option: SetconfOption,
 ): SettingValue | { error: string } | null {
-    const input = readOptionValue(interaction, toOptionName(key), keyType);
+    const input = readOptionValue(interaction, toOptionName(key), option?.type);
     if (!input || "error" in input) return input;
-    const error = settingError(language, key, input.value);
+    const error = settingError(language, key, input.value, option);
     return error ? { error } : input;
 }
 
-function settingError(language: Language, key: string, value: SettingValue["value"]) {
+function settingError(language: Language, key: string, value: SettingValue["value"], { range }: SetconfOption) {
     if (key === "timezone" && !isValidZone(String(value))) {
         // If it's not a valid timezone, let em know
         return language.get("BASE_INVALID_TIMEZONE");
     }
-    if (key === "eventCountdown" && Number(value) < 0) {
-        // Make sure the entered number is positive
-        return `${value} is not a valid entry, it __must__ be above 0`;
+    if (range && (Number(value) < range.min || Number(value) > range.max)) {
+        return `${value} is not a valid entry, it __must__ be between ${range.min} and ${range.max}`;
     }
     return null;
 }
@@ -484,4 +486,11 @@ function changeSetting(action: string, key: string, current: unknown, { value, n
         return { value: [...new Set(newArr)], log: `Removed ${value} from ${key}` };
     }
     return null;
+}
+
+function isSameSetting(current: unknown, next: unknown) {
+    if (Array.isArray(current) && Array.isArray(next)) {
+        return current.length === next.length && current.every((val, ix) => val === next[ix]);
+    }
+    return current === next;
 }
