@@ -118,6 +118,22 @@
         "avatarName": "charui_aaylasecura"
     },
     {
+        "name": "Adelphi Ranger",
+        "uniqueName": "ADELPHIRANGER",
+        "aliases": [
+            "Adelphi Ranger"
+        ],
+        "avatarName": "charui_adelphiranger",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_adelphiranger.png",
+        "side": "light",
+        "factions": [
+            "New Republic",
+            "Rebel",
+            "Tank"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Admiral Ackbar",
         "uniqueName": "ADMIRALACKBAR",
         "aliases": [
@@ -1937,9 +1953,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Defense",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Defense",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3301,7 +3317,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3481,7 +3497,8 @@
             "cross": "Offense",
             "sets": [
                 "Health x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Health x2"
             ]
         },
         "avatarName": "charui_firstorder_executioner"
@@ -4186,8 +4203,8 @@
             "circle": "Health",
             "cross": "Tenacity",
             "sets": [
-                "Speed x4",
-                "Tenacity x2"
+                "Health x2",
+                "Speed x4"
             ]
         }
     },
@@ -4386,7 +4403,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense",
             "sets": [
                 "Health x2",
@@ -5841,7 +5858,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ]
         },
         "avatarName": "charui_kylo_unmasked"
@@ -6412,6 +6429,23 @@
                 "Speed x4"
             ]
         }
+    },
+    {
+        "name": "Mercenary Guard Droid (B1)",
+        "uniqueName": "B1MERCDROID",
+        "aliases": [
+            "Mercenary Guard Droid (B1)"
+        ],
+        "avatarName": "charui_b1mercdroid",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_b1mercdroid.png",
+        "side": "dark",
+        "factions": [
+            "Droid",
+            "Hutt Cartel",
+            "Mercenary",
+            "Tank"
+        ],
+        "mods": {}
     },
     {
         "name": "Merrin",
@@ -7471,8 +7505,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Offense x4",
+                "Tenacity x2"
             ]
         },
         "avatarName": "charui_trooperranger"
@@ -8609,7 +8643,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Defense x2"
+                "Health x2"
             ]
         },
         "avatarName": "charui_trooperstorm_han"
@@ -9175,8 +9209,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Health x2",
-                "Offense x4"
+                "Offense x4",
+                "Tenacity x2"
             ]
         },
         "avatarName": "charui_tuskenraider"

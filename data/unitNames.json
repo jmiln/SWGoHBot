@@ -2417,7 +2417,7 @@
     },
     "BOBAFETT": {
         "chs_cn": "波巴·费特",
-        "cht_cn": "波巴 費特",
+        "cht_cn": "波巴·費特",
         "eng_us": "Boba Fett",
         "fre_fr": "Boba Fett",
         "ger_de": "Boba Fett",
@@ -2833,7 +2833,7 @@
     },
     "JEDIMASTERMACEWINDU": {
         "chs_cn": "绝地大师梅斯·温杜",
-        "cht_cn": "絕地大師魅使 雲杜",
+        "cht_cn": "絕地大師魅使·雲杜",
         "eng_us": "Jedi Master Mace Windu",
         "fre_fr": "Maître Jedi Mace Windu",
         "ger_de": "Jedi-Meister Mace Windu",
@@ -3025,7 +3025,7 @@
     },
     "MACEWINDU": {
         "chs_cn": "梅斯·温杜",
-        "cht_cn": "魅使 雲杜",
+        "cht_cn": "魅使·雲杜",
         "eng_us": "Mace Windu",
         "fre_fr": "Mace Windu",
         "ger_de": "Mace Windu",
@@ -3454,6 +3454,22 @@
         "spa_xm": "Lando Calrissian",
         "tha_th": "แลนโด้ คาริเซี่ยน",
         "tur_tr": "Lando Calrissian"
+    },
+    "ADELPHIRANGER": {
+        "chs_cn": "阿德尔菲游骑兵",
+        "cht_cn": "阿德爾菲巡邏隊",
+        "eng_us": "Adelphi Ranger",
+        "fre_fr": "Ranger d'Adelphi",
+        "ger_de": "Adelphi-Ranger",
+        "ind_id": "Ranger Adelphi",
+        "ita_it": "Ranger di Adelphi",
+        "jpn_jp": "アデルファイ・レンジャー",
+        "kor_kr": "아델피 레인저",
+        "por_br": "Piloto de Adelphi",
+        "rus_ru": "Рейнджер Адельфи",
+        "spa_xm": "Ranger de Adelphi",
+        "tha_th": "แรนเจอร์อะเดลฟิ",
+        "tur_tr": "Adelphi Ranger"
     },
     "SUNFAC": {
         "chs_cn": "森·法克",
@@ -4193,7 +4209,7 @@
     },
     "BOBAFETTSCION": {
         "chs_cn": "波巴·费特，詹戈之子",
-        "cht_cn": "強格的後代波巴 費特",
+        "cht_cn": "強格的後代波巴·費特",
         "eng_us": "Boba Fett, Scion of Jango",
         "fre_fr": "Boba Fett, héritier de Jango",
         "ger_de": "Boba Fett, Jangos Sohn",
@@ -5752,7 +5768,7 @@
         "ind_id": "IG-12 & Grogu",
         "ita_it": "IG-12 con Grogu",
         "jpn_jp": "IG-12 & グローグー",
-        "kor_kr": "IG-12 & 그로구",
+        "kor_kr": "IG-12&그로구",
         "por_br": "IG-12 e Grogu",
         "rus_ru": "IG-12 и Грогу",
         "spa_xm": "IG-12 y Grogu",
@@ -6510,6 +6526,22 @@
         "spa_xm": "Soldado explorador",
         "tha_th": "สเกาท์ทรูปเปอร์",
         "tur_tr": "Gözcü Trooper"
+    },
+    "B1MERCDROID": {
+        "chs_cn": "雇佣兵守护机器人（B1）",
+        "cht_cn": "僱傭兵護衛機器人（B1）",
+        "eng_us": "Mercenary Guard Droid (B1)",
+        "fre_fr": "Droïde garde mercenaire (B1)",
+        "ger_de": "Söldner-Bewachungsdroide (B1)",
+        "ind_id": "Droid Penjaga Tentara Bayaran (B1)",
+        "ita_it": "Droide guardia mercenario (B1)",
+        "jpn_jp": "傭兵ガード・ドロイド(B1)",
+        "kor_kr": "용병 가드 드로이드(B1)",
+        "por_br": "Droide Guarda Mercenário (B1)",
+        "rus_ru": "Наемный охранный дроид (B1)",
+        "spa_xm": "Droide guardia mercenario (B1)",
+        "tha_th": "ดรอยด์พิทักษ์ภัยทหารรับจ้าง (B1)",
+        "tur_tr": "Paralı Asker Muhafız Droidi (B1)"
     },
     "LUKESKYWALKER": {
         "chs_cn": "卢克·天行者（农场小子）",

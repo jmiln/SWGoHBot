@@ -68,6 +68,17 @@
         ]
     },
     {
+        "name": "Adelphi Ranger",
+        "defId": "ADELPHIRANGER",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ADELPHIRANGER_NAME",
+                "name": "Green Ranger Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Admiral Ackbar",
         "defId": "ADMIRALACKBAR",
         "locations": [
@@ -1576,11 +1587,6 @@
                 "type": "Galactic Bounty Event",
                 "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
                 "name": "Galactic Bounties I Special Event"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "5-D",
-                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -3186,6 +3192,11 @@
         ]
     },
     {
+        "name": "Mercenary Guard Droid (B1)",
+        "defId": "B1MERCDROID",
+        "locations": []
+    },
+    {
         "name": "Merrin",
         "defId": "MERRIN",
         "locations": [
@@ -4236,6 +4247,11 @@
         "name": "Snowtrooper Commander",
         "defId": "REMNANTSNOWCOMMANDER",
         "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "5-D",
+                "locId": "HARD_FLEET"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_REMNANTSNOWCOMMANDER_NAME",

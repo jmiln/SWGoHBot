@@ -248,6 +248,11 @@
         },
         "reqs": [
             {
+                "defId": "ADELPHIRANGER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "ADMIRALACKBAR",
                 "type": "STAR",
                 "tier": 7
@@ -2000,6 +2005,11 @@
                 "manual": true,
                 "required": true,
                 "defId": "HOTHREBELSOLDIER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "ADELPHIRANGER",
                 "type": "STAR",
                 "tier": 5
             },
