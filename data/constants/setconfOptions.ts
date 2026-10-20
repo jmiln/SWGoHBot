@@ -16,7 +16,7 @@ export const setconfOptions: Record<keyof GuildConfigSettings, SetconfOption> = 
     adminRole: {
         type: ApplicationCommandOptionType.Role,
         isArray: true,
-        description: "A list of the roles that are allowed to mess with settings/ events.",
+        description: "A role that can change the bot's settings and events",
     },
     timezone: {
         type: ApplicationCommandOptionType.String,

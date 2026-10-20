@@ -34,7 +34,7 @@ export default class Poll extends Command {
                     },
                     {
                         name: "anonymous",
-                        description: "If enabled, current votes will not be shown until the poll is closed. ",
+                        description: "If enabled, current votes will not be shown until the poll is closed.",
                         type: ApplicationCommandOptionType.Boolean,
                     },
                 ],
@@ -67,7 +67,7 @@ export default class Poll extends Command {
                         required: true,
                         description: "The poll option you want to vote for",
                         type: ApplicationCommandOptionType.Integer,
-                        minValue: 0,
+                        minValue: 1,
                         maxValue: 10,
                     },
                 ],

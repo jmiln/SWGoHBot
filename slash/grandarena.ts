@@ -49,7 +49,7 @@ export default class GrandArena extends Command {
             {
                 name: "characters",
                 type: ApplicationCommandOptionType.String,
-                description: "Characters to compare, comma seperated",
+                description: "Characters to compare, comma separated",
             },
             {
                 name: "faction",

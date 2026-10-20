@@ -11,7 +11,7 @@ export default class GuildUpdate extends Command {
         name: "guildupdate",
         category: "Patreon",
         contexts: [InteractionContextType.Guild],
-        description: "Set up the guild watcher to alert you for changes in guild member's rosters",
+        description: "Set up the guild watcher to alert you for changes in guild members' rosters",
         options: [
             {
                 name: "set",

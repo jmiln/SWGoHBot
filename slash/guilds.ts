@@ -156,14 +156,14 @@ export default class Guilds extends Command {
                     },
                     {
                         name: "split_types",
-                        description: "Display chacters and ships as different columns",
+                        description: "Display characters and ships as different columns",
                         type: ApplicationCommandOptionType.Boolean,
                     },
                 ],
             },
             {
                 name: "tickets",
-                description: "Show how many event tickets each guild member has aquired for the day",
+                description: "Show how many event tickets each guild member has acquired for the day",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {

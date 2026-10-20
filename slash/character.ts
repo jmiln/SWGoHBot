@@ -29,7 +29,7 @@ export default class Character extends Command {
                 name: "character",
                 autocomplete: true,
                 type: ApplicationCommandOptionType.String,
-                description: "The character you want to see the gear of",
+                description: "The character you want to see",
                 required: true,
             },
         ],

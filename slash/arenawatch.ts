@@ -73,14 +73,14 @@ export default class ArenaWatch extends Command {
                         options: [
                             {
                                 name: "allycodes",
-                                description: "Ally Codes or ally code:mention, comma seperated",
+                                description: "Ally codes or ally code:mention, comma separated",
                                 type: ApplicationCommandOptionType.String,
                                 required: true,
                             },
                             {
                                 name: "mark",
                                 type: ApplicationCommandOptionType.String,
-                                description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
+                                description: "An emote or symbol to mark these accounts with",
                             },
                         ],
                     },
@@ -91,7 +91,7 @@ export default class ArenaWatch extends Command {
                         options: [
                             {
                                 name: "allycodes",
-                                description: "AllyCodes, comma seperated",
+                                description: "Ally codes, comma separated",
                                 type: ApplicationCommandOptionType.String,
                                 required: true,
                             },
@@ -226,7 +226,7 @@ export default class ArenaWatch extends Command {
                                 name: "enable",
                                 type: ApplicationCommandOptionType.Boolean,
                                 required: true,
-                                description: "True/ False",
+                                description: "Show when one watched player hits another",
                             },
                         ],
                     },
@@ -273,7 +273,7 @@ export default class ArenaWatch extends Command {
             {
                 name: "payout",
                 type: ApplicationCommandOptionType.SubcommandGroup,
-                description: "Set to spit out the payout result of a user",
+                description: "Settings for the payout schedule message",
                 options: [
                     {
                         name: "arena",
@@ -297,7 +297,7 @@ export default class ArenaWatch extends Command {
                     {
                         name: "channel",
                         type: ApplicationCommandOptionType.Subcommand,
-                        description: "Set an arena's logs to a specified channel",
+                        description: "Set which channel the payout schedule posts in",
                         options: [
                             {
                                 name: "target_channel",
@@ -342,7 +342,7 @@ export default class ArenaWatch extends Command {
                                 name: "mark",
                                 type: ApplicationCommandOptionType.String,
                                 required: false,
-                                description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
+                                description: "The emote or symbol to mark them with (use remove_mark to clear it)",
                             },
                             {
                                 name: "remove_mark",

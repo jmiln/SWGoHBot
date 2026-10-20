@@ -31,7 +31,7 @@ export default class Patreon extends Command {
             },
             {
                 name: "my_info",
-                description: "Show what benefits your currently have available to you",
+                description: "Show what benefits you currently have available to you",
                 type: ApplicationCommandOptionType.Subcommand,
             },
             {

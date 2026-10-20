@@ -16,7 +16,7 @@ export default class Help extends Command {
         options: [
             {
                 name: "details",
-                description: "Show details about each command's argument",
+                description: "Show details about each command's arguments",
                 type: ApplicationCommandOptionType.Boolean,
             },
             {

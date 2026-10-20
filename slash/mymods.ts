@@ -23,7 +23,7 @@ export default class MyMods extends Command {
         options: [
             {
                 name: "character",
-                description: "Show the mod stat for the specified character",
+                description: "Show the mods on the specified character",
                 type: ApplicationCommandOptionType.Subcommand,
                 options: [
                     {

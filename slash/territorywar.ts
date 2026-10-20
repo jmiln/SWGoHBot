@@ -21,14 +21,14 @@ export default class TerritoryWar extends Command {
             {
                 name: "allycode_1",
                 type: ApplicationCommandOptionType.String,
-                description: "Ally code for player 1",
+                description: "Ally code of a player in the first guild",
                 required: true,
                 autocomplete: true,
             },
             {
                 name: "allycode_2",
                 type: ApplicationCommandOptionType.String,
-                description: "Ally code for player 2",
+                description: "Ally code of a player in the second guild",
                 autocomplete: true,
                 required: true,
             },

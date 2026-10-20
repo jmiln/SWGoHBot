@@ -15,7 +15,7 @@ export default class MyProfile extends Command {
         options: [
             {
                 name: "allycode",
-                description: "The ally code for the profile you want view",
+                description: "The ally code for the profile you want to view",
                 type: ApplicationCommandOptionType.String,
                 autocomplete: true,
             },

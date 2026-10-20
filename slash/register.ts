@@ -20,7 +20,7 @@ export default class Register extends Command {
         options: [
             {
                 name: "allycode",
-                description: "The ally code for the user you want to look up",
+                description: "The ally code to link",
                 type: ApplicationCommandOptionType.String,
                 required: true,
             },

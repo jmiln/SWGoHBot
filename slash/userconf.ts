@@ -32,18 +32,18 @@ export default class UserConf extends Command {
         options: [
             {
                 name: "allycodes",
-                description: "The ally code of the user you want to see",
+                description: "Manage your linked ally codes",
                 type: ApplicationCommandOptionType.SubcommandGroup,
                 // Need add, remove, makeprimary
                 options: [
                     {
                         name: "add",
                         type: ApplicationCommandOptionType.Subcommand,
-                        description: "Add an allycode",
+                        description: "Add an ally code",
                         options: [
                             {
                                 name: "allycode",
-                                description: "The ally code of the user you want to see",
+                                description: "The ally code to add",
                                 type: ApplicationCommandOptionType.String,
                                 required: true,
                             },
@@ -52,11 +52,11 @@ export default class UserConf extends Command {
                     {
                         name: "remove",
                         type: ApplicationCommandOptionType.Subcommand,
-                        description: "Remove an allycode",
+                        description: "Remove an ally code",
                         options: [
                             {
                                 name: "allycode",
-                                description: "The ally code of the user you want to see",
+                                description: "The ally code to remove",
                                 type: ApplicationCommandOptionType.String,
                                 required: true,
                                 autocomplete: true,
@@ -70,7 +70,7 @@ export default class UserConf extends Command {
                         options: [
                             {
                                 name: "allycode",
-                                description: "The ally code of the user you want to see",
+                                description: "The ally code to make your primary",
                                 type: ApplicationCommandOptionType.String,
                                 required: true,
                                 autocomplete: true,

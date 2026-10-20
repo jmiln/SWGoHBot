@@ -24,7 +24,8 @@ export default class Arenarank extends Command {
             {
                 name: "hops",
                 type: ApplicationCommandOptionType.Integer,
-                description: "How many more ranks to calculate",
+                description: "How many battles ahead to calculate (default 5)",
+                minValue: 1,
             },
         ],
     };

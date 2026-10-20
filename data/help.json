@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-10-05T11:03:47.493Z",
+        "generatedAt": "2026-10-20T00:39:19.813Z",
         "totalCommands": 49,
         "categories": 5
     },
@@ -96,7 +96,8 @@
                     {
                         "name": "hops",
                         "type": 4,
-                        "description": "How many more ranks to calculate"
+                        "description": "How many battles ahead to calculate (default 5)",
+                        "minValue": 1
                     }
                 ],
                 "permLevel": 0,
@@ -184,7 +185,7 @@
                         "name": "character",
                         "autocomplete": true,
                         "type": 3,
-                        "description": "The character you want to see the gear of",
+                        "description": "The character you want to see",
                         "required": true
                     }
                 ],
@@ -267,7 +268,7 @@
                 "options": [
                     {
                         "name": "details",
-                        "description": "Show details about each command's argument",
+                        "description": "Show details about each command's arguments",
                         "type": 5
                     },
                     {
@@ -500,17 +501,17 @@
                 "options": [
                     {
                         "name": "allycodes",
-                        "description": "The ally code of the user you want to see",
+                        "description": "Manage your linked ally codes",
                         "type": 2,
                         "options": [
                             {
                                 "name": "add",
                                 "type": 1,
-                                "description": "Add an allycode",
+                                "description": "Add an ally code",
                                 "options": [
                                     {
                                         "name": "allycode",
-                                        "description": "The ally code of the user you want to see",
+                                        "description": "The ally code to add",
                                         "type": 3,
                                         "required": true
                                     }
@@ -519,11 +520,11 @@
                             {
                                 "name": "remove",
                                 "type": 1,
-                                "description": "Remove an allycode",
+                                "description": "Remove an ally code",
                                 "options": [
                                     {
                                         "name": "allycode",
-                                        "description": "The ally code of the user you want to see",
+                                        "description": "The ally code to remove",
                                         "type": 3,
                                         "required": true,
                                         "autocomplete": true
@@ -537,7 +538,7 @@
                                 "options": [
                                     {
                                         "name": "allycode",
-                                        "description": "The ally code of the user you want to see",
+                                        "description": "The ally code to make your primary",
                                         "type": 3,
                                         "required": true,
                                         "autocomplete": true
@@ -943,7 +944,7 @@
                             },
                             {
                                 "name": "anonymous",
-                                "description": "If enabled, current votes will not be shown until the poll is closed. ",
+                                "description": "If enabled, current votes will not be shown until the poll is closed.",
                                 "type": 5
                             }
                         ]
@@ -976,7 +977,7 @@
                                 "required": true,
                                 "description": "The poll option you want to vote for",
                                 "type": 4,
-                                "minValue": 0,
+                                "minValue": 1,
                                 "maxValue": 10
                             }
                         ]
@@ -1009,7 +1010,7 @@
                             {
                                 "name": "admin_role",
                                 "type": 8,
-                                "description": "A list of the roles that are allowed to mess with settings/ events."
+                                "description": "A role that can change the bot's settings and events"
                             },
                             {
                                 "name": "event_countdown",
@@ -1028,7 +1029,7 @@
                             {
                                 "name": "admin_role",
                                 "type": 8,
-                                "description": "A list of the roles that are allowed to mess with settings/ events."
+                                "description": "A role that can change the bot's settings and events"
                             },
                             {
                                 "name": "event_countdown",
@@ -1188,12 +1189,12 @@
                                     {
                                         "name": "add_unit",
                                         "type": 3,
-                                        "description": "Add a unit to the list",
+                                        "description": "Add a unit to the blacklist",
                                         "autocomplete": true
                                     },
                                     {
                                         "name": "remove_unit",
-                                        "description": "Remove a unit from the list",
+                                        "description": "Remove a unit from the blacklist",
                                         "type": 3,
                                         "autocomplete": true
                                     }
@@ -1506,14 +1507,14 @@
                                 "options": [
                                     {
                                         "name": "allycodes",
-                                        "description": "Ally Codes or ally code:mention, comma seperated",
+                                        "description": "Ally codes or ally code:mention, comma separated",
                                         "type": 3,
                                         "required": true
                                     },
                                     {
                                         "name": "mark",
                                         "type": 3,
-                                        "description": "The emote or symbol to mark them with. Leaving this empty will remove it if available"
+                                        "description": "An emote or symbol to mark these accounts with"
                                     }
                                 ]
                             },
@@ -1524,7 +1525,7 @@
                                 "options": [
                                     {
                                         "name": "allycodes",
-                                        "description": "AllyCodes, comma seperated",
+                                        "description": "Ally codes, comma separated",
                                         "type": 3,
                                         "required": true
                                     }
@@ -1701,7 +1702,7 @@
                                         "name": "enable",
                                         "type": 5,
                                         "required": true,
-                                        "description": "True/ False"
+                                        "description": "Show when one watched player hits another"
                                     }
                                 ]
                             },
@@ -1760,7 +1761,7 @@
                     {
                         "name": "payout",
                         "type": 2,
-                        "description": "Set to spit out the payout result of a user",
+                        "description": "Settings for the payout schedule message",
                         "options": [
                             {
                                 "name": "arena",
@@ -1796,7 +1797,7 @@
                             {
                                 "name": "channel",
                                 "type": 1,
-                                "description": "Set an arena's logs to a specified channel",
+                                "description": "Set which channel the payout schedule posts in",
                                 "options": [
                                     {
                                         "name": "target_channel",
@@ -1841,7 +1842,7 @@
                                         "name": "mark",
                                         "type": 3,
                                         "required": false,
-                                        "description": "The emote or symbol to mark them with. Leaving this empty will remove it if available"
+                                        "description": "The emote or symbol to mark them with (use remove_mark to clear it)"
                                     },
                                     {
                                         "name": "remove_mark",
@@ -1976,7 +1977,7 @@
             },
             {
                 "name": "guildupdate",
-                "description": "Set up the guild watcher to alert you for changes in guild member's rosters",
+                "description": "Set up the guild watcher to alert you for changes in guild members' rosters",
                 "usage": [
                     "**/guildupdate** set [enabled] [channel] [allycode]",
                     "**/guildupdate** view"
@@ -2046,7 +2047,7 @@
                     },
                     {
                         "name": "my_info",
-                        "description": "Show what benefits your currently have available to you",
+                        "description": "Show what benefits you currently have available to you",
                         "type": 1
                     },
                     {
@@ -2294,7 +2295,7 @@
                     {
                         "name": "characters",
                         "type": 3,
-                        "description": "Characters to compare, comma seperated"
+                        "description": "Characters to compare, comma separated"
                     },
                     {
                         "name": "faction",
@@ -2472,14 +2473,14 @@
                             },
                             {
                                 "name": "split_types",
-                                "description": "Display chacters and ships as different columns",
+                                "description": "Display characters and ships as different columns",
                                 "type": 5
                             }
                         ]
                     },
                     {
                         "name": "tickets",
-                        "description": "Show how many event tickets each guild member has aquired for the day",
+                        "description": "Show how many event tickets each guild member has acquired for the day",
                         "type": 1,
                         "options": [
                             {
@@ -2869,7 +2870,7 @@
                 "options": [
                     {
                         "name": "character",
-                        "description": "Show the mod stat for the specified character",
+                        "description": "Show the mods on the specified character",
                         "type": 1,
                         "options": [
                             {
@@ -3053,7 +3054,7 @@
                 "options": [
                     {
                         "name": "allycode",
-                        "description": "The ally code for the profile you want view",
+                        "description": "The ally code for the profile you want to view",
                         "type": 3,
                         "autocomplete": true
                     }
@@ -3363,7 +3364,7 @@
                 "options": [
                     {
                         "name": "allycode",
-                        "description": "The ally code for the user you want to look up",
+                        "description": "The ally code to link",
                         "type": 3,
                         "required": true
                     },
@@ -3391,14 +3392,14 @@
                     {
                         "name": "allycode_1",
                         "type": 3,
-                        "description": "Ally code for player 1",
+                        "description": "Ally code of a player in the first guild",
                         "required": true,
                         "autocomplete": true
                     },
                     {
                         "name": "allycode_2",
                         "type": 3,
-                        "description": "Ally code for player 2",
+                        "description": "Ally code of a player in the second guild",
                         "autocomplete": true,
                         "required": true
                     }

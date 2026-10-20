@@ -78,12 +78,12 @@ const options = {
                     {
                         name: "add_unit",
                         type: ApplicationCommandOptionType.String,
-                        description: "Add a unit to the list",
+                        description: "Add a unit to the blacklist",
                         autocomplete: true,
                     },
                     {
                         name: "remove_unit",
-                        description: "Remove a unit from the list",
+                        description: "Remove a unit from the blacklist",
                         type: ApplicationCommandOptionType.String,
                         autocomplete: true,
                     },
