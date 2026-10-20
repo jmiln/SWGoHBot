@@ -8,6 +8,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
 4.0.0 and 3.0.0 predate that and stay as written.
 
+## [6.2.0] - 2026-10-19
+
+### Added
+
+- A few bug fixes & limit cooldowns between 1 & 2880
+- Clean up the stat block some to better fit mobile
+
+### Fixed
+
+- Correct copied or wrong option descriptions and typos, and set minimums on poll vote and arenarank hops
+- Treat a missing payout offset as unknown instead of UTC+0, and stop saving the guess
+- Await the roster reply and fall back to the channel stat results
+- Make copy's permission and empty-source checks work, keep time_until in UTC, and accept any usable flag
+- Detect zetas and omicrons from the game's tier flags, and store omicronMode
+- Reject triggering an unknown event, and use guildUnitStats' zetas
+
+### Refactoring
+
+- Split run() into twlist and settings handlers, and share the autocomplete unit list
+- Split processShardPatron into collect, build, send and commit steps
+- Split run() into lookup and display steps, and share one reply embed
+- Split run() into per-subcommand handlers and lift its nested helpers
+- Split run() into fetch, stat and roster steps
+- Clean up wording for command opts
+- Split run() into per-subcommand handlers and lift its nested helpers
+- Split processAWChanges into per-setting handlers
+
 ## [6.1.2] - 2026-10-15
 
 ### CI
