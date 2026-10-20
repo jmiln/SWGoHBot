@@ -158,7 +158,7 @@ export function hydrateWatchAccounts(entries: ArenaWatchConfig[], playerMap: Map
             // hydrated account always satisfies ArenaWatchAcct
             mention: entry.mention ?? null,
             mark: entry.mark ?? undefined,
-            poOffset: entry.poOffset ?? 0,
+            poOffset: entry.poOffset ?? null,
             name: doc?.name || String(entry.allyCode),
             lastChar: doc?.lastCharRank ?? null,
             lastShip: doc?.lastShipRank ?? null,
@@ -343,7 +343,7 @@ function commitWatchState(
     let userChanged = false;
     for (const acct of accountsToCheck) {
         const stored = storedByCode.get(acct.allyCode);
-        if (stored && stored.poOffset !== acct.poOffset) {
+        if (stored && typeof acct.poOffset === "number" && stored.poOffset !== acct.poOffset) {
             stored.poOffset = acct.poOffset;
             userChanged = true;
         }
@@ -1526,7 +1526,7 @@ class PatreonFuncs {
         const fieldOut: { name: string; value: string }[] = [];
         for (const [key, time] of times.entries()) {
             fieldOut.push({
-                name: `PO in ${key}`,
+                name: key ? `PO in ${key}` : "Payout time unknown",
                 value: time.players
                     .sort((a: ArenaWatchAcct, b: ArenaWatchAcct) => (a[arenaString] ?? 0) - (b[arenaString] ?? 0))
                     .map((p: ArenaWatchAcct) => p.outString)
@@ -1550,7 +1550,8 @@ class PatreonFuncs {
             player.duration = Math.floor(timeLeft / constants.minMS);
             player.timeTil = `${formatDuration(timeLeft, Language.getLanguages()[defaultGuildSettings.language])} until payout.`;
         }
-        return players.sort((a, b) => ((a.duration ?? 0) > (b.duration ?? 0) ? 1 : -1));
+        const unknownLast = Number.POSITIVE_INFINITY;
+        return players.sort((a, b) => ((a.duration ?? unknownLast) > (b.duration ?? unknownLast) ? 1 : -1));
     }
 
     // Compare ranks to see if we have both sides of the fight or not

@@ -1934,6 +1934,72 @@ describe("PatreonFuncs Module", () => {
             assert.ok(!logText.includes("undefined"), `player name must never render as 'undefined': ${logText}`);
             assert.ok(logText.includes(String(LOG_ALLY_CODE)), `expected the ally code as the name fallback: ${logText}`);
         });
+
+        it("skips payout lines, and saves no offset, when neither the entry nor the API knows it", async (t) => {
+            // 30s after a UTC+0 char payout, so treating the unknown offset as 0 would post a result line
+            t.mock.timers.enable({ apis: ["Date"], now: Date.UTC(2030, 0, 1, 18, 0, 30) });
+            const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
+            const user = {
+                id: "shard_test_user",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: LOG_ALLY_CODE, mention: null, result: "char" }],
+                    arena: {
+                        char: { channel: "aw-chan", enabled: true },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: false, channel: null, msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [LOG_ALLY_CODE, { name: "NoOffset", allyCode: LOG_ALLY_CODE, arena: { char: { rank: 5 }, ship: { rank: null } } }],
+            ] as [number, PlayerArenaRes][]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>();
+            const changed = await (logFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
+
+            assert.deepStrictEqual(sentLogs, [], "an unknown offset must not be treated as UTC+0");
+            assert.ok(
+                !("poOffset" in user.arenaWatch.allyCodes[0]),
+                `no offset may be saved: ${JSON.stringify(user.arenaWatch.allyCodes[0])}`,
+            );
+            assert.strictEqual(changed, false);
+        });
+    });
+
+    describe("payout schedule", () => {
+        it("lists accounts with an unknown offset last, under their own heading, not a guessed time", () => {
+            const accounts = hydrateWatchAccounts(
+                [
+                    { allyCode: 888777697, mention: null },
+                    { allyCode: 888777698, mention: null, poOffset: 120 },
+                ] as ArenaWatchConfig[],
+                new Map([
+                    [888777697, { allyCode: 888777697, name: "Unknown" } as ArenaPlayer],
+                    [888777698, { allyCode: 888777698, name: "Known" } as ArenaPlayer],
+                ]),
+            );
+
+            const funcs = patreonFuncs as any;
+            const embed = funcs.formatPayouts(funcs.getPayoutTimes(accounts, "char"), "char");
+
+            const names = embed.fields.map((f: { name: string }) => f.name);
+            assert.strictEqual(names.length, 2, JSON.stringify(embed.fields));
+            assert.ok(names[0].startsWith("PO in ") && names[0].length > "PO in ".length, `known first: ${names}`);
+            assert.ok(embed.fields[0].value.includes("Known"));
+            assert.strictEqual(names[1], "Payout time unknown");
+            assert.ok(embed.fields[1].value.includes("Unknown"));
+        });
     });
 
     describe("processShardPatron() channel rank anchoring + payout self-heal", () => {

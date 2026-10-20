@@ -308,7 +308,7 @@ export interface ArenaWatchAcct {
     mention: string | null;
     lastChar: number | null;
     lastShip: number | null;
-    poOffset: number;
+    poOffset: number | null;
     mark?: string;
     warn?: { min?: number; arena?: string };
     result?: string;
