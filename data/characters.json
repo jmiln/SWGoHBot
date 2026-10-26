@@ -2420,7 +2420,18 @@
             "Sith",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        }
     },
     {
         "name": "Darth Malak",
@@ -3114,7 +3125,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -3317,7 +3328,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3497,8 +3508,7 @@
             "cross": "Offense",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Crit. Damage x4"
             ]
         },
         "avatarName": "charui_firstorder_executioner"
@@ -4403,7 +4413,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense",
             "sets": [
                 "Health x2",
@@ -4851,8 +4861,9 @@
             "circle": "Protection",
             "cross": "Tenacity",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Tenacity x2",
+                "Tenacity x2",
+                "Tenacity x2"
             ]
         },
         "avatarName": "charui_imperial_super_commando"
@@ -5073,7 +5084,18 @@
             "Scoundrel",
             "Smuggler"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "sets": [
+                "Crit. Chance x2",
+                "Crit. Damage x4"
+            ]
+        }
     },
     {
         "name": "Jedi Consular",
@@ -5157,7 +5179,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Health",
             "sets": [
@@ -6258,7 +6280,18 @@
             "Jedi",
             "New Republic"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ]
+        }
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
@@ -7505,8 +7538,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Offense x4",
-                "Tenacity x2"
+                "Health x2",
+                "Speed x4"
             ]
         },
         "avatarName": "charui_trooperranger"
@@ -8569,7 +8602,18 @@
             "Support",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ]
+        }
     },
     {
         "name": "Stormtrooper",
@@ -8615,7 +8659,19 @@
             "Imperial Trooper",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "sets": [
+                "Health x2",
+                "Defense x2",
+                "Defense x2"
+            ]
+        }
     },
     {
         "name": "Stormtrooper Han",
@@ -8643,7 +8699,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ]
         },
         "avatarName": "charui_trooperstorm_han"
@@ -9040,7 +9096,18 @@
             "Attacker",
             "Sith"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ]
+        }
     },
     {
         "name": "The Stranger",
@@ -9234,7 +9301,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -9686,7 +9753,18 @@
             "Healer",
             "Sith"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        }
     },
     {
         "name": "Yoda & Chewie",

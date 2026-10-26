@@ -1,3 +1,14 @@
+# Long-running services only. dataseed needs root's capabilities to chown the data dir, and
+# dataupdater is left unlimited for the memory its cycle needs.
+x-hardened: &hardened
+  read_only: true
+  tmpfs:
+    - /tmp
+  cap_drop:
+    - ALL
+  security_opt:
+    - "no-new-privileges:true"
+
 services:
   # Runs to completion before the services below, copying any data/ file that is missing from the
   # mount out of the image's pristine copy. A bind mount never inherits image content, so without
@@ -38,6 +49,7 @@ services:
       - ${DATA_DIR:-./data}:/app/data
 
   bot:
+    <<: *hardened
     image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
     # `build:` is for local iteration only. Anything deployed is built and published by CI.
     build: .
@@ -54,6 +66,9 @@ services:
       # network.
       SHARD_STATUS_HOST: 0.0.0.0
     init: true
+    # ~1.75g in steady state; the rest is headroom so a slow leak restarts the bot before it
+    # starves Mongo or the nightly dataupdater.
+    mem_limit: 4g
     # Shards need well past a second or two to finish closing Mongo. 15s is generous.
     stop_grace_period: 15s
     extra_hosts:
@@ -79,6 +94,7 @@ services:
       start_period: 180s
 
   eventserve:
+    <<: *hardened
     image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
     build: .
     container_name: swgohbot-eventserve
@@ -86,6 +102,7 @@ services:
     command: ["node", "services/eventServe.ts"]
     env_file: .env
     init: true
+    mem_limit: 512m
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
@@ -99,6 +116,7 @@ services:
       start_period: 30s
 
   swapiserve:
+    <<: *hardened
     image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
     build: .
     container_name: swgohbot-swapiserve
@@ -111,6 +129,7 @@ services:
       # stays on loopback, and the control routes are guarded by SWAPI_SERVE_CONTROL_SECRET.
       SWAPI_SERVE_HOST: "0.0.0.0"
     init: true
+    mem_limit: 512m
     # Past SHUTDOWN_GRACE_MS in services/swapiServe/index.ts, so the service finishes its own
     # shutdown rather than being killed partway through it.
     stop_grace_period: 15s
