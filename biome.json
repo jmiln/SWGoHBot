@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "files": {
-        "includes": ["**", "!**/node_modules", "!scripts", "!languages", "!data", "!wipCommands"]
+        "includes": ["**", "!**/node_modules", "!scripts", "!languages", "!data", "!wipCommands", "!**/*.md"]
     },
     "assist": {
         "actions": {
@@ -17,6 +17,11 @@
         "indentWidth": 4,
         "lineWidth": 140
     },
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
     "javascript": {
         "formatter": {
             "quoteStyle": "double",
@@ -26,6 +31,16 @@
     "json": {
         "formatter": {
             "expand": "auto"
+        }
+    },
+    "markdown": {
+        "formatter": {
+            "enabled": false
+        }
+    },
+    "yaml": {
+        "formatter": {
+            "enabled": false
         }
     },
     "linter": {
