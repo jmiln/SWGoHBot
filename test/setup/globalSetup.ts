@@ -27,7 +27,7 @@ export async function globalSetup(): Promise<void> {
     }
 
     console.log("[info] Starting MongoDB testcontainer...");
-    container = await new MongoDBContainer("mongo:7.0")
+    container = await new MongoDBContainer("mongo:9.0")
         .withExposedPorts({ container: MONGO_CONTAINER_PORT, host: MONGO_HOST_PORT })
         .start();
 

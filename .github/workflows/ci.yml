@@ -149,7 +149,7 @@ jobs:
 
       # eventServe's init() connects to MongoDB before it listens, so it needs one to start.
       - name: Start MongoDB for eventServe
-        run: docker run -d --name mongo-ci --network host mongo:8
+        run: docker run -d --name mongo-ci --network host mongo:9.0
 
       - name: eventServe answers /health without a bearer
         run: |
