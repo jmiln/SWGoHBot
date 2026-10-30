@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Entries from 4.1.0 onward are generated from commit subjects by `npm run changelog:draft`.
 4.0.0 and 3.0.0 predate that and stay as written.
 
+## [6.2.3] - 2026-10-30
+
+### Fixed
+
+- Run MongoDB 9.0 in CI and tests
+
 ## [6.2.2] - 2026-10-30
 
 ### Fixed
