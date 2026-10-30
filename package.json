@@ -40,16 +40,16 @@
         "mongodb": "^7.7.0",
         "pino": "^10.4.0",
         "piscina": "^5.3.2",
-        "zod": "^4.6.5"
+        "zod": "^4.6.7"
     },
     "engines": {
         "node": ">=26.1"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.5.15",
-        "@testcontainers/mongodb": "^12.2.0",
-        "@types/node": "^26.6.4",
-        "discord-api-types": "^0.38.56",
+        "@biomejs/biome": "^2.6.2",
+        "@testcontainers/mongodb": "^12.2.1",
+        "@types/node": "^26.6.5",
+        "discord-api-types": "^0.38.57",
         "husky": "^9.1.7",
         "typescript": "^7.0.2"
     },
