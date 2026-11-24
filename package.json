@@ -52,5 +52,8 @@
         "discord-api-types": "^0.38.57",
         "husky": "^9.1.7",
         "typescript": "^7.0.2"
+    },
+    "overrides": {
+        "glob": "^14.0.2"
     }
 }
