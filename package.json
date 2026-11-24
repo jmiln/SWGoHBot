@@ -1,6 +1,6 @@
 {
     "name": "swgohbot",
-    "version": "6.2.3",
+    "version": "6.2.4",
     "description": "Discord bot for the Star Wars Galaxy of Heroes game.",
     "main": "swgohBot.js",
     "type": "module",
