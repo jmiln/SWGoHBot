@@ -36,8 +36,8 @@
     },
     "dependencies": {
         "@swgoh-utils/comlink": "^2.0.0",
-        "discord.js": "^14.27.0",
-        "mongodb": "^7.7.0",
+        "discord.js": "^14.28.1",
+        "mongodb": "^7.9.0",
         "pino": "^10.4.0",
         "piscina": "^5.3.2",
         "zod": "^4.6.7"
@@ -46,9 +46,9 @@
         "node": ">=26.1"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.6.2",
+        "@biomejs/biome": "^2.6.8",
         "@testcontainers/mongodb": "^12.2.1",
-        "@types/node": "^26.6.5",
+        "@types/node": "^26.6.6",
         "discord-api-types": "^0.38.57",
         "husky": "^9.1.7",
         "typescript": "^7.0.2"
